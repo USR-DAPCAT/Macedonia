@@ -1,17 +1,17 @@
-Package: Macedonia
-Type: Package
-Title: FormatGe Package
-Version: 0.1.0
-Date: 2022-08-25
-Author: Jordi Real,Ray Puig
-Maintainer: Jordi Real <jordireal@gmail.com>
-Description: Macedonia és un Package que conté les funcions necessàries per treballar en bases de dades mèdiques.
-License: GPL(>=3)
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.2.1
+Package:            Macedonia
+Type:               Package
+Title:              Macedonia Package
+Version:            0.1.0
+Date:               2022-10-17
+Author:             Jordi Real,Ray Puig
+Maintainer:         Jordi Real <jordireal@gmail.com>
+Description:        Macedonia és un Package que conté les funcions necessàries per treballar en bases de dades mèdiques.
+License:            GPL(>=3)
+Encoding:           UTF-8
+LazyData:           true
+RoxygenNote:        7.2.1
 Depends:
-    R (>= 3.5.0)
+                    R (>= 3.5.0)
 Imports: 
       dplyr,
       tidyr,
@@ -24,4 +24,31 @@ Imports:
       data.table,
       lubridate,
       purrr,
-      stats
+      stats,
+      ResourceSelection,
+      boot,
+      cmprsk,
+      compareGroups,
+      crrSC,
+      epiR,
+      ggcorrplot,
+      ggplot2,
+      mgcv,
+      mice,
+      pROC,
+      parameters,
+      plotROC,
+      survival,
+      survminer
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
