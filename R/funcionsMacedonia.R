@@ -28,7 +28,7 @@ etiquetar_model<-function(model,
   covars<-attr(model$terms, "term.labels")
   factoritzar_funcio<-function(x) {if (is.character(x)) as.factor(x) else {x}}
   dt<-eval(model$call$data)
-  dt<-dt %>% mutate_at(vars(covars), ~factoritzar_funcio(.))
+  dt<-dt %>% dplyr::mutate_at(vars(covars), ~factoritzar_funcio(.))
 
   # construir etiquetes
   taula_etiquetes<-
@@ -36,10 +36,10 @@ etiquetar_model<-function(model,
     purrr::map(~levels(dt[[.x]])) %>%
     tibble::enframe() %>%
     tidyr::unnest(cols = c(value),keep_empty = T) %>%
-    mutate(value=ifelse(is.na(value),"",value)) %>%
-    mutate(categoria=paste0(name,value)) %>%
+    dplyr::mutate(value=ifelse(is.na(value),"",value)) %>%
+    dplyr::mutate(categoria=paste0(name,value)) %>%
     etiquetar_taula(camp = "name",taulavariables = taulavariables,camp_descripcio = camp_descripcio) %>%
-    mutate(descripcio_nova=ifelse(value!="",paste0(name,": ",value),name)) %>%
+    dplyr::mutate(descripcio_nova=ifelse(value!="",paste0(name,": ",value),name)) %>%
     select(Parameter=categoria,descripcio_nova) %>%
     filter(Parameter%in%names(model$coefficients)) # filtrar pels coefficients que tenim en el model
 
@@ -148,24 +148,24 @@ generar_Surv<-function(dt,event,dtindex="dtindex",dtsortida="sortida"){
   if(class(dt[[x]])!="Date" & class(dt[[sortida]])!="Date") {
 
     temp<-dt %>% dplyr::select(!!dtindex,!!x,!!sortida) %>%
-      mutate(
-        event=case_when(as.Date(as.character(!!x),"%Y%m%d")>0~1,
+      dplyr::mutate(
+        event=dplyr::case_when(as.Date(as.character(!!x),"%Y%m%d")>0~1,
                         is.na(!!x)~0),
-        data_final=case_when(as.Date(as.character(!!x),"%Y%m%d")>0~as.Date(as.character(!!x),"%Y%m%d"),
+        data_final=dplyr::case_when(as.Date(as.character(!!x),"%Y%m%d")>0~as.Date(as.character(!!x),"%Y%m%d"),
                              is.na(!!x)~as.Date(as.character(!!sortida),"%Y%m%d")))
   }
 
   if(class(dt[[x]])=="Date" & class(dt[[sortida]])=="numeric") {
 
     temp<-dt %>% dplyr::select(!!dtindex,!!x,!!sortida) %>%
-      mutate(
-        event=case_when(!!x>0~1,
+      dplyr::mutate(
+        event=dplyr::case_when(!!x>0~1,
                         is.na(!!x)~0),
-        data_final=case_when(!!x>0~!!x,
+        data_final=dplyr::case_when(!!x>0~!!x,
                              is.na(!!x)~as.Date(as.character(!!sortida),"%Y%m%d")))
   }
 
-  temp<- temp %>% mutate(temps=(data_final-dtindex) %>% as.numeric())
+  temp<- temp %>% dplyr::mutate(temps=(data_final-dtindex) %>% as.numeric())
 
   # Genero l'objecte Surv
   temp$event_surv<-Surv(temp$temps,temp$event)
@@ -527,12 +527,12 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
     # Estandarditzar
     resumStd<-parameters::model_parameters(fit,standardize="basic",ci=level_conf) %>% select(c(1:5),-SE) %>%
       rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>%
-      mutate(term=as.factor(term))
+      dplyr::mutate(term=as.factor(term))
     resum<-resum %>% cbind(resumStd)
 
     resum_model<-tibble(categoria=row.names(resum)) %>%
       cbind(resum) %>% as_tibble() %>%
-      mutate(OR=Estimate %>% exp(),
+      dplyr::mutate(OR=Estimate %>% exp(),
              Linf=(Estimate-(Zalfa*`Std. Error`)) %>% exp(),
              Lsup=(Estimate+(Zalfa*`Std. Error`)) %>% exp())
 
@@ -547,12 +547,12 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
     # Estandarditzar
     resumStd<-parameters::model_parameters(fit,standardize="basic",ci=level_conf) %>% select(c(1:5),-SE) %>%
       rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>%
-      mutate(term=as.factor(term))
+      dplyr::mutate(term=as.factor(term))
     resum<-resum %>% cbind(resumStd)
 
     resum_model<-tibble(categoria=row.names(resum)) %>%
       cbind(resum) %>% as_tibble() %>% select(-term) %>%
-      mutate(Beta=Estimate,
+      dplyr::mutate(Beta=Estimate,
              Linf=(Estimate-(Zalfa*`Std. Error`)) ,
              Lsup=(Estimate+(Zalfa*`Std. Error`)))
   }
@@ -567,13 +567,13 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
   if (!es_factor) {resumtotal<-tibble(categoria=row.names(resum),outcome=outcome) }
 
   # Afegir categoria
-  resumtotal<-resumtotal %>% left_join(resum_model,by="categoria")
+  resumtotal<-resumtotal %>% dplyr::left_join(resum_model,by="categoria")
 
   # Només en GLM afegir mitjana estimada per categoria
   if (outcome_es_factor==F) {
     resumtotal<-resumtotal %>%
-      mutate (beta0=resumtotal$Estimate[1],estimate=ifelse(is.na(Estimate),0,Estimate)) %>%
-      mutate(mean=ifelse(categoria!="(Intercept)", beta0+estimate,NA))
+      dplyr::mutate (beta0=resumtotal$Estimate[1],estimate=ifelse(is.na(Estimate),0,Estimate)) %>%
+      dplyr::mutate(mean=ifelse(categoria!="(Intercept)", beta0+estimate,NA))
   }
 
   resumtotal %>% head(Ncat.x+1)
@@ -595,10 +595,10 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
     pars_Std<-fits$analyses %>%
       map(~parameters::model_parameters(.x,standardize="basic",ci=level_conf)) %>%
       bind_rows() %>% data.frame() %>%
-      group_by(Parameter) %>%
-      summarise_all(base::mean) %>%
+      dplyr::group_by(Parameter) %>%
+      dplyr::summarise_all(base::mean) %>%
       select(c(1:5),-SE) %>%
-      rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>% mutate(term=as.factor(term))}
+      rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>% dplyr::mutate(term=as.factor(term))}
 
   # Z per confidence interval
   Zalfa=qnorm((1-level_conf)/2,lower.tail=FALSE)
@@ -619,11 +619,11 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
 
     # Resum estandarditzat i ho fusiono
     resum_Std<-Standarditzar_mice_fits(fits,level_conf)
-    resum<-resum %>% left_join(resum_Std,by="term")
+    resum<-resum %>% dplyr::left_join(resum_Std,by="term")
 
     resum_model<-tibble(categoria=resum$term) %>%
       cbind(resum) %>%
-      mutate(OR=estimate %>% exp,
+      dplyr::mutate(OR=estimate %>% exp,
              Linf=(estimate-(Zalfa*std.error)) %>% exp,
              Lsup=(estimate+(Zalfa*std.error)) %>% exp)
   }
@@ -638,7 +638,7 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
 
     # Resum estandarditzat i fusiono
     resum_Std<-Standarditzar_mice_fits(fits,level_conf)
-    resum<-resum %>% left_join(resum_Std,by="term")
+    resum<-resum %>% dplyr::left_join(resum_Std,by="term")
 
     resum_model<-tibble(categoria=resum$term) %>% cbind(resum)
 
@@ -659,14 +659,14 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
   if (!es_factor) {resumtotal<-tibble(categoria=resum$term,outcome=outcome) }
 
   # Afegir categoria
-  resumtotal<-resumtotal %>% left_join(resum_model,by="categoria")  %>% select(-term)
+  resumtotal<-resumtotal %>% dplyr::left_join(resum_model,by="categoria")  %>% select(-term)
 
   # Només en GLM calcular la mitjana estimada per categoria
   if (outcome_es_factor==F) {
     resumtotal<-resumtotal %>%
-      mutate (beta0=resumtotal$estimate[1],
+      dplyr::mutate (beta0=resumtotal$estimate[1],
               estimate=ifelse(is.na(estimate),0,estimate)) %>%
-      mutate(mean=ifelse(categoria!="(Intercept)", beta0+estimate,NA)) }
+      dplyr::mutate(mean=ifelse(categoria!="(Intercept)", beta0+estimate,NA)) }
 
   # Seleccionar columnes
   resumtotal %>% head(Ncat.x+1)
@@ -734,16 +734,16 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
 
   # N per grups
   dades_N<-dades %>%
-    group_by(!!outcome_eval) %>% count(!!grups_eval) %>% ungroup() %>%
+    dplyr::group_by(!!outcome_eval) %>% count(!!grups_eval) %>% dplyr::ungroup() %>%
     spread(key=!!outcome_eval,value=n)
 
   levels_outcome=names(dades_N)[names(dades_N)!=grups]
 
   # Proporcions per grups
-  dades_P<-dades %>% group_by(!!outcome_eval) %>% count(!!grups_eval) %>% ungroup() %>%
+  dades_P<-dades %>% dplyr::group_by(!!outcome_eval) %>% count(!!grups_eval) %>% dplyr::ungroup() %>%
     spread(key=!!outcome_eval,value=n) %>%
-    mutate(sum=rowSums(.[2:ncol(.)])) %>%
-    mutate_if(is.numeric,funs(./sum)) %>%
+    dplyr::mutate(sum=rowSums(.[2:ncol(.)])) %>%
+    dplyr::mutate_if(is.numeric,funs(./sum)) %>%
     select(-sum)
 
   # Parts de errors estandards: p, variancia (p*q/n), n
@@ -762,7 +762,7 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
 
   # Error standard de la diferencia [p1*(1-p1)]n1 + [(p2*1-p2)/n2] respecte catRef
   SE_dif_prop<-var2 %>%
-    mutate_all(function(x) sqrt (x + .[[ref_cat]])) %>%
+    dplyr::mutate_all(function(x) sqrt (x + .[[ref_cat]])) %>%
     dplyr::select(-ref_cat)
 
   # Rotate (Diferencia respecte una de cat ref_cat ("No"))
@@ -772,7 +772,7 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
     select(-temp)
 
   # Diferencia de proporcions
-  dif_prop<-prop %>% mutate_all(function(x) x - .[[ref_cat]])
+  dif_prop<-prop %>% dplyr::mutate_all(function(x) x - .[[ref_cat]])
   dif_prop<-dif_prop %>% select(-ref_cat)
   colnames(dif_prop)<-names(dif_prop) %>% paste0(".dif")
 
@@ -786,7 +786,7 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
   dades_T<-data.frame(group=levels_outcome) %>% cbind(dif_prop,IC1,IC2) %>% as_tibble()
 
   # Transformar en %
-  dades_T<-dades_T %>% mutate_if(is.numeric,~ .*100)
+  dades_T<-dades_T %>% dplyr::mutate_if(is.numeric,~ .*100)
 
   # Selecciono per printar en l'ordre
   categories<-levels(dades[[grups]])[levels(dades[[grups]])!=ref_cat] %>% as.vector()
@@ -992,10 +992,10 @@ MAP_ggplot<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp
   # lim_sup=+Inf
   # add_point=NA
 
-  if (is.na(grup_linea)) dades<- dades %>% mutate(Overall="Overall")
+  if (is.na(grup_linea)) dades<- dades %>% dplyr::mutate(Overall="Overall")
   if (is.na(grup_linea)) grup_linea<- "Overall"
 
-  if (is.na(grup_color)) dades<- dades %>% mutate(Overall2="Overall2")
+  if (is.na(grup_color)) dades<- dades %>% dplyr::mutate(Overall2="Overall2")
   if (is.na(grup_color)) grup_color<- "Overall2"
 
   # # Configuro limits finestra
@@ -1017,7 +1017,7 @@ MAP_ggplot<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp
 
   # Calculo dies de duració
   dades<-dades %>%
-    mutate(
+    dplyr::mutate(
       dia0=lubridate::ymd(!!datainicial),
       diaf=lubridate::ymd(!!datafinal),
       days_duration=lubridate::interval(dia0,diaf) %>% lubridate::as.duration()/lubridate::ddays()
@@ -1056,31 +1056,31 @@ Gaps<-function(dt=dades,K=14,Nmostra=10,finestraX=c(NA,NA),llavor=123){
   # if (Nmostra==Inf) Nmostra=10
 
   # Si Nmostra es infinit o mes gran que la mostra agafo el màxim
-  Nmostra_maxim<- dt %>% distinct(idp) %>% nrow()
+  Nmostra_maxim<- dt %>% dplyr::distinct(idp) %>% nrow()
   if (Nmostra==Inf | Nmostra>Nmostra_maxim) Nmostra<- Nmostra_maxim
 
 
-  farmacs_list<-dt %>%distinct(agr)%>%dplyr::pull()
+  farmacs_list<-dt %>%dplyr::distinct(agr)%>%dplyr::pull()
 
-  dt<-dt%>% mutate(agr=factor(agr))
+  dt<-dt%>% dplyr::mutate(agr=factor(agr))
   set.seed(llavor) # S'ha d'actualitzar
-  id_sample<-dt %>% distinct(idp) %>%sample_n(size=Nmostra)
-  dt<-id_sample %>% left_join(dt,by="idp")
+  id_sample<-dt %>% dplyr::distinct(idp) %>% dplyr::sample_n(size=Nmostra)
+  dt<-id_sample %>% dplyr::left_join(dt,by="idp")
   dt<-dt%>%dplyr::select(idp,agr,data=dat,datafi,FACTPRESC=tipus)
 
   # Calculo dies de duració
   dt<-dt %>%
-    mutate(
+    dplyr::mutate(
       data=lubridate::ymd(data),
       datafi=lubridate::ymd(datafi),
-      days_duration=lubridate::interval(data,datafi) %>% as.duration()/ddays())
+      days_duration=lubridate::interval(data,datafi) %>%lubridate:: as.duration()/lubridate::ddays())
 
-  dt<-dt %>% mutate (idp2=idp, idp=paste0(idp,agr,".",str_sub(FACTPRESC,1,1)))
+  dt<-dt %>% dplyr::mutate (idp2=idp, idp=paste0(idp,agr,".",stringr::str_sub(FACTPRESC,1,1)))
 
   dt<-dt%>%dplyr::select(idp,agr,data,datafi,days_duration,idp2,FACTPRESC)
   # Genera mapa origen (n)
 
-  dt<-dt %>% mutate (idp_temp=paste0(stringr::str_sub(dt$idp,1,6),agr,".",str_sub(FACTPRESC,1,1)))
+  dt<-dt %>% dplyr::mutate (idp_temp=paste0(stringr::str_sub(dt$idp,1,6),agr,".",stringr::str_sub(FACTPRESC,1,1)))
 
 
   if (is.na(finestraX[1]))  porca1<-lubridate::ymd(min(dt$data))
@@ -1088,33 +1088,33 @@ Gaps<-function(dt=dades,K=14,Nmostra=10,finestraX=c(NA,NA),llavor=123){
   if (!is.na(finestraX[1])) porca1<-lubridate::ymd(finestraX[1])
   if (!is.na(finestraX[2])) porca2<-lubridate::ymd(finestraX[2])
 
-  dt<-dt %>% mutate(datafi =case_when(porca2<=datafi ~ porca2,TRUE ~ datafi))
+  dt<-dt %>% dplyr::mutate(datafi =dplyr::case_when(porca2<=datafi ~ porca2,TRUE ~ datafi))
 
   # Recalcular intervals en dies a partir de les finetres!
-  dt<-dt%>%mutate(days_duration=interval(data,datafi)%>%as.duration()/ddays())
+  dt<-dt%>%dplyr::mutate(days_duration=lubridate::interval(data,datafi)%>%lubridate::as.duration()/lubridate::ddays())
 
   MAP<-MAP_ggplot(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp",grup_color="agr",grup_linea="FACTPRESC",lim_inf=porca1,lim_sup=porca2)
 
 
-  dt<-dt%>%arrange(idp,data,datafi)
-  dt<-mutate(dt,data=ymd(data),datafi=ymd(datafi))
-  dt<-dt%>%group_by(idp)%>% mutate(gap=(data-lag(datafi)))
-  dt<-dt%>%mutate(gap2=case_when(gap>K ~1, TRUE ~0))
-  dt<-dt%>%group_by(idp)%>%mutate(gap3=(cumsum(gap2)))%>%ungroup()
+  dt<-dt%>%dplyr::arrange(idp,data,datafi)
+  dt<-dplyr::mutate(dt,data=lubridate::ymd(data),datafi=lubridate::ymd(datafi))
+  dt<-dt%>%dplyr::group_by(idp)%>% dplyr::mutate(gap=(data-dplyr::lag(datafi)))
+  dt<-dt%>%dplyr::mutate(gap2=dplyr::case_when(gap>K ~1, TRUE ~0))
+  dt<-dt%>%dplyr::group_by(idp)%>%dplyr::mutate(gap3=(cumsum(gap2)))%>%dplyr::ungroup()
 
   # Agregate
   dt2<-dt %>%
     dplyr::select(idp,data,datafi,gap3,agr,idp2, FACTPRESC) %>%
-    group_by(idp,agr,gap3)%>%
-    summarise(data= min(data), datafi= max(datafi),idp2=min(idp2),FACTPRESC=min(FACTPRESC))%>%
-    ungroup
+    dplyr::group_by(idp,agr,gap3)%>%
+    dplyr::summarise(data= min(data), datafi= max(datafi),idp2=min(idp2),FACTPRESC=min(FACTPRESC))%>%
+    dplyr::ungroup
   #
 
   # Tornem a Recalcular intervals en dies a partir dels Gaps i Fienstra!.
-  dt2<-dt2%>%mutate(days_duration=interval(data,datafi)%>%as.duration()/ddays())
+  dt2<-dt2%>%dplyr::mutate(days_duration=lubridate::interval(data,datafi)%>%lubridate::as.duration()/lubridate::ddays())
 
 
-  dt2<-dt2 %>% mutate(idp_temp=paste0(stringr::str_sub(dt2$idp,1,6),agr,".",str_sub(FACTPRESC,1,1)))
+  dt2<-dt2 %>% dplyr::mutate(idp_temp=paste0(stringr::str_sub(dt2$idp,1,6),agr,".",stringr::str_sub(FACTPRESC,1,1)))
 
 
   MAP2<-MAP_ggplot(dades=dt2,datainicial="data",datafinal="datafi",id="idp_temp",grup_color="agr",grup_linea="FACTPRESC",lim_inf=porca1,lim_sup=porca2)
@@ -1152,11 +1152,11 @@ agregar_solapaments_gaps<-function(dt=dades,id="idp",datainici="data",datafinal=
 
   # Seleccionar dades necessaries amb noms sense sym::
   dt<-dt %>% dplyr::select(idp=!!idp_sym, data=!!datainici_sym,datafi=!!datafinal_sym)%>%
-    mutate(data=lubridate::ymd(data),datafi=lubridate::ymd(datafi))
+    dplyr::mutate(data=lubridate::ymd(data),datafi=lubridate::ymd(datafi))
 
   #filtrem els errors!!!!
   origen<-dt
-  dt<-dt%>%mutate(error=case_when(datafi<data~1 ,
+  dt<-dt%>%dplyr::mutate(error=dplyr::case_when(datafi<data~1 ,
                                   is.na(data) ~ 1,
                                   is.na(datafi) ~ 1,
                                   TRUE ~0))
@@ -1171,11 +1171,11 @@ agregar_solapaments_gaps<-function(dt=dades,id="idp",datainici="data",datafinal=
 
   # 1. Eliminar solapaments [!!!]
   dt2<-dt %>%
-    group_by(idp) %>% arrange(data) %>%
-    mutate(indx = c(0, cumsum(as.numeric(lead(data)) >cummax(as.numeric(datafi)+gap))[-n()]))%>%
-    group_by(idp, indx) %>%
-    summarise(data = min(data), datafi = max(datafi),.groups = 'drop') %>%
-    dplyr::select(-indx) %>% ungroup()
+    dplyr::group_by(idp) %>% dplyr::arrange(data) %>%
+    dplyr::mutate(indx = c(0, cumsum(as.numeric(lead(data)) >cummax(as.numeric(datafi)+gap))[-n()]))%>%
+    dplyr::group_by(idp, indx) %>%
+    dplyr::summarise(data = min(data), datafi = max(datafi),.groups = 'drop') %>%
+    dplyr::select(-indx) %>% dplyr::ungroup()
 
   # list(dades0=origen,dades1=dt,dades2=dt2)
 
@@ -1205,11 +1205,11 @@ MAP_ggplot_univariant<-function(dades=dt,datainicial="data",datafinal="datafi",i
   # mostrejo
   dades<-mostreig_ids(dt=dades,id=id,n_mostra = Nmostra,set_seed=set_seed)
 
-  # if (Nmostra!=Inf) id_sample<-dades %>% distinct(!!id) %>% sample_n(size=Nmostra)
-  # dt<-id_sample %>% left_join(dt,by=quo_name(id)) #
+  # if (Nmostra!=Inf) id_sample<-dades %>% dplyr::distinct(!!id) %>% dplyr:: sample_n(size=Nmostra)
+  # dt<-id_sample %>% dplyr::left_join(dt,by=quo_name(id)) #
 
   # Calculo dies de duració
-  dades<-dades %>%  mutate(dia0=!!datainicial,diaf=!!datafinal,days_duration=diaf-dia0)
+  dades<-dades %>%  dplyr::mutate(dia0=!!datainicial,diaf=!!datafinal,days_duration=diaf-dia0)
 
   # Gráfico el tema
   figura<- ggplot2::ggplot(dades,ggplot2::aes(x =dia0,y =!!id_sym))+
@@ -1261,11 +1261,11 @@ MAP_punts_ggplot<-function(
   # id_AGG=T
 
 
-  if (finestraX[1]==-Inf) porca1<-min(dt %>% pull(datainicial))  %>% ymd()
-  if (finestraX[2]==+Inf) porca2<-max(dt %>% pull(datainicial))  %>% ymd()
+  if (finestraX[1]==-Inf) porca1<-min(dt %>% pull(datainicial))  %>% lubridate::ymd()
+  if (finestraX[2]==+Inf) porca2<-max(dt %>% pull(datainicial))  %>% lubridate::ymd()
 
-  if (finestraX[1]!=-Inf) porca1<-finestraX[1] %>% ymd()
-  if (finestraX[2]!=+Inf) porca2<-finestraX[2] %>% ymd()
+  if (finestraX[1]!=-Inf) porca1<-finestraX[1] %>% lubridate::ymd()
+  if (finestraX[2]!=+Inf) porca2<-finestraX[2] %>% lubridate::ymd()
 
 
   # Interpretacio com a parametre
@@ -1275,26 +1275,26 @@ MAP_punts_ggplot<-function(
   val<-rlang::sym(val)
 
   # Converteix data a data inicial
-  dt<-dt %>% mutate(dat=ymd(!!datainicial))
+  dt<-dt %>% dplyr::mutate(dat=lubridate::ymd(!!datainicial))
 
   # Cal estandarditzar valor
 
   # Llista de nombre d'analitiques
-  analitiques_list<-dt%>%distinct(!!grup_color)%>%dplyr::pull()
+  analitiques_list<-dt%>%dplyr::distinct(!!grup_color)%>%dplyr::pull()
 
   set.seed(llavor) # S'ha d'actualitzar
   #
-  id_sample<-dt %>% distinct(!!id) %>% sample_n(size=Nmostra)
-  dt<-id_sample %>% left_join(dt,by=quo_name(id)) #
+  id_sample<-dt %>% dplyr::distinct(!!id) %>% dplyr:: sample_n(size=Nmostra)
+  dt<-id_sample %>% dplyr::left_join(dt,by=quo_name(id)) #
 
 
   # Construccio del identificador id-grup
 
   if (id_AGG){
-    dt<-dt%>%mutate(id_plot=paste0(stringr::str_sub(!!id,1,6),!!grup_color),id_num=as.numeric(factor(!!id)))
+    dt<-dt%>%dplyr::mutate(id_plot=paste0(stringr::str_sub(!!id,1,6),!!grup_color),id_num=as.numeric(factor(!!id)))
   }
   if (id_AGG ==F) {
-    dt<-dt%>%mutate(id_plot=paste0(stringr::str_sub(!!id,1,6)),id_num=as.numeric(factor(!!id))) }
+    dt<-dt%>%dplyr::mutate(id_plot=paste0(stringr::str_sub(!!id,1,6)),id_num=as.numeric(factor(!!id))) }
 
   ggplot(dt,aes(x =!!datainicial,y =id_plot,color=!!grup_color))+
     geom_point(aes(!!datainicial, id_plot)) +
@@ -1339,10 +1339,10 @@ MAP_valor_ggplot<-function(
   # llavor=126
 
 
-  if (finestraX[1]==-Inf) {porca1<-min(dt %>% pull(datainicial)) %>% ymd()}
-  if (finestraX[2]==+Inf) {porca2<-max(dt %>% pull(datainicial)) %>% ymd()}
-  if (finestraX[1]!=-Inf) {porca1<-finestraX[1] %>% ymd()}
-  if (finestraX[2]!=+Inf) {porca2<-finestraX[2] %>% ymd()}
+  if (finestraX[1]==-Inf) {porca1<-min(dt %>% pull(datainicial)) %>% lubridate::ymd()}
+  if (finestraX[2]==+Inf) {porca2<-max(dt %>% pull(datainicial)) %>% lubridate::ymd()}
+  if (finestraX[1]!=-Inf) {porca1<-finestraX[1] %>% lubridate::ymd()}
+  if (finestraX[2]!=+Inf) {porca2<-finestraX[2] %>% lubridate::ymd()}
 
 
   # Interpretacio com a parametre
@@ -1352,20 +1352,20 @@ MAP_valor_ggplot<-function(
   val<-rlang::sym(val)
 
   # Formatejo a data
-  dt<-dt %>% mutate(dat=lubridate::ymd(!!datainicial))
+  dt<-dt %>% dplyr::mutate(dat=lubridate::ymd(!!datainicial))
 
   # Llistat de codis d'analitiques
-  analitiques_list<-dt%>%distinct(!!grup_color)%>%dplyr::pull()
+  analitiques_list<-dt%>%dplyr::distinct(!!grup_color)%>%dplyr::pull()
 
   set.seed(llavor) # S'ha d'actualitzar
 
   # Seleccionar sample
-  id_sample<-dt%>% distinct(!!id) %>%sample_n(size=Nmostra)
-  dt<-id_sample %>% left_join(dt,by=quo_name(id)) #
+  id_sample<-dt%>% dplyr::distinct(!!id) %>% dplyr::sample_n(size=Nmostra)
+  dt<-id_sample %>% dplyr::left_join(dt,by=quo_name(id)) #
   #
 
   # Construcció del identificador id-grup
-  dt<-dt%>%mutate(id_plot=paste0(stringr::str_sub(!!id,1,6),!!grup_color))
+  dt<-dt%>%dplyr::mutate(id_plot=paste0(stringr::str_sub(!!id,1,6),!!grup_color))
 
   # Grafica plot de la variable
   ggplot(dt,aes(x =!!datainicial,y =id_plot,color=id_plot))+
@@ -1509,7 +1509,7 @@ extreure_HRFG=function(event="exitusCV",temps="temps_seguiment",grup="diabetis",
     if (!any(is.na(covariables)))  dt<-dt %>% select(grup=!!grup,exitus=!!eventcompetitiu,temps=!!temps,event=!!event,all_of(covariables),cluster=!!cluster) }
 
   # Generar variable status (tipo de censuras) ----
-  dt<-dt %>% mutate(status=case_when(event==codievent ~"event",
+  dt<-dt %>% dplyr::mutate(status=dplyr::case_when(event==codievent ~"event",
                                      event!=codievent & exitus==codievent~"Mortality",
                                      event!=codievent & exitus!=codievent~"Censored"))
 
@@ -1562,14 +1562,14 @@ extreure_model_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure_
   # Extreure variables i formatar
   dt <- dt %>% select(temps=!!temps,event=!!event,exitus=!!competitiu,all_of(covariables)) %>% na.omit()
 
-  dt<-dt %>% mutate(event=as.numeric(event==codievent),
+  dt<-dt %>% dplyr::mutate(event=as.numeric(event==codievent),
                     exitus=as.numeric(exitus==codievent))
 
   codi_event=as.numeric(codievent==codievent)
   codi_Noevent=as.numeric(codievent!=codievent)
 
   # Generar variable status (tipo de censuras) ----
-  dt<-dt %>% mutate(status=case_when(event==codi_event ~"Event",
+  dt<-dt %>% dplyr::mutate(status=dplyr::case_when(event==codi_event ~"Event",
                                      event==codi_Noevent & exitus==codi_event~"Mortality",
                                      event==codi_Noevent & exitus==codi_Noevent~"Censored"))
   # Converir matriu de covariables
@@ -1603,14 +1603,14 @@ extreure_cuminc_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure
   # Extreure variables i formatar
   dt <- dt %>% select(temps=!!temps,event=!!event,exitus=!!competitiu,group,strata) %>% na.omit()
 
-  dt<-dt %>% mutate(event=as.numeric(event==codievent),
+  dt<-dt %>% dplyr::mutate(event=as.numeric(event==codievent),
                     exitus=as.numeric(exitus==codievent))
 
   codi_event=as.numeric(codievent==codievent)
   codi_Noevent=as.numeric(codievent!=codievent)
 
   # Generar variable status (tipo de censuras) ----
-  dt<-dt %>% mutate(status=case_when(event==codi_event ~"Event",
+  dt<-dt %>% dplyr::mutate(status=dplyr::case_when(event==codi_event ~"Event",
                                      event==codi_Noevent & exitus==codi_event~"Mortality",
                                      event==codi_Noevent & exitus==codi_Noevent~"Censored"))
   # cuminc
@@ -1778,7 +1778,7 @@ extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades=dt,conditional=F,strat
     ret_val<-cbind(categoria=row.names(resum)) %>% cbind(resum) %>% as_tibble
 
     # Capturar OR, etc...
-    dades_resum<-ret_val %>% mutate(OR=estimate %>% exp,
+    dades_resum<-ret_val %>% dplyr::mutate(OR=estimate %>% exp,
                                     Linf=(estimate-std.error) %>% exp,
                                     Lsup=(estimate+std.error) %>% exp) %>%
       dplyr::select(categoria,OR,Linf,Lsup,p.value)
@@ -1801,7 +1801,7 @@ generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",dades=dt) 
     unlist() %>%
     tibble() %>% rename("var"=".") %>%
     separate(col=var, into=c("Categoria","Variable"), sep = "/") %>%
-    mutate(nivell=stringr::str_remove(Categoria,Variable),
+    dplyr::mutate(nivell=stringr::str_remove(Categoria,Variable),
            tipo=if_else(nivell=="","Continua","Cat"))
 }
 
@@ -1832,7 +1832,7 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
   # Factoritzar character a factor
   covariables<-extreure.variables(x,taulavariables)
   covariables_character<-dades %>% select_at(covariables) %>% select_if(is.character) %>% names()
-  dades<-dades %>% mutate_at(covariables_character,as.factor)
+  dades<-dades %>% dplyr::mutate_at(covariables_character,as.factor)
 
   # Eliminar variable que no hi ha com a mínim 2 nivells
   var_eliminar<-dades %>% select_at(covariables) %>% select_if(is.factor) %>% map(~length(unique(.x)))
@@ -1847,7 +1847,7 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
   if (conditional) {dades<-dades %>% dplyr::select(c(all.vars(formu),strata)) %>% na.omit()}
   if (conditional==F) {dades<-dades %>% dplyr::select(c(all.vars(formu))) %>% na.omit()}
   # Eliminar nivells que no tenim dades de variables factor
-  dades<-dades %>% mutate_if(is.factor, droplevels)
+  dades<-dades %>% dplyr::mutate_if(is.factor, droplevels)
 
   resposta<-all.vars(formu)[1]
   fit<-stats::glm(formu, family = binomial, data=dades)
@@ -1866,15 +1866,15 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
 
   # juntar taula_OR + taula editada --> etiquetar i editar
   taula_editada<-taula_editada %>%
-    left_join(taula_OR,by="Categoria") %>%
-    mutate(nivell=if_else(is.na(OR),paste0(" Ref:",nivell),nivell),
+    dplyr::left_join(taula_OR,by="Categoria") %>%
+    dplyr::mutate(nivell=if_else(is.na(OR),paste0(" Ref:",nivell),nivell),
            OR=if_else(is.na(OR),1,OR),
            Linf=if_else(is.na(Linf),1,Linf),
            Lsup=if_else(is.na(Lsup),1,Lsup),
            nivell=stringr::str_trim(nivell)) %>%
     filter (!is.na(id)) %>% # Eliminar cat de referencia
     etiquetar_taula("Variable",taulavariables,"descripcio") %>%
-    mutate(Variable=if_else(tipo=="Cat",paste0(Variable,":",nivell),Variable)) %>%
+    dplyr::mutate(Variable=if_else(tipo=="Cat",paste0(Variable,":",nivell),Variable)) %>%
     dplyr::select(Categoria=Variable,OR,Linf,Lsup,p.value)
 
   forest_plot<-forest.plot(taula_editada)
@@ -1882,12 +1882,12 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
   dades_prediccio<-
     data.frame(prediccio=predict(fit,dades, type=c("response")),known.truth=dades %>% pull(resposta)) %>%
     tibble::as_tibble() %>%
-    mutate(event=as.numeric(known.truth==valor_outcome)) %>%
+    dplyr::mutate(event=as.numeric(known.truth==valor_outcome)) %>%
     filter(!is.na(event) & !is.na(prediccio))
 
   if (conditional) {
     predict_clogit<-data.frame(logit_pred=predict(fit_c,type = "lp")) %>%
-      mutate(prob_pred=boot::inv.logit(logit_pred))
+      dplyr::mutate(prob_pred=boot::inv.logit(logit_pred))
 
     dades_prediccio<-dades_prediccio %>%
       cbind(predict_clogit) %>% dplyr::select(-prediccio) %>% rename(prediccio=prob_pred)
@@ -1985,7 +1985,7 @@ resum_quanti_estrat<-function(dt=dades,y="valor_basal.GLICADA",grup="CODGLP1",es
 
 
   if (!"estrat" %in% colnames(dt)) {
-    dt<-dt %>% mutate (overall="Overall")
+    dt<-dt %>% dplyr::mutate (overall="Overall")
     estrat="overall"}
 
   dt %>%
@@ -2051,7 +2051,7 @@ resum_events_v3<-function(dt=dadestotal,evento="RD",temps="temps",valorevent="Si
   # valorevent=1
   # dt=dades
 
-  dt %>% summarise(Patients=n(),
+  dt %>% dplyr::summarise(Patients=n(),
                    P_Years=sum(!!sym(temps)),
                    Years_free_event_mean=mean(!!sym(temps)),
                    Years_free_event_median=median(!!sym(temps)),
@@ -2108,8 +2108,8 @@ Resum_taxa_incidencia_idp<-function(dt=dades,evento="event_tbc",temps="anys_lliu
   # temps="tmp_seguiment"
   # valorevent=1
 
-  Patients_reals=dt %>% distinct(idp) %>% count() %>% as.numeric()
-  N.Events_reals=dt %>% filter(!!sym(evento)==valorevent) %>% distinct(idp) %>% count() %>% as.numeric()
+  Patients_reals=dt %>% dplyr::distinct(idp) %>% count() %>% as.numeric()
+  N.Events_reals=dt %>% filter(!!sym(evento)==valorevent) %>% dplyr::distinct(idp) %>% count() %>% as.numeric()
 
   Patients=length(dt[[evento]])
   PYears=sum(dt[[temps]])
@@ -2172,11 +2172,11 @@ Pvalors_ajustats_compare<-function(objecte_compare=T1.1.2, metodo="BH",p="p.over
   pvals<-pvals[,1:ncol(pvals)] %>% purrr::map_df(stats::p.adjust,method = metodo)
 
   # # 5. Punt de tall
-  # pvals<-pvals %>% mutate_all(sigBH=ifelse(Adjpvalor<0.05,"Sig","NS"))
+  # pvals<-pvals %>% dplyr::mutate_all(sigBH=ifelse(Adjpvalor<0.05,"Sig","NS"))
 
   # 5. Canviar a punts de tall si argument Sig="Yes"
   if (any(Sig==c("Yes","Si",1))) pvals<-pvals %>%
-    mutate_all(funs(ifelse(.<0.05,"Sig","NS")))
+    dplyr::mutate_all(funs(ifelse(.<0.05,"Sig","NS")))
 
   # 3. Posa noms
   pvals$variable<-rownames(pvalors)
@@ -2236,7 +2236,7 @@ Pvalors_ajustats_taula<-function(objecte_taula=OR.ajust, p.valors='p valor', met
   objecte_taula<-objecte_taula %>% cbind(pvals_adj)
 
   # 4. Punt de tall
-  objecte_taula<-objecte_taula %>% mutate (sigBH=ifelse(pvals_adj<0.05,"Sig","NS"))
+  objecte_taula<-objecte_taula %>% dplyr::mutate (sigBH=ifelse(pvals_adj<0.05,"Sig","NS"))
 
   # 6. Canviar noms
   objecte_taula<-objecte_taula %>% setNames(nomsnous)
@@ -2279,17 +2279,17 @@ criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris
     dplyr::filter_(paste0(criteris,"!=0")) %>% dplyr::select_("camp",criteris) %>%
     transmute_("camp","crit_temp"=criteris) %>%
     # if criteri missing is.na()
-    mutate(crit_temp=if_else(str_detect(crit_temp,"is.na"),paste0("is.na(",camp,")"),crit_temp)) %>%
-    mutate(camp=if_else(str_detect(crit_temp,"is.na"),"",camp)) %>%
+    dplyr::mutate(crit_temp=if_else(str_detect(crit_temp,"is.na"),paste0("is.na(",camp,")"),crit_temp)) %>%
+    dplyr::mutate(camp=if_else(str_detect(crit_temp,"is.na"),"",camp)) %>%
     # Si es texte sense igualtat --> la poso
-    mutate(crit_temp=if_else(str_detect(crit_temp,char_logics),crit_temp,paste0("=='",crit_temp,"'")))
+    dplyr::mutate(crit_temp=if_else(str_detect(crit_temp,char_logics),crit_temp,paste0("=='",crit_temp,"'")))
 
   # Genero la llista de filtres
   maco<-maco %>% tidyr::unite(filtres, c("camp", "crit_temp"),sep="", remove=F) %>%
-    mutate(filtres=paste0("(",filtres,")"))
+    dplyr::mutate(filtres=paste0("(",filtres,")"))
 
   # Afegir valors valids per aplicar criteri (Si missings==F)
-  if (missings==F) maco<-maco %>% mutate(filtres=stringr::str_c("(", filtres, " & !is.na(",camp, "))"))
+  if (missings==F) maco<-maco %>% dplyr::mutate(filtres=stringr::str_c("(", filtres, " & !is.na(",camp, "))"))
 
   # Concateno condicions amb un OR
   maco<-str_c(maco$filtres,collapse=" | ")
@@ -2329,7 +2329,7 @@ criteris_exclusio_taula<-function(dt=dades,
       }
 
   # Extrec vector d'exclusions
-  vec_excl<-dt_criteris %>% mutate(criteri=paste0(camp,!!sym(criteris))) %>% pull(criteri)
+  vec_excl<-dt_criteris %>% dplyr::mutate(criteri=paste0(camp,!!sym(criteris))) %>% pull(criteri)
 
   # Genero taula amb n per cada exclusio
   dt_temp<-vec_excl %>%
@@ -2454,7 +2454,7 @@ reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
   names(dt)<-c("pre","post","dif","basal_cat")
 
   ## model cru (descriptiu bàsic,+ mean, se )
-  taula<-dt %>% summarise(
+  taula<-dt %>% dplyr::summarise(
     n=n(),
     mean.basal=mean(pre),
     mean.canvi=mean(dif),
@@ -2716,7 +2716,7 @@ forest.plot<-function(dadesmodel=ramo,label=dadesmodel$Categoria,mean=dadesmodel
   # label_X="OR (95% CI)"
   # intercept=1
 
-  dadesmodel<-dadesmodel %>% mutate(id=seq(length(label),1))
+  dadesmodel<-dadesmodel %>% dplyr::mutate(id=seq(length(label),1))
 
   fp <- ggplot(data=dadesmodel,aes(x=dadesmodel$id, y=dadesmodel$OR, ymin=dadesmodel$Linf, ymax=dadesmodel$Lsup)) +
     geom_pointrange() +
@@ -2739,7 +2739,7 @@ forest.plot.v2<-function(dadesmodel=ramo,label="Categoria",mean="OR",lower="Linf
   # label_X="Differences standardized (95% CI)"
   # intercept=0
 
-  dadesmodel<-dadesmodel %>% mutate(id=seq(length(dadesmodel[[label]])))
+  dadesmodel<-dadesmodel %>% dplyr::mutate(id=seq(length(dadesmodel[[label]])))
 
   # Generar data set
   dadestemp <- dadesmodel %>% select(etiqueta=!!label,valor=!!mean,Linf=!!lower,Lsup=!!upper,id)
@@ -2778,21 +2778,21 @@ forest.plot.v3<-function(dadesmodel=dt_estimacions,label="Categoria",mean="estim
   dadesmodel <- dadesmodel %>% select(valor=!!mean,Linf=!!lower,Lsup=!!upper,nivell=!!nivell, factor1=!!factor1,factor2=!!factor2)
 
   ## Preparar taula (Genero etiqueta)
-  taula_betas<-dadesmodel %>% mutate(etiqueta=paste0("     ",factor2," ",factor1),
+  taula_betas<-dadesmodel %>% dplyr::mutate(etiqueta=paste0("     ",factor2," ",factor1),
                                      Method = paste0(factor2," ",factor1))
 
   # Afegir fila com un punt nivell per outcome i genero label de group
   taula_betas<-taula_betas %>% split(.$nivell) %>%
     map_dfr(~add_row(.x,.before = 0),.id = "outcome" ) %>%
-    mutate (etiqueta2=if_else(is.na(etiqueta),outcome,"")) %>%
-    mutate (etiqueta=if_else(is.na(etiqueta),outcome,etiqueta))
+    dplyr::mutate (etiqueta2=if_else(is.na(etiqueta),outcome,"")) %>%
+    dplyr::mutate (etiqueta=if_else(is.na(etiqueta),outcome,etiqueta))
 
   # AFegir etiqueta 3 mes centrada
-  taula_betas<-taula_betas %>% mutate(etiqueta3=lag(etiqueta2),
+  taula_betas<-taula_betas %>% dplyr::mutate(etiqueta3=dplyr::lag(etiqueta2),
                                       etiqueta3=if_else(is.na(etiqueta3),"",etiqueta3))
 
   # Generar id
-  taula_betas<-taula_betas %>% mutate(id=seq(n())) %>% mutate(id=n()-id+1)
+  taula_betas<-taula_betas %>% dplyr::mutate(id=seq(n())) %>% dplyr::mutate(id=n()-id+1)
 
   # REomplir missings en factor1 i factor2
   taula_betas<-taula_betas %>% fill(c(factor1,factor2,Method),.direction="updown")
@@ -2846,7 +2846,7 @@ forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Lin
   dadesmodel <- dadesmodel %>% select(valor=!!mean,Linf=!!lower,Lsup=!!upper,nivell=!!nivell, factor1=!!factor1)
 
   ## Preparar taula (Genero etiqueta)
-  taula_betas<-dadesmodel %>% mutate(etiqueta=paste0("   ",factor1),
+  taula_betas<-dadesmodel %>% dplyr::mutate(etiqueta=paste0("   ",factor1),
                                      Group = paste0(factor1))
 
   # Afegir fila com un punt nivell per outcome i genero label de group
@@ -2856,15 +2856,15 @@ forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Lin
     dplyr::mutate (etiqueta=if_else(is.na(etiqueta),outcome,etiqueta))
 
   # AFegir etiqueta 3 mes centrada
-  taula_betas<-taula_betas %>% mutate(etiqueta3=lag(etiqueta2),
+  taula_betas<-taula_betas %>% dplyr::mutate(etiqueta3=dplyr::lag(etiqueta2),
                                       etiqueta3=if_else(is.na(etiqueta3),"",etiqueta3))
 
   # Reordenar outcomes segons origen de taula inicial
-  dt_ordre<-dadesmodel %>% distinct(outcome=nivell) %>% mutate(seq=seq(1:n()))
-  taula_betas<-taula_betas %>% left_join(dt_ordre,by="outcome") %>% arrange(seq)
+  dt_ordre<-dadesmodel %>% dplyr::distinct(outcome=nivell) %>% dplyr::mutate(seq=seq(1:n()))
+  taula_betas<-taula_betas %>% dplyr::left_join(dt_ordre,by="outcome") %>%dplyr:: arrange(seq)
 
   # Generar id
-  taula_betas<-taula_betas %>% mutate(id=seq(n())) %>% mutate(id=n()-id+1)
+  taula_betas<-taula_betas %>% dplyr::mutate(id=seq(n())) %>% dplyr::mutate(id=n()-id+1)
 
   # REomplir missings en factor1 i factor2
   taula_betas<-taula_betas %>% fill(c(factor1,Group),.direction="updown")
@@ -2945,23 +2945,23 @@ fores.plot.v4<-function(dadesmodel=dt_outHR,label="etiqueta",mean="estimate",low
     select(label=!!sym(label),mean=!!sym(mean),lower=!!sym(lower),upper=!!sym(upper),nivell=!!sym(nivell),factor=!!sym(factor))
 
   # Indexo ordre
-  dt_temp<-dt %>% mutate (id=n():1)
+  dt_temp<-dt %>%dplyr:: mutate (id=n():1)
 
   # Si existeix nivell preparar dades per nivell
   # Afegir nivell amb etiqueta si cal
   if (nivell!="") {
     dt_temp<- dt_temp %>%
-      left_join(dt_temp %>% distinct(nivell) %>% mutate(id_nivell=1:n()),.id="nivell",by = "nivell") %>%
-      mutate(label=paste0("           ",label)) %>%
+      dplyr::left_join(dt_temp %>% dplyr::distinct(nivell) %>% dplyr::mutate(id_nivell=1:n()),.id="nivell",by = "nivell") %>%
+      dplyr::mutate(label=paste0("           ",label)) %>%
       split(.$nivell) %>%
       map_dfr(~add_row(.x,.before = 0),.id = "nivell" ) %>%
-      mutate(label=if_else(is.na(label),nivell,label)) %>%
-      group_by(nivell) %>%
-      mutate(id_nivell=max(id_nivell,na.rm = T)) %>% ungroup() %>%
-      arrange(id_nivell) %>%
-      mutate(id=n():1)
+      dplyr::mutate(label=if_else(is.na(label),nivell,label)) %>%
+      dplyr::group_by(nivell) %>%
+      dplyr::mutate(id_nivell=max(id_nivell,na.rm = T)) %>% dplyr::ungroup() %>%
+      dplyr::arrange(id_nivell) %>%
+      dplyr::mutate(id=n():1)
     # reemplenar categoria missing de factor (si existeix)
-    dt_temp<-dt_temp %>% group_by(id_nivell) %>% mutate(factor=if_else(is.na(factor),max(factor,na.rm = T),factor))
+    dt_temp<-dt_temp %>% dplyr::group_by(id_nivell) %>% dplyr::mutate(factor=if_else(is.na(factor),max(factor,na.rm = T),factor))
   }
 
   # Plot
@@ -3008,7 +3008,7 @@ dt_index_data_random<-function(dt=PACIENTS) {
     nrow() %>% runif(as.Date("10/01/01", "%y/%m/%d"), as.Date("16/12/31", "%y/%m/%d")) %>%
     data.table() %>%
     setNames(.,c("dtindex.random")) %>%
-    mutate (
+    dplyr::mutate (
       dtindex.random=as.Date(dtindex.random, origin = "1970-01-01")
     )
 
@@ -3046,9 +3046,9 @@ dt_index_data_semirandom<-function(dt=PACIENTS,dt.variables=VARIABLES,codi="EK20
     dplyr::select(idp,cod,dat,dtsortida) %>%           # Selecciono camps necessaris
     filter(!is.na(dtsortida)) %>%               # Filtro només pacients (amb dtsortida)
     filter (dat>=20100101 & dat<=dtsortida) %>%  # filtro Dates dins periode de seguiment
-    group_by(idp) %>%                           # Agafo un colesterol per cada idp
-    sample_n(size = 1) %>%                      # Random
-    ungroup %>%
+    dplyr::group_by(idp) %>%                           # Agafo un colesterol per cada idp
+    dplyr::sample_n(size = 1) %>%                      # Random
+    dplyr::ungroup %>%
     dplyr::select(idp, dat) %>%
     rename(dat_col=dat)
 
@@ -3058,17 +3058,17 @@ dt_index_data_semirandom<-function(dt=PACIENTS,dt.variables=VARIABLES,codi="EK20
     dplyr::select(idp,dat,dtsortida) %>%               # Selecciono camps necessaris
     filter(!is.na(dtsortida)) %>%               # Filtro només pacients amb dtsortida
     filter (dat>=20100101 & dat<=dtsortida) %>% # Dates possibles dins el seguiment
-    group_by(idp) %>%                           # Agafo unA fila per cada idp
-    sample_n(size = 1) %>%                      # RAndom
-    ungroup() %>%
+    dplyr::group_by(idp) %>%                           # Agafo unA fila per cada idp
+    dplyr::sample_n(size = 1) %>%                      # RAndom
+    dplyr::ungroup() %>%
     dplyr::select(idp, dat) %>%
     rename(dat_var=dat)
 
   ### Fusió d'ambdos fitxers i selecciono una d'elles preferentment colesterol
 
   BDADES_DT_INDEX<-UNA.VARIABLE %>%
-    left_join(UN.COLESTEROL,by="idp") %>%
-    mutate(dtindex.semirandom=ifelse(is.na(dat_col),dat_var,dat_col)) %>%
+    dplyr::left_join(UN.COLESTEROL,by="idp") %>%
+    dplyr::mutate(dtindex.semirandom=ifelse(is.na(dat_col),dat_var,dat_col)) %>%
     dplyr::select(idp,dtindex.semirandom)
 
 }
@@ -3092,9 +3092,9 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   formulaPS<-formula.text("matching",y="grup_dic",taulavariables=conductor) %>% as.formula()
 
   # Genero index de grup
-  dt_temp<-dt %>% select(!!grups) %>% distinct() %>% mutate(id_grup=row_number())
+  dt_temp<-dt %>% select(!!grups) %>% dplyr::distinct() %>%dplyr:: mutate(id_grup=row_number())
   # Fusiono id_grup
-  dt<-dt %>% left_join(dt_temp)  # + id_grup
+  dt<-dt %>% dplyr::left_join(dt_temp)  # + id_grup
 
   #  -----------------  1 vs 3 ---------------------- dades_match13
   dades<-dt %>% filter(id_grup==1 | id_grup==3 ) # Filtro dos grups
@@ -3181,15 +3181,15 @@ matching_case_control<-function(dt=PACIENTS,variables.ps=llistaPS,dt_pacients_di
   # 2 Fusionar events i controls en una sola taula
 
   dt <-dt %>%
-    left_join(dt_pacients_dindex,by="idp")              # dt + dtindex.random (data random generada + de control
+    dplyr::left_join(dt_pacients_dindex,by="idp")              # dt + dtindex.random (data random generada + de control
 
   # Selecciono events i mutar dataindex (event=1) en data d'event (dtsortida)
 
-  dtevents<-dt %>% filter(event==1) %>% mutate(dtindex=lubridate::ymd(dtsortida), event=1)         ## Els events data de sortida
+  dtevents<-dt %>% filter(event==1) %>% dplyr::mutate(dtindex=lubridate::ymd(dtsortida), event=1)         ## Els events data de sortida
 
   # Seleccionar controls i mutar dataindex en data index random
 
-  dtcontrols<-dt %>% filter(control==1) %>% mutate(dtindex=dtindex.random, event=0)     ## Els controls data random
+  dtcontrols<-dt %>% filter(control==1) %>% dplyr::mutate(dtindex=dtindex.random, event=0)     ## Els controls data random
 
   # Fusionar events + controls
   dt.total<-dtevents %>% rbind(dtcontrols)
@@ -3201,7 +3201,7 @@ matching_case_control<-function(dt=PACIENTS,variables.ps=llistaPS,dt_pacients_di
   # Agrego en dtindex
 
   dt.total<-dt.total %>%
-    mutate (edat=as.numeric((dtindex-lubridate::ymd(dnaix))/365.25))               # Calculo edat en dataindex
+    dplyr::mutate (edat=as.numeric((dtindex-lubridate::ymd(dnaix))/365.25))               # Calculo edat en dataindex
 
 
   # 4 Fer matching
@@ -3236,22 +3236,22 @@ covariate_plot<-function(dt=m.out,vars_remove=NULL, etiquetar=F,subtitle="oGLD v
   # taulavariables=conductor_variables
 
   # Preparar dades a plotejar
-  dt_pre<-summary(dt,standardize = T)$sum.all %>% tibble::as_tibble(rownames = "var") %>% mutate(Sample="Unmatched",id=dplyr::row_number())
-  dt_post<-summary(dt,standardize = T)$sum.matched %>% tibble::as_tibble(rownames = "var") %>% mutate(Sample="Matched",id=dplyr::row_number())
+  dt_pre<-summary(dt,standardize = T)$sum.all %>% tibble::as_tibble(rownames = "var") %>% dplyr::mutate(Sample="Unmatched",id=dplyr::row_number())
+  dt_post<-summary(dt,standardize = T)$sum.matched %>% tibble::as_tibble(rownames = "var") %>% dplyr::mutate(Sample="Matched",id=dplyr::row_number())
   #
   # Preparar i ordenar per id
   dt_total<-
     dt_pre %>% dplyr::bind_rows(dt_post) %>%
-    mutate (stat=`Std. Mean Diff.`) %>%
+    dplyr::mutate (stat=`Std. Mean Diff.`) %>%
     dplyr::filter(var!="distance") %>%
     dplyr::filter(!is.na(stat)) %>%
-    mutate(var=factor(var,levels=rev(dt_pre$var)))   # Convertir a factor per que surti ordenat
+    dplyr::mutate(var=factor(var,levels=rev(dt_pre$var)))   # Convertir a factor per que surti ordenat
 
   # He generar variables+nivells indexat
   llista_vars<-names(dt$X)
 
   # les variables exact s'han de factoritzar
-  dt$X<-dt$X %>% mutate_at(all.vars(dt$exact),as.factor)
+  dt$X<-dt$X %>% dplyr::mutate_at(all.vars(dt$exact),as.factor)
 
   vars_df<-
     llista_vars %>% set_names(llista_vars) %>%
@@ -3278,7 +3278,7 @@ covariate_plot<-function(dt=m.out,vars_remove=NULL, etiquetar=F,subtitle="oGLD v
   # Afegir nivells exepte Yes / Si i eliminar cat No
   dt_total<-
     dt_total %>%
-    mutate(name=if_else(value=="" | value=="Yes" | value=="Si",
+    dplyr::mutate(name=if_else(value=="" | value=="Yes" | value=="Si",
                         name,paste0(name,":",value))) %>%
     filter(value!="No") %>%
     filter(value!="0")
@@ -3348,8 +3348,8 @@ mostreig_ids<-function(dt,id="idp",n_mostra=100,set_seed=123) {
   if (n_mostra!=Inf) {
 
     id_sym<-sym(id)
-    id_sample<-dt %>% distinct(!!id_sym) %>%sample_n(size=n_mostra)
-    dt<-id_sample %>% left_join(dt,by=id)
+    id_sample<-dt %>% dplyr::distinct(!!id_sym) %>% dplyr::sample_n(size=n_mostra)
+    dt<-id_sample %>% dplyr::left_join(dt,by=id)
 
   } else { dt<-dt}
 
@@ -3423,22 +3423,22 @@ extreure_Pglobal_SigTest<-function(dt=dades,vars_pre=vars_pre,vars_post=vars_pos
   # vars_post<-vars_post
   # dt<-dades
 
-  dt<-dt %>% mutate(id=1:n()) %>%
+  dt<-dt %>% dplyr::mutate(id=1:n()) %>%
     select(id, vars_pre,vars_post) %>%
     rename_at(vars_pre,~paste0("var",c(1:length(vars_post)),"_pre")) %>%
     rename_at(vars_post,~paste0("var",c(1:length(vars_post)),"_pos")) %>%
-    mutate_all(as.numeric)
+    dplyr::mutate_all(as.numeric)
 
   longer<-dt %>%
     tidyr::pivot_longer(cols=-1, names_pattern = "(.*)(....)$", names_to = c("var", "temps")) %>%
-    mutate(temps=if_else(temps=="_pre","0","1")) %>%
+    dplyr::mutate(temps=if_else(temps=="_pre","0","1")) %>%
     tidyr::pivot_wider(id_cols = c(id,temps), names_from = var, values_from = value, names_repair = "check_unique") %>%
     na.omit()
 
   vars<-paste0("var",c(1:length(vars_post)))
 
-  dt_fi<-longer %>% group_by(id) %>% summarise_at(vars,list(dif=~.-lag(.))) %>%
-    slice(2) %>% ungroup() %>%
+  dt_fi<-longer %>% dplyr::group_by(id) %>% dplyr::summarise_at(vars,list(dif=~.-dplyr::lag(.))) %>%
+    slice(2) %>% dplyr::ungroup() %>%
     tidyr::pivot_longer(cols=-1) %>%
     filter (value!=0) # Elimino els empats
 
