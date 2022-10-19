@@ -53,23 +53,6 @@ selectorvariables<-function(taula="table1",
 #'k1
 #'k2
 #'
-#' @title                       Extreure variables seleccionades
-#' @description                 Extreure variables seleccionades a partir d un conductor
-#' @param  taula                Camp a on hi han les variables
-#' @param  taulavariables       Conductor
-#' @param  variable_camp        Variable camp del Conductor
-#' @param  dt                   Base de dades
-#' @param                       ... altres funcions
-#' @return                      un vectora amb les variables seleccionades
-#' @export                      extreure.variables
-#' @importFrom                  dplyr "%>%"
-#' @examples
-#'
-#'k1<-extreure.variables(taula="taula1",taulavariables=conductor1,variable_camp="camp",dt=NA)
-#'k2<-extreure.variables(taula="taula1",taulavariables=conductor1,variable_camp="camp",dt=dt_plana)
-#'k1
-#'k2
-#'
 extreure.variables<-function(taula="table1",
                              taulavariables="variables_R.xls",
                              variable_camp="camp",
@@ -99,3 +82,49 @@ extreure.variables<-function(taula="table1",
   purrr::set_names(kk,kk)
 
 }
+
+#' @title                   Etiquetar una Taula
+#' @description             Etiquetar una Taula
+#' @param taula             Taula
+#' @param camp              Camp
+#' @param taulavariables    xxx
+#' @param camp_descripcio   xxx
+#' @param idcamp            xxx
+#' @return                  Nova Taula
+#' @export                  etiquetar_taula
+#' @importFrom dplyr "%>%"
+etiquetar_taula<-function(taula="resumtotal",
+                          camp="variable",
+                          taulavariables="variables_R.xls",
+                          camp_descripcio="descripcio",
+                          idcamp="camp") {
+
+  # taula=dt_temp
+  # taulavariables=conductor
+  # camp="Parameter"
+  # camp_descripcio="descripcio"
+  # idcamp="camp"
+
+  ####  Llegir etiquetes i variables a analitzar ####
+  variables <- read_conductor(taulavariables)
+  camp_sym<-dplyr::sym(camp)
+  idcamp_sym<-dplyr::sym(camp_sym)
+
+  # Canviar nom de camp de variables al de la taula
+  # colnames(variables)[colnames(variables)=="camp"] <- camp
+  colnames(variables)[colnames(variables)==idcamp] <- camp
+
+  # Canviar arguments per ser evaluats
+  camp_eval<-dplyr::sym(camp)
+  camp_descripcio_eval<-dplyr::sym(camp_descripcio)
+  # Canviar el format de la taula
+  taula %>% dplyr::left_join(dplyr::select(variables,c(!!camp_eval,camp_descripcio)),by=dplyr::quo_name(camp_eval)) %>%
+    dplyr::mutate(!!camp_descripcio_eval:=ifelse(is.na(!!camp_descripcio_eval),!!camp_eval,!!camp_descripcio_eval)) %>%
+    dplyr::rename(descripcio:=!!camp_descripcio) %>%
+    dplyr::mutate(!!camp_eval:=descripcio) %>%
+    dplyr::select(-descripcio)
+
+
+}
+
+

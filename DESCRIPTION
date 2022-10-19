@@ -34,13 +34,13 @@ Imports:
       epiR,
       ggcorrplot,
       ggplot2,
-      mgcv,
       mice,
       pROC,
       parameters,
       plotROC,
       survival,
-      survminer
+      survminer,
+      graphics
       
       
       

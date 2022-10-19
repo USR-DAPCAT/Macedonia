@@ -5,7 +5,7 @@
 \title{Etiquetar_model}
 \usage{
 etiquetar_model(
-  model,
+  model = "kkk",
   taulavariables = "variables_R.xls",
   camp = "camp",
   camp_descripcio = "descripcio",
@@ -13,6 +13,8 @@ etiquetar_model(
 )
 }
 \arguments{
+\item{model}{Model}
+
 \item{taulavariables}{Conductor}
 
 \item{camp}{Camp}
