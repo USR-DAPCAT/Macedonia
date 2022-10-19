@@ -1,3 +1,4 @@
+
 #' @title                     Etiquetar_model
 #' @description               Etiquetar_model
 #' @param taulavariables      Conductor
@@ -259,7 +260,7 @@ HRadj=function(x="v.ajust",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",c="",d=
   if (c!="") posicio_p=6
 
   result=tryCatch({
-    pp<-coxph(formulaCOX(x=x,event=event,temps=t,elimina=e,cluster=c,taulavariables = taulavariables,codievent=codievent),data=d)
+    pp<-survival::coxph(formulaCOX(x=x,event=event,temps=t,elimina=e,cluster=c,taulavariables = taulavariables,codievent=codievent),data=d)
 
     cbind(PT.Year=PT/365.25,
           N=pp$n,
@@ -304,7 +305,7 @@ HRestratificats<-function(event="exitus",t="temps",tipo="v.ajust",c="",taulavari
   N<-length(variables2[variables2$estrat==1,]$camp)
 
   for (i in 1:N) {
-    outDf <-ddply(dades, variables2[variables2$estrat==1,]$camp[i], function(df)  HRadj(x=tipo,event=event,t=t,d=df,c=c))
+    outDf <-plyr::ddply(dades, variables2[variables2$estrat==1,]$camp[i], function(df)  HRadj(x=tipo,event=event,t=t,d=df,c=c))
 
     row.names(outDf)<-c(paste(Hmisc::label(eval(parse(text=paste("dades$",names(outDf)[1],sep="")))),"Adj1",sep=""),
                         paste(Hmisc::label(eval(parse(text=paste("dades$",names(outDf)[1],sep="")))),"Adj2",sep=""))
@@ -1456,7 +1457,7 @@ HR.COX.CRU=function(x="lipos",event="EVENT_MCV",t="temps_exitus",e="",d=dadesDF,
     xx<-camps[i]
 
     rr<-paste("Surv(",t,", as.integer(",event," == ",evento,"))~",xx,sep="")
-    pp<-coxph(eval(parse(text=rr)),data=d)
+    pp<-survival::coxph(eval(parse(text=rr)),data=d)
 
 
     mama<-cbind(N=pp$n,
