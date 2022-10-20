@@ -128,3 +128,26 @@ etiquetar_taula<-function(taula="resumtotal",
 }
 
 
+#' @title               Formula_vector.
+#' @description         Formula_vector, vector amb les variables i y
+#' @param vector        Vector amb les variables
+#' @param y             Variable dependents
+#' @param logit         Logit
+#' @param eliminar      Aquelles variables per eliminar
+#' @return              Formula_vector
+#' @export              formula_vector
+#' @importFrom          dplyr "%>%"
+#' @examples
+#' vector=c("sex","age","age")
+#' formula_iris3<-formula_vector(vector,y="y")
+#' formula_iris3
+formula_vector<-function(vector=c("sex","age","age"),y="y",logit=F,eliminar=NA){
+
+  vector<-vector [!vector %in% eliminar] %>% unique()
+
+  if (!logit) {formula= stats::as.formula(paste(y, paste(vector, collapse=" + "), sep=" ~ "))}
+  if (logit) {formula=paste0("as.factor(",y,")~ ", paste(vector, collapse=" + ")) %>%  stats::as.formula()}
+
+  formula
+
+}

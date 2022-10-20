@@ -37,5 +37,21 @@ utils::globalVariables(c("...",
                          "Sample",
                          "mgcv",
                          "id",
-                         "id_nivell"
+                         "id_nivell",
+                         "var",
+                         "crit_temp",
+                         "filtres",
+                         "criteri",
+                         "dtindex.random",
+                         "dtsortida",
+                         "dat_col",
+                         "dat_var",
+                         "dtindex.semirandom",
+                         "vars",
+                         "categoria",
+                         "descripcio_nova",
+                         "Parameter",
+                         "temp"
+
+
                             ))

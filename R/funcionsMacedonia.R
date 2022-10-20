@@ -28,7 +28,7 @@ etiquetar_model<-function(model="kkk",taulavariables="variables_R.xls",
   covars<-attr(model$terms, "term.labels")
   factoritzar_funcio<-function(x) {if (is.character(x)) as.factor(x) else {x}}
   dt<-eval(model$call$data)
-  dt<-dt %>% dplyr::mutate_at(vars(covars), ~factoritzar_funcio(.))
+  dt<-dt %>% dplyr::mutate_at(dplyr::vars(covars), ~factoritzar_funcio(.))
 
   # construir etiquetes
   taula_etiquetes<-
@@ -194,8 +194,8 @@ generar_Surv_to_column<-function(dt="dadestotal", event="EV.AVC_DIC",temps="EV.A
 
   # Genero l'objecte Surv i el coloco en un tibble el renombro
   dt_temp<-
-    survival::Surv(dt[[temps]],as.numeric(dt[[event]]==codievent)) %>% tibble() %>%
-    rename(!!nom_surv:=1)
+    survival::Surv(dt[[temps]],as.numeric(dt[[event]]==codievent)) %>% dplyr::tibble() %>%
+    dplyr::rename(!!nom_surv:=1)
 }
 
 
@@ -461,18 +461,18 @@ extreure_coef_glm<-function(dt=dades,outcomes="OFT_WORST",x="DM",z="",taulavaria
   # names(table(dt[x]))[2:Ncat.x]
   if (Ncat.x==1) models1_oft<-models1_oft %>%                       # Si es continua només un coef de X
     purrr::map(tail,Ncat.x) %>%
-    purrr::map_dfr(data.table)
+    purrr::map_dfr(data.table::data.table)
 
   if (Ncat.x>1) models1_oft<-models1_oft %>%                          ## Select només num de coeficients necessaris de X
     purrr::map(tail,Ncat.x-1) %>%
-    purrr::map_dfr(data.table)
+    purrr::map_dfr(data.table::data.table)
 
   if (Ncat.x>1) variables<-names(selectorvariables(outcomes,taulavariables,dt=dt)) %>%  ##  Noms dels outcomes
     rep(each=Ncat.x-1) %>%                                                ##  Cada Num de coeficients
-    data.table()      # Outcomes
+    data.table::data.table()      # Outcomes
 
   if (Ncat.x==1) variables<-names(selectorvariables(outcomes,taulavariables,dt=dt)) %>%  ##  Noms dels outcomes
-    data.table()      # Outcomes
+    data.table::data.table()      # Outcomes
 
   colnames(variables)<-"Outcome"
 
@@ -503,7 +503,7 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
   # v.ajust=""
   # level_conf=0.95
 
-  Zalfa=qnorm((1-level_conf)/2,lower.tail=FALSE)
+  Zalfa=stats::qnorm((1-level_conf)/2,lower.tail=FALSE)
 
   outcome_sym<-rlang::sym(outcome)
 
@@ -526,11 +526,11 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
 
     # Estandarditzar
     resumStd<-parameters::model_parameters(fit,standardize="basic",ci=level_conf) %>% dplyr::select(c(1:5),-SE) %>%
-      rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>%
+      dplyr::rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>%
       dplyr::mutate(term=as.factor(term))
     resum<-resum %>% cbind(resumStd)
 
-    resum_model<-tibble(categoria=row.names(resum)) %>%
+    resum_model<-dplyr::tibble(categoria=row.names(resum)) %>%
       cbind(resum) %>% dplyr::as_tibble() %>%
       dplyr::mutate(OR=Estimate %>% exp(),
              Linf=(Estimate-(Zalfa*`Std. Error`)) %>% exp(),
@@ -546,11 +546,11 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
 
     # Estandarditzar
     resumStd<-parameters::model_parameters(fit,standardize="basic",ci=level_conf) %>% dplyr::select(c(1:5),-SE) %>%
-      rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>%
+      dplyr::rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>%
       dplyr::mutate(term=as.factor(term))
     resum<-resum %>% cbind(resumStd)
 
-    resum_model<-tibble(categoria=row.names(resum)) %>%
+    resum_model<-dplyr::tibble(categoria=row.names(resum)) %>%
       cbind(resum) %>% dplyr::as_tibble() %>% dplyr::select(-term) %>%
       dplyr::mutate(Beta=Estimate,
              Linf=(Estimate-(Zalfa*`Std. Error`)) ,
@@ -560,11 +560,11 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
   # Si X es factor afegir cat de ref + mean
   es_factor<- any(dt[[x]] %>% class() %in% c("character","factor"))
   if (es_factor) {
-    resumtotal<-tibble(categoria=row.names(resum)[1:Ncat.x],outcome=outcome) %>%
+    resumtotal<-dplyr::tibble(categoria=row.names(resum)[1:Ncat.x],outcome=outcome) %>%
       add_row (categoria=paste0(x,".Ref"),outcome=outcome)
   }
   # Si no es factor
-  if (!es_factor) {resumtotal<-tibble(categoria=row.names(resum),outcome=outcome) }
+  if (!es_factor) {resumtotal<-dplyr::tibble(categoria=row.names(resum),outcome=outcome) }
 
   # Afegir categoria
   resumtotal<-resumtotal %>% dplyr::left_join(resum_model,by="categoria")
@@ -593,15 +593,15 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
   # Funció que extreu parametres estandaritzats Overall (mitjana Cutre)
   Standarditzar_mice_fits<-function(fits,level_conf=0.95) {
     pars_Std<-fits$analyses %>%
-      map(~parameters::model_parameters(.x,standardize="basic",ci=level_conf)) %>%
-      bind_rows() %>% data.frame() %>%
+      purrr::map(~parameters::model_parameters(.x,standardize="basic",ci=level_conf)) %>%
+      dplyr::bind_rows() %>% data.frame() %>%
       dplyr::group_by(Parameter) %>%
       dplyr::summarise_all(base::mean) %>%
       dplyr::select(c(1:5),-SE) %>%
-      rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>% dplyr::mutate(term=as.factor(term))}
+      dplyr::rename(term=Parameter, CIStd_low=CI_low,CIStd_high=CI_high) %>% dplyr::mutate(term=as.factor(term))}
 
   # Z per confidence interval
-  Zalfa=qnorm((1-level_conf)/2,lower.tail=FALSE)
+  Zalfa=stats::qnorm((1-level_conf)/2,lower.tail=FALSE)
 
   ### Hi ha variables d'ajust genero formula llista
   if (any(v.ajust!="")) pepe<-paste0(outcome,"~",paste0(c(x,v.ajust),collapse = " + "))
@@ -621,7 +621,7 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
     resum_Std<-Standarditzar_mice_fits(fits,level_conf)
     resum<-resum %>% dplyr::left_join(resum_Std,by="term")
 
-    resum_model<-tibble(categoria=resum$term) %>%
+    resum_model<-dplyr::tibble(categoria=resum$term) %>%
       cbind(resum) %>%
       dplyr::mutate(OR=estimate %>% exp,
              Linf=(estimate-(Zalfa*std.error)) %>% exp,
@@ -640,7 +640,7 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
     resum_Std<-Standarditzar_mice_fits(fits,level_conf)
     resum<-resum %>% dplyr::left_join(resum_Std,by="term")
 
-    resum_model<-tibble(categoria=resum$term) %>% cbind(resum)
+    resum_model<-dplyr::tibble(categoria=resum$term) %>% cbind(resum)
 
   }
 
@@ -651,12 +651,12 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
 
   if (es_factor) {
     resumtotal<-
-      tibble(categoria=resum$term[1:Ncat.x],outcome=outcome) %>%
+      dplyr::tibble(categoria=resum$term[1:Ncat.x],outcome=outcome) %>%
       add_row (categoria=paste0(x,".Ref"),outcome=outcome)
   }
 
   # Si no es factor
-  if (!es_factor) {resumtotal<-tibble(categoria=resum$term,outcome=outcome) }
+  if (!es_factor) {resumtotal<-dplyr::tibble(categoria=resum$term,outcome=outcome) }
 
   # Afegir categoria
   resumtotal<-resumtotal %>% dplyr::left_join(resum_model,by="categoria")  %>% dplyr::select(-term)
@@ -693,7 +693,7 @@ extreure_coef_mice_estrats<-function(tempData,data_list,X=c("bmi","hyp"),Y="chl"
   }
 
   # Cada llista de datasets separat per grups
-  data_list_splitted<-data_list %>% map(~base::split(.x,.x[[grups]]))
+  data_list_splitted<-data_list %>% purrr::map(~base::split(.x,.x[[grups]]))
 
   # numero de grups
   num_grups<-tempData$data[[grups]] %>% table %>% length
@@ -711,7 +711,7 @@ extreure_coef_mice_estrats<-function(tempData,data_list,X=c("bmi","hyp"),Y="chl"
   names(models_list)<-names(data_list_splitted[[1]])
 
   # Ho posa en un data set
-  models_dt<-bind_rows(models_list, .id = "Grup") %>% dplyr::as_tibble
+  models_dt<-dplyr::bind_rows(models_list, .id = "Grup") %>% dplyr::as_tibble
 
   models_dt
 }
@@ -735,13 +735,13 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
   # N per grups
   dades_N<-dades %>%
     dplyr::group_by(!!outcome_eval) %>% dplyr::count(!!grups_eval) %>% dplyr::ungroup() %>%
-    spread(key=!!outcome_eval,value=n)
+    tidyr::spread(key=!!outcome_eval,value=dplyr::n)
 
   levels_outcome=names(dades_N)[names(dades_N)!=grups]
 
   # Proporcions per grups
   dades_P<-dades %>% dplyr::group_by(!!outcome_eval) %>% dplyr::count(!!grups_eval) %>% dplyr::ungroup() %>%
-    spread(key=!!outcome_eval,value=n) %>%
+    tidyr::spread(key=!!outcome_eval,value=dplyr::n) %>%
     dplyr::mutate(sum=rowSums(.[2:ncol(.)])) %>%
     dplyr::mutate_if(is.numeric,dplyr::funs(./sum)) %>%
     dplyr::select(-sum)
@@ -756,8 +756,8 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
 
   # Rotate
   var2<-variancia %>%
-    gather(temp, value,-grups) %>%
-    spread(!!grups_eval, value) %>% right_join(tibble(temp=levels_outcome),by="temp") %>%
+    tidyr::gather(temp, value,-grups) %>%
+    tidyr::spread(!!grups_eval, value) %>% dplyr::right_join(dplyr::tibble(temp=levels_outcome),by="temp") %>%
     dplyr::select(-temp)
 
   # Error standard de la diferencia [p1*(1-p1)]n1 + [(p2*1-p2)/n2] respecte catRef
@@ -767,8 +767,8 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
 
   # Rotate (Diferencia respecte una de cat ref_cat ("No"))
   prop<-dades_P %>%
-    gather(temp,prop,-grups) %>%
-    spread(!!grups_eval,prop) %>% right_join(tibble(temp=levels_outcome),by="temp") %>%
+    tidyr::gather(temp,prop,-grups) %>%
+    tidyr::spread(!!grups_eval,prop) %>%dplyr:: right_join(dplyr::tibble(temp=levels_outcome),by="temp") %>%
     dplyr::select(-temp)
 
   # Diferencia de proporcions
@@ -794,7 +794,7 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
   # Genero taula ordenada per categories i en funcio
   dades_select<-dades_T %>% dplyr::select(1)
   for (i in 1:ncat) {
-    dades_temp<-dades_T %>% dplyr::select(contains(categories[i]))
+    dades_temp<-dades_T %>% dplyr::select(dplyr::contains(categories[i]))
     dades_select<-dades_select %>% cbind(dades_temp) }
 
 
@@ -863,7 +863,7 @@ extreure_resum_outcomes_imputation<-function(dades_long=dades,outcome="HBA1C.dif
   }
 
   # Juntar-ho tot
-  dt_estimaciones_resumen<-dt_estimaciones1 %>% bind_rows(dt_estimaciones2) %>%  bind_rows(dt_estimaciones3) %>%  bind_rows(dt_estimaciones4)
+  dt_estimaciones_resumen<-dt_estimaciones1 %>%dplyr:: bind_rows(dt_estimaciones2) %>% dplyr:: bind_rows(dt_estimaciones3) %>% dplyr:: bind_rows(dt_estimaciones4)
   # Descriptivo datos completos
 
   dt_estimaciones_resumen
@@ -1480,7 +1480,15 @@ HR.COX.CRU=function(x="lipos",event="EVENT_MCV",t="temps_exitus",e="",d="dadesDF
 # Donat un event, temps de seguiment, grup, eventcompetitiu retorna tibble:
 # Beta, SE, p-value, HR, Li95%CI, Ls95%CI
 # Afegit cluster
-extreure_HRFG=function(event="exitusCV",temps="temps_seguiment",grup="diabetis",eventcompetitiu="exitus",dt=dades, covariables=NA,codievent="Si",refcat=NA,cluster=""){
+extreure_HRFG=function(event="exitusCV",
+                       temps="temps_seguiment",
+                       grup="diabetis",
+                       eventcompetitiu="exitus",
+                       dt="dades",
+                       covariables=NA,
+                       codievent="Si",
+                       refcat=NA,
+                       cluster=""){
 
   # dt=dades
   # event="event_tbc"
@@ -1502,11 +1510,11 @@ extreure_HRFG=function(event="exitusCV",temps="temps_seguiment",grup="diabetis",
   # Selecciono variables necessaries ()
   if (cluster=="") {
     if (any(is.na(covariables)))   dt<-dt %>% dplyr::select(grup=!!grup,exitus=!!eventcompetitiu,temps=!!temps,event=!!event)
-    if (!any(is.na(covariables)))  dt<-dt %>% dplyr::select(grup=!!grup,exitus=!!eventcompetitiu,temps=!!temps,event=!!event,all_of(covariables)) }
+    if (!any(is.na(covariables)))  dt<-dt %>% dplyr::select(grup=!!grup,exitus=!!eventcompetitiu,temps=!!temps,event=!!event,dplyr::all_of(covariables)) }
 
   if (cluster!="") {
     if (any(is.na(covariables)))   dt<-dt %>% dplyr::select(grup=!!grup,exitus=!!eventcompetitiu,temps=!!temps,event=!!event,cluster=!!cluster)
-    if (!any(is.na(covariables)))  dt<-dt %>% dplyr::select(grup=!!grup,exitus=!!eventcompetitiu,temps=!!temps,event=!!event,all_of(covariables),cluster=!!cluster) }
+    if (!any(is.na(covariables)))  dt<-dt %>% dplyr::select(grup=!!grup,exitus=!!eventcompetitiu,temps=!!temps,event=!!event,dplyr::all_of(covariables),cluster=!!cluster) }
 
   # Generar variable status (tipo de censuras) ----
   dt<-dt %>% dplyr::mutate(status=dplyr::case_when(event==codievent ~"event",
@@ -1516,7 +1524,7 @@ extreure_HRFG=function(event="exitusCV",temps="temps_seguiment",grup="diabetis",
   # Generar matriu de covariables
   # Cambiar categoria de referencia de grup a No
   dt[[grup]]<-as.factor(dt[[grup]])
-  if (!is.na(refcat)) dt[[grup]] = relevel(dt[[grup]], refcat)
+  if (!is.na(refcat)) dt[[grup]] = stats::relevel(dt[[grup]], refcat)
 
   # Afegir variable grup a covariables
   covariables<-c("grup",covariables)
@@ -1536,8 +1544,8 @@ extreure_HRFG=function(event="exitusCV",temps="temps_seguiment",grup="diabetis",
                    "SE" = tab[3],
                    "p-value" = tab[5],
                    "HR" = tab[2],
-                   "LI" = exp(tab[1] - qnorm(1 - (1-0.95)/2)*tab[3]),
-                   "LS" = exp(tab[1] + qnorm(1 - (1-0.95)/2)*tab[3])), 4)
+                   "LI" = exp(tab[1] - stats::qnorm(1 - (1-0.95)/2)*tab[3]),
+                   "LS" = exp(tab[1] + stats::qnorm(1 - (1-0.95)/2)*tab[3])), 4)
   colnames(x) <- c("Beta", "SE", "p-value", "HR", "Li95%CI", "Ls95%CI")
   rownames(x) <- rownames(tab)
 
@@ -1560,7 +1568,7 @@ extreure_model_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure_
   competitiu<-dplyr::sym(competitiu)
 
   # Extreure variables i formatar
-  dt <- dt %>% dplyr::select(temps=!!temps,event=!!event,exitus=!!competitiu,all_of(covariables)) %>% na.omit()
+  dt <- dt %>% dplyr::select(temps=!!temps,event=!!event,exitus=!!competitiu,dplyr::all_of(covariables)) %>% na.omit()
 
   dt<-dt %>% dplyr::mutate(event=as.numeric(event==codievent),
                     exitus=as.numeric(exitus==codievent))
@@ -1760,7 +1768,7 @@ extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades=dt,conditional=F,strat
     OR_linf<-ci %>% exp()
     pvalors<-coef(summary(fit))[,'Pr(>|z|)']
     coeficients<-cbind(OR,OR_linf,pvalors) %>% dplyr::as_tibble
-    ret_val <- tibble::enframe(row.names(ci)) %>% bind_cols(coeficients)
+    ret_val <- tibble::enframe(row.names(ci)) %>% dplyr::bind_cols(coeficients)
     colnames(ret_val) <- c("id","Categoria","OR","Linf", "Lsup", "p.value")
     dades_resum<-ret_val %>% dplyr::as_tibble
 
@@ -1797,9 +1805,9 @@ generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",dades=dt) 
 
   taula_editada<-
     all.vars(formu)[-1] %>%
-    map(~paste0(.x,levels(dades[[.x]]),"/",.x)) %>%
+    purrr::map(~paste0(.x,levels(dades[[.x]]),"/",.x)) %>%
     unlist() %>%
-    tibble() %>% rename("var"=".") %>%
+    dplyr::tibble() %>% dplyr::rename("var"=".") %>%
     separate(col=var, into=c("Categoria","Variable"), sep = "/") %>%
     dplyr::mutate(nivell=stringr::str_remove(Categoria,Variable),
            tipo=dplyr::if_else(nivell=="","Continua","Cat"))
@@ -1835,7 +1843,7 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
   dades<-dades %>% dplyr::mutate_at(covariables_character,as.factor)
 
   # Eliminar variable que no hi ha com a mínim 2 nivells
-  var_eliminar<-dades %>% select_at(covariables) %>% dplyr::select_if(is.factor) %>% map(~length(unique(.x)))
+  var_eliminar<-dades %>% select_at(covariables) %>% dplyr::select_if(is.factor) %>% purrr::map(~length(unique(.x)))
   var_eliminar<-var_eliminar[var_eliminar==1] %>% names()
   print(paste0("Eliminada del model: ", var_eliminar))
 
@@ -1890,7 +1898,7 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
       dplyr::mutate(prob_pred=boot::inv.logit(logit_pred))
 
     dades_prediccio<-dades_prediccio %>%
-      cbind(predict_clogit) %>% dplyr::select(-prediccio) %>% rename(prediccio=prob_pred)
+      cbind(predict_clogit) %>% dplyr::select(-prediccio) %>% dplyr::rename(prediccio=prob_pred)
   }
 
   g <- pROC::roc(event ~ prediccio, data = dades_prediccio)
@@ -1965,7 +1973,7 @@ resum_quanti<-function(dt=dades,y="valor_basal.GLICADA",grup="constant") {
                       sd=summ2,
                       n="n()") %>%
     dplyr::mutate(p=pvalor) %>%
-    rename("group"=grup)
+    dplyr::rename("group"=grup)
 
 }
 
@@ -2077,9 +2085,9 @@ resum_events_grup=function(d="dadestotal",evento="RD",temps="TEMPS_RD2",grup="se
   dadesgrups<-d %>% split(eval(parse(text=pepito)))
 
   temp<- dadesgrups %>%
-    map(~resum_events_v2(dades=.x,evento=evento,temps=temps)) %>%
-    map(as.data.frame) %>%
-    map_df(bind_rows,.id = "Group") %>%
+    purrr::map(~resum_events_v2(dades=.x,evento=evento,temps=temps)) %>%
+    purrr::map(as.data.frame) %>%
+    purrr::map_df(dplyr::bind_rows,.id = "Group") %>%
     dplyr::as_tibble()
 
 }
@@ -2263,8 +2271,8 @@ criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris
 
   ##  2. Eliminar els espais en blanc de les variables factors del data.frame
   dt<-dt %>%
-    dplyr::mutate_if(is.factor,dplyr::funs(str_trim(.))) %>%
-    dplyr::mutate_if(is.character,dplyr::funs(str_trim(.)))
+    dplyr::mutate_if(is.factor,dplyr::funs(stringr::str_trim(.))) %>%
+    dplyr::mutate_if(is.character,dplyr::funs(stringr::str_trim(.)))
 
   ##  Llegeix criteris de variables
   variables <- read_conductor(taulavariables,col_types = "text",...) %>% tidyr::as_tibble() %>% dplyr::select(camp,!!criteris)
@@ -2282,10 +2290,10 @@ criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris
     dplyr::filter_(paste0(criteris,"!=0")) %>% dplyr::select_("camp",criteris) %>%
     dplyr::transmute_("camp","crit_temp"=criteris) %>%
     # if criteri missing is.na()
-    dplyr::mutate(crit_temp=dplyr::if_else(str_detect(crit_temp,"is.na"),paste0("is.na(",camp,")"),crit_temp)) %>%
-    dplyr::mutate(camp=dplyr::if_else(str_detect(crit_temp,"is.na"),"",camp)) %>%
+    dplyr::mutate(crit_temp=dplyr::if_else(stringr::str_detect(crit_temp,"is.na"),paste0("is.na(",camp,")"),crit_temp)) %>%
+    dplyr::mutate(camp=dplyr::if_else(stringr::str_detect(crit_temp,"is.na"),"",camp)) %>%
     # Si es texte sense igualtat --> la poso
-    dplyr::mutate(crit_temp=dplyr::if_else(str_detect(crit_temp,char_logics),crit_temp,paste0("=='",crit_temp,"'")))
+    dplyr::mutate(crit_temp=dplyr::if_else(stringr::str_detect(crit_temp,char_logics),crit_temp,paste0("=='",crit_temp,"'")))
 
   # Genero la llista de filtres
   maco<-maco %>% tidyr::unite(filtres, c("camp", "crit_temp"),sep="", remove=F) %>%
@@ -2295,10 +2303,10 @@ criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris
   if (missings==F) maco<-maco %>% dplyr::mutate(filtres=stringr::str_c("(", filtres, " & !is.na(",camp, "))"))
 
   # Concateno condicions amb un OR
-  maco<-str_c(maco$filtres,collapse=" | ")
+  maco<-stringr::str_c(maco$filtres,collapse=" | ")
 
   ## 1. Genera filtre en base a columna exclusio1   popes
-  popes<-str_c("!(",maco,")")
+  popes<-stringr::str_c("!(",maco,")")
 
   ##  3. Aplicar filtre: popes a dt
   dt %>% dplyr::filter(eval(parse(text=popes)))
@@ -2336,19 +2344,19 @@ criteris_exclusio_taula<-function(dt=dades,
 
   # Genero taula amb n per cada exclusio
   dt_temp<-vec_excl %>%
-    map(~dt %>% dplyr::filter(eval(parse(text = .x))))%>%
-    map_df(~dplyr::count(.x),.id="Criteri") %>% dplyr::transmute(N_excluded=n)
+    purrr::map(~dt %>% dplyr::filter(eval(parse(text = .x))))%>%
+    purrr::map_df(~dplyr::count(.x),.id="Criteri") %>% dplyr::transmute(N_excluded=dplyr::n)
 
   # Genero taula de N's després d'aplicar exclusions sequencials
   dt_temp2<-seq(1:length(vec_excl)) %>%
-    map(~paste0("!",vec_excl[1:.x],collapse = " & ")) %>%
-    map(~dt %>% dplyr::filter(eval(parse(text = .x)))) %>%
-    map_df(~dplyr::count(.x),.id="Criteri") %>% dplyr::transmute(N_remain=n)
+    purrr::map(~paste0("!",vec_excl[1:.x],collapse = " & ")) %>%
+    purrr::map(~dt %>% dplyr::filter(eval(parse(text = .x)))) %>%
+    purrr::map_df(~dplyr::count(.x),.id="Criteri") %>% dplyr::transmute(N_remain=dplyr::n)
 
-  dt_criteris<-dt_criteris %>% dplyr::select(camp,!!criteris) %>% bind_cols(dt_temp) %>% bind_cols(dt_temp2)
+  dt_criteris<-dt_criteris %>% dplyr::select(camp,!!criteris) %>% dplyr::bind_cols(dt_temp) %>%dplyr:: bind_cols(dt_temp2)
 
   # Afegeixo N inicial
-  tibble::tibble(camp="",N_excluded=0,N_remain=dt %>% dplyr::count() %>% as.numeric()) %>% bind_rows(dt_criteris)
+  tibble::tibble(camp="",N_excluded=0,N_remain=dt %>% dplyr::count() %>% as.numeric()) %>%dplyr:: bind_rows(dt_criteris)
 
 }
 
@@ -2786,7 +2794,7 @@ forest.plot.v3<-function(dadesmodel=dt_estimacions,label="Categoria",mean="estim
 
   # Afegir fila com un punt nivell per outcome i genero label de group
   taula_betas<-taula_betas %>% split(.$nivell) %>%
-    map_dfr(~add_row(.x,.before = 0),.id = "outcome" ) %>%
+    purrr::map_dfr(~add_row(.x,.before = 0),.id = "outcome" ) %>%
     dplyr::mutate (etiqueta2=dplyr::if_else(is.na(etiqueta),outcome,"")) %>%
     dplyr::mutate (etiqueta=dplyr::if_else(is.na(etiqueta),outcome,etiqueta))
 
@@ -3004,7 +3012,7 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
 #
 # Genero N dates random entre 2010-2016 el mateix nombre que
 
-dt_index_data_random<-function(dt=PACIENTS) {
+dt_index_data_random<-function(dt="PACIENTS") {
 
   # dt=PACIENTS
   # Necessito camp dtsortida (ymd)
@@ -3013,8 +3021,8 @@ dt_index_data_random<-function(dt=PACIENTS) {
 
   set.seed(123)
   data_index_data<-dt %>%
-    nrow() %>% runif(as.Date("10/01/01", "%y/%m/%d"), as.Date("16/12/31", "%y/%m/%d")) %>%
-    data.table() %>%
+    nrow() %>% stats::runif(as.Date("10/01/01", "%y/%m/%d"), as.Date("16/12/31", "%y/%m/%d")) %>%
+    data.table::data.table() %>%
     stats::setNames(.,c("dtindex.random")) %>%
     dplyr::mutate (
       dtindex.random=as.Date(dtindex.random, origin = "1970-01-01")
@@ -3036,7 +3044,7 @@ dt_index_data_random<-function(dt=PACIENTS) {
 #  GENERA UNA DATA INDEX SEGONS UNA DETERMINACIÓ ----------------------
 ## RETORNA DADES AMB idp + dtindex.semirandom
 
-dt_index_data_semirandom<-function(dt=PACIENTS,dt.variables=VARIABLES,codi="EK201"){
+dt_index_data_semirandom<-function(dt="PACIENTS",dt.variables="VARIABLES",codi="EK201"){
 
   # dt=PACIENTS
   # dt.variables=VARIABLES
@@ -3058,7 +3066,7 @@ dt_index_data_semirandom<-function(dt=PACIENTS,dt.variables=VARIABLES,codi="EK20
     dplyr::sample_n(size = 1) %>%                      # Random
     dplyr::ungroup %>%
     dplyr::select(idp, dat) %>%
-    rename(dat_col=dat)
+    dplyr::rename(dat_col=dat)
 
   ### Per cada pacient selecciono una dat random entre totes les VARIABLES
   UNA.VARIABLE<-dt.variables %>%                # totes les variables
@@ -3070,7 +3078,7 @@ dt_index_data_semirandom<-function(dt=PACIENTS,dt.variables=VARIABLES,codi="EK20
     dplyr::sample_n(size = 1) %>%                      # RAndom
     dplyr::ungroup() %>%
     dplyr::select(idp, dat) %>%
-    rename(dat_var=dat)
+    dplyr::rename(dat_var=dat)
 
   ### Fusió d'ambdos fitxers i selecciono una d'elles preferentment colesterol
 
@@ -3114,7 +3122,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   # MATCHING 1VS3
   m.out<-matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
   # Filtro per ps
-  dades_match_13<-dades %>% bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
+  dades_match_13<-dades %>% dplyr::bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
 
   #  -----------------  2 vs 4 ---------------------- dades_match13
   dades<-dt %>% dplyr::filter(id_grup==2 | id_grup==4 ) # Filtro dos grups
@@ -3128,10 +3136,10 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   m.out<-matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
 
   # Filtro per ps
-  dades_match_24<-dades %>% bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
+  dades_match_24<-dades %>%dplyr:: bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
 
   # -------------------  Actualitzar dt amb dades només matxejades ---
-  dt<-dades_match_13 %>% bind_rows(dades_match_24) %>%dplyr:: select(-c(gr_2,gr_1,grup_dic))
+  dt<-dades_match_13 %>% dplyr::bind_rows(dades_match_24) %>%dplyr:: select(-c(gr_2,gr_1,grup_dic))
 
   #  -----------------  1 vs 2 ---------------------- dades_match12
   dades<-dt %>% dplyr::filter(id_grup==1 | id_grup==2 ) # Filtro dos grups
@@ -3146,7 +3154,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   m.out<-matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
 
   # Filtro per ps
-  dades_match_12<-dades %>% bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
+  dades_match_12<-dades %>% dplyr::bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
 
   #  -----------------  3 vs 4 ---------------------- dades_match12
   dades<-dt %>% dplyr::filter(id_grup==3 | id_grup==4 ) # Filtro dos grups
@@ -3158,13 +3166,13 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   # MATCHING 3VS4
   m.out<-matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
   # Filtro per ps
-  dades_match_34<-dades %>% bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
+  dades_match_34<-dades %>%dplyr:: bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
 
   # Fusionar dades
   # Juntar tot
 
   # -------------------  Actualitzar dt amb dades només matxejades ---
-  dt<-dades_match_12 %>% bind_rows(dades_match_34) %>% dplyr::select(-c(gr_1,gr_3,grup_dic))
+  dt<-dades_match_12 %>% dplyr::bind_rows(dades_match_34) %>% dplyr::select(-c(gr_1,gr_3,grup_dic))
 
 }
 
@@ -3177,7 +3185,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
 ##  Retorna Subset matxejat per grup (event) en data index (dtindex.random, control) DE dt_pacients_dindex
 ##  Llista de variables variables.ps
 
-matching_case_control<-function(dt=PACIENTS,variables.ps=llistaPS,dt_pacients_dindex=BD_PAC_DINDEX) {
+matching_case_control<-function(dt="PACIENTS",variables.ps=llistaPS,dt_pacients_dindex=BD_PAC_DINDEX) {
 
   # dt=PACIENTS
   # variables.ps=c("edat","dtindex","sexe") # covaribles
@@ -3223,9 +3231,9 @@ matching_case_control<-function(dt=PACIENTS,variables.ps=llistaPS,dt_pacients_di
   dt.matched<-formulaPS %>%
     matchit(method="nearest",data=dadesmatching,ratio=4,caliper=0.01,distance = "logit") %>%    # FAig el matching 4 a 1
     weights() %>%                                                            # Guardo els pesos
-    data.table() %>%
+    data.table::data.table() %>%
     'colnames<-'(c("PS")) %>%
-    bind_cols(dt.total) %>%                                                 # Ho junto al dt.total
+    dplyr::bind_cols(dt.total) %>%                                                 # Ho junto al dt.total
     dplyr::filter(PS==1) %>%
     dplyr::as_tibble()
 
@@ -3436,8 +3444,8 @@ extreure_Pglobal_SigTest<-function(dt=dades,vars_pre=vars_pre,vars_post=vars_pos
 
   dt<-dt %>% dplyr::mutate(id=1:n()) %>%
     dplyr::select(id, vars_pre,vars_post) %>%
-    rename_at(vars_pre,~paste0("var",c(1:length(vars_post)),"_pre")) %>%
-    rename_at(vars_post,~paste0("var",c(1:length(vars_post)),"_pos")) %>%
+    dplyr::rename_at(vars_pre,~paste0("var",c(1:length(vars_post)),"_pre")) %>%
+    dplyr::rename_at(vars_post,~paste0("var",c(1:length(vars_post)),"_pos")) %>%
     dplyr::mutate_all(as.numeric)
 
   longer<-dt %>%
