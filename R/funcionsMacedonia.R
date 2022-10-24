@@ -60,7 +60,7 @@ etiquetar_model<-function(model="kkk",taulavariables="variables_R.xls",
 formula=function(x="taula1",y="grup",eliminar=c("idp",y)) {
   pepito<-paste("as.vector(variables[variables$",x,"==1,]$camp)[!as.vector(variables[variables$",x,"==1,]$camp)%in%eliminar]",sep="")
   llistataula<-eval(parse(text=pepito))
-  y<-as.formula(paste(y, paste(llistataula, collapse=" + "), sep=" ~ "))
+  y<-stats::as.formula(paste(y, paste(llistataula, collapse=" + "), sep=" ~ "))
 }
 
 #  FORMULA MILLORADA --------------------------
@@ -93,13 +93,13 @@ formula_compare=function(x="taula1",y="grup",elimina=c("IDP"),taulavariables="va
 
   # 1.2. Filtrar per variables que realment existeixen en la base de dades
 
-  if (is.data.frame(dt)) {mua<-mua %>% semi_join(data.frame(camp=names(dades)),by="camp")}
+  if (is.data.frame(dt)) {mua<-mua %>% dplyr::semi_join(data.frame(camp=names(dades)),by="camp")}
 
   # 3. Generar formula
 
-  # y<-as.formula(paste(y, paste(llista$camp, collapse=" + "), sep=" ~ "))
+  # y<-stats::as.formula(paste(y, paste(llista$camp, collapse=" + "), sep=" ~ "))
 
-  y<-as.formula(paste(y, paste(mua$camp, collapse=" + "), sep=" ~ "))
+  y<-stats::as.formula(paste(y, paste(mua$camp, collapse=" + "), sep=" ~ "))
 
   y
 
@@ -122,7 +122,7 @@ llista.compare.Ys<-function(dt=dades,llista.y=c("CODGLP1","CKDEPI_cat2"),llista.
 
     # i<-1
 
-    restab.llista[[i]]<-as.formula(paste(llista.y[[i]], paste(llista.x, collapse=" + "), sep=" ~ ")) %>%
+    restab.llista[[i]]<-stats::as.formula(paste(llista.y[[i]], paste(llista.x, collapse=" + "), sep=" ~ ")) %>%
       compareGroups(data=dt,include.miss = F,include.label=T,byrow = byrow,ref.no=ref.no) %>%
       createTable(show.ratio = show.ratio , hide.no = hide.no, show.p.overall=T,show.n=show.n,show.all=show.all,show.descr=show.descr,digits=digits,digits.ratio=digits.ratio)
 
@@ -230,9 +230,9 @@ formulaCOX=function(x="",event="event",temps="temps",elimina="",cluster="",a="",
   if (cluster!="") kk<-paste(paste(llistataula,collapse=" + "),paste("cluster(",cluster,")",sep=""),sep="+")
   if (cluster=="") kk<-paste(llistataula,collapse=" + ")
   #
-  # y<-as.formula(paste(resposta, paste(llistataula, collapse=" + "), sep=" ~ "))
-  if (sum(elimina==llistataula)>0) y<-as.formula(paste(paste(resposta, kk , sep=" ~ "),elimina,sep=" - "))
-  if (sum(elimina==llistataula)==0) y<-as.formula(paste(resposta, kk , sep=" ~ "))
+  # y<-stats::as.formula(paste(resposta, paste(llistataula, collapse=" + "), sep=" ~ "))
+  if (sum(elimina==llistataula)>0) y<-stats::as.formula(paste(paste(resposta, kk , sep=" ~ "),elimina,sep=" - "))
+  if (sum(elimina==llistataula)==0) y<-stats::as.formula(paste(resposta, kk , sep=" ~ "))
   #
 
   y
@@ -347,7 +347,7 @@ formula.LOGIT=function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavari
 
   if (a!="") llistataula<-c(a,llistataula)
 
-  y<-as.formula(paste(y, paste(llistataula, collapse=" + "), sep=" ~ "))
+  y<-stats::as.formula(paste(y, paste(llistataula, collapse=" + "), sep=" ~ "))
 
 }
 
@@ -429,7 +429,7 @@ variables.ajust=function(x="taula1",variables=variables) {
 
 #  GLM  COEFICIENTS      ###########################################################
 #################   EXTREU COEFICIENTS glm, IC95 , p valors  GLM a partir de llista d'outcomes, X, i llista de v.ajust
-extreure_coef_glm<-function(dt=dades,outcomes="OFT_WORST",x="DM",z="",taulavariables="variables_R.xls"){
+extreure_coef_glm<-function(dt="dades",outcomes="OFT_WORST",x="DM",z="",taulavariables="variables_R.xls"){
 
   # dt=dades
   # outcomes="lipos"
@@ -447,7 +447,7 @@ extreure_coef_glm<-function(dt=dades,outcomes="OFT_WORST",x="DM",z="",taulavaria
 
   models1_oft<-names(selectorvariables(outcomes,dt=dt,taulavariables=taulavariables))%>%
     paste('~',x) %>%
-    purrr::map(~stats::glm(as.formula(.x), data= dt))%>%
+    purrr::map(~stats::glm(stats::as.formula(.x), data= dt))%>%
     purrr::map(summary) %>%
     purrr::map(coefficients)
 
@@ -487,7 +487,7 @@ extreure_coef_glm<-function(dt=dades,outcomes="OFT_WORST",x="DM",z="",taulavaria
 }
 
 #  EXTREU COEFICIENTS glm, IC95 , p valors  GLM a outcome, X, i llista de v.ajust
-extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",level_conf=0.95){
+extreure_coef_glm_v2<-function(dt="dades",outcome="OFT_WORST",x="DM",v.ajust="",level_conf=0.95){
 
   # dt=dades_long %>% filter(.imp==0),outcome=outcome,x=grups,v.ajust=""
   # dt=dades_long %>% filter(.imp==0)
@@ -522,7 +522,7 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
   if (outcome_es_factor) {
 
     fit<-stats::glm(eval(parse(text=pepe)),family = stats::binomial(link="logit"),data=dt)
-    resum<-fit %>% summary %>% coef()
+    resum<-fit %>% summary %>% stats::coef()
 
     # Estandarditzar
     resumStd<-parameters::model_parameters(fit,standardize="basic",ci=level_conf) %>% dplyr::select(c(1:5),-SE) %>%
@@ -541,8 +541,8 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
   # Si Outcome (Y) es numerica --> glm-lineal
   if (!outcome_es_factor) {
 
-    fit<-stats::glm(as.formula(pepe),family = gaussian, data= dt)
-    resum<-fit %>% summary %>% coef()
+    fit<-stats::glm(stats::as.formula(pepe),family = "gaussian", data= dt)
+    resum<-fit %>% summary %>% stats::coef()
 
     # Estandarditzar
     resumStd<-parameters::model_parameters(fit,standardize="basic",ci=level_conf) %>% dplyr::select(c(1:5),-SE) %>%
@@ -561,7 +561,7 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
   es_factor<- any(dt[[x]] %>% class() %in% c("character","factor"))
   if (es_factor) {
     resumtotal<-dplyr::tibble(categoria=row.names(resum)[1:Ncat.x],outcome=outcome) %>%
-      add_row (categoria=paste0(x,".Ref"),outcome=outcome)
+      dplyr::add_row (categoria=paste0(x,".Ref"),outcome=outcome)
   }
   # Si no es factor
   if (!es_factor) {resumtotal<-dplyr::tibble(categoria=row.names(resum),outcome=outcome) }
@@ -581,7 +581,7 @@ extreure_coef_glm_v2<-function(dt=dades,outcome="OFT_WORST",x="DM",v.ajust="",le
 
 #  GLM (Logistic o Lineal) dades imputades --------------------
 ## Retorn de coeficients glm() amb dades imputades d'una variable independent X ~ Y
-extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",v.ajust="",level_conf=0.95) {
+extreure_coef_glm_mi<-function(dt="tempData",outcome="valor612M.GLICADA",x="SEXE",v.ajust="",level_conf=0.95) {
 
   # dt=mice::as.mids(dades_long)
   # outcome=outcome
@@ -632,7 +632,7 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
   if (!outcome_es_factor) {
 
     # pepe<-paste0(outcome,"~",x)
-    fits<-with(dt,lm(eval(parse(text=pepe))))
+    fits<-with(dt,stats::lm(eval(parse(text=pepe))))
 
     resum<-base::summary(mice::pool(fits))
 
@@ -652,7 +652,7 @@ extreure_coef_glm_mi<-function(dt=tempData,outcome="valor612M.GLICADA",x="SEXE",
   if (es_factor) {
     resumtotal<-
       dplyr::tibble(categoria=resum$term[1:Ncat.x],outcome=outcome) %>%
-      add_row (categoria=paste0(x,".Ref"),outcome=outcome)
+      dplyr::add_row (categoria=paste0(x,".Ref"),outcome=outcome)
   }
 
   # Si no es factor
@@ -688,7 +688,7 @@ extreure_coef_mice_estrats<-function(tempData,data_list,X=c("bmi","hyp"),Y="chl"
 
   fitting=function(.data,frm,logit=F) {
     if(logit) {model=stats::glm(frm,data=.data,family=stats::binomial(link="logit"))}
-    if(!logit){model=lm(frm, data =.data)}
+    if(!logit){model=stats::lm(frm, data =.data)}
     model
   }
 
@@ -700,7 +700,7 @@ extreure_coef_mice_estrats<-function(tempData,data_list,X=c("bmi","hyp"),Y="chl"
 
   # Aplica models n una llista
   models_list<-lapply(1:num_grups, function(NSPLIT) data_list_splitted %>%
-                        lapply(nth, NSPLIT) %>%
+                        lapply(dplyr::nth, NSPLIT) %>%
                         lapply(fitting, formula_vector(X,Y,logit),logit=logit) %>%
                         mice::as.mira() %>%
                         mice::pool() %>%
@@ -967,7 +967,7 @@ boxplot_variables_grup<-function(dt=dades,variables="OFT_WORST",grup="DM", taula
 ggplot_grups<-function(Y="DIS_estatina",dt=dades,X="edat",grup="sexe") {
 
   figuragamX<-ggplot2::ggplot(dt, ggplot2::aes_string(x=X, y=Y,group=grup,shape=grup, color=grup))+
-    geom_smooth(method = lm, formula = y ~ splines::bs(x, 3), se = T)+
+    geom_smooth(method = stats::lm, formula = y ~ splines::bs(x, 3), se = T)+
     xlab(Hmisc::label(dades[X]))+
     ylab(Hmisc::label(dades[Y]))+
     theme_bw()+
@@ -1397,7 +1397,7 @@ HR.COX=function(x="",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",d="dadesDF",t
   # event = "event_tbc"
   # t="temps_tbc"
   # d=dades
-  # taulavariables = conductor_variables
+  # taulavariables ="conductor_variables"
   # e=""
   # c="case.id"
 
@@ -1568,7 +1568,7 @@ extreure_model_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure_
   competitiu<-dplyr::sym(competitiu)
 
   # Extreure variables i formatar
-  dt <- dt %>% dplyr::select(temps=!!temps,event=!!event,exitus=!!competitiu,dplyr::all_of(covariables)) %>% na.omit()
+  dt <- dt %>% dplyr::select(temps=!!temps,event=!!event,exitus=!!competitiu,dplyr::all_of(covariables)) %>% stats::na.omit()
 
   dt<-dt %>% dplyr::mutate(event=as.numeric(event==codievent),
                     exitus=as.numeric(exitus==codievent))
@@ -1609,7 +1609,7 @@ extreure_cuminc_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure
   competitiu<-dplyr::sym(competitiu)
 
   # Extreure variables i formatar
-  dt <- dt %>% dplyr::select(temps=!!temps,event=!!event,exitus=!!competitiu,group,strata) %>% na.omit()
+  dt <- dt %>% dplyr::select(temps=!!temps,event=!!event,exitus=!!competitiu,group,strata) %>% stats::na.omit()
 
   dt<-dt %>% dplyr::mutate(event=as.numeric(event==codievent),
                     exitus=as.numeric(exitus==codievent))
@@ -1651,7 +1651,7 @@ extreure_cor=function(var1="CD36",var="quantis",d="dades",taulavariables="VARIAB
   # var1="alb24hurine_value"
   # var="lipos_corr"
   # d="dades"
-  # taulavariables = conductor_variables
+  # taulavariables = "conductor_variables"
 
   ##  Llegeix criteris de variables
   variables <- readxl::read_excel(taulavariables) %>% tidyr::as_tibble()
@@ -1669,9 +1669,9 @@ extreure_cor=function(var1="CD36",var="quantis",d="dades",taulavariables="VARIAB
 
     var2<-paste(d,llistavariables[i],sep="$")
     y<-eval(parse(text=var2))
-    cor.test(x,y)$estimate
-    correlacio<-cor.test(x,y)$estimate
-    pvalor<-cor.test(x,y)$p.value
+    stats::cor.test(x,y)$estimate
+    correlacio<-stats::cor.test(x,y)$estimate
+    pvalor<-stats::cor.test(x,y)$p.value
 
     pp<-cbind(correlacio,pvalor)
     row.names(pp)<-llistavariables[i]
@@ -1687,12 +1687,12 @@ extreure_cor=function(var1="CD36",var="quantis",d="dades",taulavariables="VARIAB
 # Retorna matriu de correlacions, i plot bivariant (Correlograma) de ggcorrplot
 # Requereix dades, llista1, llista2
 
-extreure_cor_multi<-function(dades=dt,llistavar1=c("Age","BMI"),llistavar2=c("Large_PER_HDL","Medium_HDL_P_molL"),etiquetar=F,coductor_variables=conductor_variables,method = "circle",...){
+extreure_cor_multi<-function(dades=dt,llistavar1=c("Age","BMI"),llistavar2=c("Large_PER_HDL","Medium_HDL_P_molL"),etiquetar=F,coductor_variables="conductor_variables",method = "circle",...){
 
   # dt=dt
   # llistavar1=vars1
   # llistavar2=vars2
-  # coductor_variables=conductor_variables
+  # coductor_variables="conductor_variables"
   # etiquetar=T
   # method = "square"
 
@@ -1736,7 +1736,7 @@ extreure_cor_multi<-function(dades=dt,llistavar1=c("Age","BMI"),llistavar2=c("La
 #  Extreure OR (segons formula, i dades)  --------------------
 #       LLANÇO UNA FORMULA les dades per executar un model i retorno OR , CI95% i p-valor en una tibble()
 
-extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades=dt,conditional=F,strata="caseid") {
+extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades="dt",conditional=F,strata="caseid") {
 
   # formu<-formula.LOGIT(x="article.model",y="canvi312M.GLICADA.inputCAT2",taulavariables='variables_v2.xls')
   # dades=tempData
@@ -1759,14 +1759,14 @@ extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades=dt,conditional=F,strat
     } else {
 
       formu<- paste0(formu,"+ strata(",strata,")")
-      fit<-survival::clogit(as.formula(formu),data=dades)}
+      fit<-survival::clogit(stats::as.formula(formu),data=dades)}
 
     # Extrec info total del model
-    my_coefficients <- fit %>% coef
-    ci<-fit %>% confint
+    my_coefficients <- fit %>% stats::coef
+    ci<-fit %>% stats::confint
     OR<-my_coefficients %>% exp()
     OR_linf<-ci %>% exp()
-    pvalors<-coef(summary(fit))[,'Pr(>|z|)']
+    pvalors<-stats::coef(summary(fit))[,'Pr(>|z|)']
     coeficients<-cbind(OR,OR_linf,pvalors) %>% dplyr::as_tibble
     ret_val <- tibble::enframe(row.names(ci)) %>% dplyr::bind_cols(coeficients)
     colnames(ret_val) <- c("id","Categoria","OR","Linf", "Lsup", "p.value")
@@ -1815,7 +1815,7 @@ generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",dades=dt) 
 
 
 # Retorno model amb ORs, curva ROC , auc IC95% etc... a partir de formula glm , i dades
-extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariables=conductorvariables,dades=dades,elimina=c("IDP"),a="", valor_outcome="Yes",conditional=F,strata="caseid") {
+extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariables="conductorvariables",dades=dades,elimina=c("IDP"),a="", valor_outcome="Yes",conditional=F,strata="caseid") {
 
 
   # x="regicor_alone_continu"
@@ -1839,11 +1839,11 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
 
   # Factoritzar character a factor
   covariables<-extreure.variables(x,taulavariables)
-  covariables_character<-dades %>% select_at(covariables) %>% dplyr::select_if(is.character) %>% names()
+  covariables_character<-dades %>% dplyr::select_at(covariables) %>% dplyr::select_if(is.character) %>% names()
   dades<-dades %>% dplyr::mutate_at(covariables_character,as.factor)
 
   # Eliminar variable que no hi ha com a mínim 2 nivells
-  var_eliminar<-dades %>% select_at(covariables) %>% dplyr::select_if(is.factor) %>% purrr::map(~length(unique(.x)))
+  var_eliminar<-dades %>% dplyr::select_at(covariables) %>% dplyr::select_if(is.factor) %>% purrr::map(~length(unique(.x)))
   var_eliminar<-var_eliminar[var_eliminar==1] %>% names()
   print(paste0("Eliminada del model: ", var_eliminar))
 
@@ -1852,8 +1852,8 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
   formu_text<-formula.text(x=x,y=y,taulavariables=taulavariables,eliminar = var_eliminar)
 
   # Subselecciono dades completes amb només variables utilitzades i elimino nivells sense utilitzar (Sinó peta en ROC curve)
-  if (conditional) {dades<-dades %>% dplyr::select(c(all.vars(formu),strata)) %>% na.omit()}
-  if (conditional==F) {dades<-dades %>% dplyr::select(c(all.vars(formu))) %>% na.omit()}
+  if (conditional) {dades<-dades %>% dplyr::select(c(all.vars(formu),strata)) %>% stats::na.omit()}
+  if (conditional==F) {dades<-dades %>% dplyr::select(c(all.vars(formu))) %>% stats::na.omit()}
   # Eliminar nivells que no tenim dades de variables factor
   dades<-dades %>% dplyr::mutate_if(is.factor, droplevels)
 
@@ -1867,7 +1867,7 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
     taula_OR<-extreure_OR(formu=formu,dades=dades,conditional=conditional,strata=strata)
   } else {
     taula_OR<-extreure_OR(formu=formu_text,dades=dades,conditional=conditional,strata=strata)
-    fit_c<-survival::clogit(as.formula(paste0(formu_text,"+ strata(",strata,")")),data=dades)
+    fit_c<-survival::clogit(stats::as.formula(paste0(formu_text,"+ strata(",strata,")")),data=dades)
   }
 
   taula_editada<-generar_taula_variables_formula(formu,dades)
@@ -1911,8 +1911,8 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
     plotROC::geom_roc(n.cuts = 0)
 
   plot_curve<- plot_curve +
-    # annotate("text", x = .75, y = .25, label = paste("AUC =", round(plotROC::calc_auc(plot_curve)["AUC"], 2))) +
-    annotate("text", x = .75, y = .25, label = paste("95 CI%:",round(auc_ci[1],2),"-",round(auc_ci[3],2)))
+    # ggplot::annotate("text", x = .75, y = .25, label = paste("AUC =", round(plotROC::calc_auc(plot_curve)["AUC"], 2))) +
+    ggplot::annotate("text", x = .75, y = .25, label = paste("95 CI%:",round(auc_ci[1],2),"-",round(auc_ci[3],2)))
 
   HL_test<-ResourceSelection::hoslem.test(dades_prediccio$event, dades_prediccio$prediccio, g = 10)
 
@@ -2556,8 +2556,8 @@ retorn_prediccio_MI<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",dades
   texto=paste0(y,"~",x)
 
   mods.imp = lapply(1:nimp, function(.nimp){
-    # m = lm(canvi_ADD~HBpreADD, data = complete(imp, .nimp))
-    m=with(complete(imp,.nimp),lm(eval(parse(text=texto))))
+    # m = stats::lm(canvi_ADD~HBpreADD, data = complete(imp, .nimp))
+    m=with(complete(imp,.nimp),stats::lm(eval(parse(text=texto))))
 
     mm = predict(m, newdata=df.pred, se.fit = TRUE)
     structure(
@@ -2596,10 +2596,10 @@ retorn_prediccio_MI_STR<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",d
   texte_subset<-paste0("subset(complete(imp,.nimp),",subset,")")
 
   mods.imp = lapply(1:nimp, function(.nimp){
-    # m = lm(canvi_ADD~HBpreADD, data = complete(imp, .nimp))
-    # m=with(complete(imp,.nimp),lm(eval(parse(text=texto))))
+    # m = stats::lm(canvi_ADD~HBpreADD, data = complete(imp, .nimp))
+    # m=with(complete(imp,.nimp),stats::lm(eval(parse(text=texto))))
 
-    m=with(eval(parse(text=texte_subset)),lm(eval(parse(text=texto))))
+    m=with(eval(parse(text=texte_subset)),stats::lm(eval(parse(text=texto))))
 
     mm = predict(m, newdata=df.pred, se.fit = TRUE)
     structure(
@@ -2640,10 +2640,10 @@ retorn_prediccio_MI_STR2<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",
   texte_subset<-paste0("subset(complete(imp,.nimp),",subset,")")
 
   mods.imp = lapply(1:nimp, function(.nimp){
-    # m = lm(canvi_ADD~HBpreADD, data = complete(imp, .nimp))
-    # m=with(complete(imp,.nimp),lm(eval(parse(text=texto))))
+    # m = stats::lm(canvi_ADD~HBpreADD, data = complete(imp, .nimp))
+    # m=with(complete(imp,.nimp),stats::lm(eval(parse(text=texto))))
 
-    m=with(eval(parse(text=texte_subset)),lm(eval(parse(text=texto))))
+    m=with(eval(parse(text=texte_subset)),stats::lm(eval(parse(text=texto))))
 
     mm = predict(m, newdata=df.pred, se.fit = TRUE)
     structure(
@@ -2717,7 +2717,7 @@ plot.dispersio.reduccio <-function(dt=dades,v.basal="HBpreADD",v.final="HBpostAD
 # A partir de taula amb OR's / Betas genera Forest Plot
 # La taula ha de contenir els seguents camps:Categoria,OR,Linf,Lsup
 
-forest.plot<-function(dadesmodel=ramo,label=dadesmodel$Categoria,mean=dadesmodel$OR,lower=dadesmodel$Linf,upper=dadesmodel$Lsup,label_X="OR (95% CI)", intercept=1) {
+forest.plot<-function(dadesmodel="ramo",label=dadesmodel$Categoria,mean=dadesmodel$OR,lower=dadesmodel$Linf,upper=dadesmodel$Lsup,label_X="OR (95% CI)", intercept=1) {
 
   # dadesmodel=taula_coefs
   # label=taula_editada$Categoria
@@ -2734,13 +2734,13 @@ forest.plot<-function(dadesmodel=ramo,label=dadesmodel$Categoria,mean=dadesmodel
     geom_hline(yintercept=intercept, lty=2) +  # add a dotted line at x=1 after flip
     coord_flip() +  # flip coordinates (puts labels on y axis)
     xlab("Label") + ylab(label_X) +
-    scale_x_continuous(breaks=dadesmodel %>%  dplyr::pull(id) ,labels=dadesmodel %>% dplyr:: pull(Categoria))
+    ggplot2::scale_x_continuous(breaks=dadesmodel %>%  dplyr::pull(id) ,labels=dadesmodel %>% dplyr:: pull(Categoria))
 
   fp
 }
 
 # Forest plot versió 2 millorada per tal que funcioni
-forest.plot.v2<-function(dadesmodel=ramo,label="Categoria",mean="OR",lower="Linf",upper="Lsup",label_X="OR (95% CI)", intercept=1) {
+forest.plot.v2<-function(dadesmodel="ramo",label="Categoria",mean="OR",lower="Linf",upper="Lsup",label_X="OR (95% CI)", intercept=1) {
 
   # dadesmodel=dt_dif
   # label="lipo"
@@ -2760,7 +2760,7 @@ forest.plot.v2<-function(dadesmodel=ramo,label="Categoria",mean="OR",lower="Linf
     geom_hline(yintercept=intercept, lty=2) +  # add a dotted line at x=1 after flip
     coord_flip() +  # flip coordinates (puts labels on y axis)
     xlab("Label") + ylab(label_X) +
-    scale_x_continuous(breaks=dadestemp %>% dplyr:: pull(id),labels=dadestemp %>% dplyr:: pull(etiqueta))
+    ggplot2::scale_x_continuous(breaks=dadestemp %>% dplyr:: pull(id),labels=dadestemp %>% dplyr:: pull(etiqueta))
 
   fp
 
@@ -2794,7 +2794,7 @@ forest.plot.v3<-function(dadesmodel=dt_estimacions,label="Categoria",mean="estim
 
   # Afegir fila com un punt nivell per outcome i genero label de group
   taula_betas<-taula_betas %>% split(.$nivell) %>%
-    purrr::map_dfr(~add_row(.x,.before = 0),.id = "outcome" ) %>%
+    purrr::map_dfr(~dplyr::add_row(.x,.before = 0),.id = "outcome" ) %>%
     dplyr::mutate (etiqueta2=dplyr::if_else(is.na(etiqueta),outcome,"")) %>%
     dplyr::mutate (etiqueta=dplyr::if_else(is.na(etiqueta),outcome,etiqueta))
 
@@ -2817,7 +2817,7 @@ forest.plot.v3<-function(dadesmodel=dt_estimacions,label="Categoria",mean="estim
     geom_hline(yintercept=intercept, lty=1) +  # add a dotted line at x=1 after flip
     coord_flip() +  # flip coordinates (puts labels on y axis)
     xlab("Outcome") + ylab(label_X) +
-    scale_x_continuous(breaks=taula_betas %>% dplyr:: pull(id),labels=taula_betas %>% dplyr:: pull(etiqueta3))
+    ggplot2::scale_x_continuous(breaks=taula_betas %>% dplyr:: pull(id),labels=taula_betas %>% dplyr:: pull(etiqueta3))
 
   fp<-fp + theme_minimal() + ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 0,vjust=0,size=10))
 
@@ -2862,7 +2862,7 @@ forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Lin
 
   # Afegir fila com un punt nivell per outcome i genero label de group
   taula_betas<-taula_betas %>% split(.$nivell) %>%
-    purrr::map_dfr(~add_row(.x,.before = 0),.id = "outcome" ) %>%
+    purrr::map_dfr(~dplyr::add_row(.x,.before = 0),.id = "outcome" ) %>%
     dplyr::mutate (etiqueta2=dplyr::if_else(is.na(etiqueta),outcome,"")) %>%
     dplyr::mutate (etiqueta=dplyr::if_else(is.na(etiqueta),outcome,etiqueta))
 
@@ -2897,13 +2897,13 @@ forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Lin
     geom_pointrange(size=0.2) +
     geom_hline(yintercept=intercept, lty=1,colour="grey") +  # add a dotted line at x=1 after flip
     coord_flip() +  # flip coordinates (puts labels on y axis)
-    scale_x_continuous(breaks=taula_betas %>% dplyr:: pull(id),labels=labels_scaleX)  +
+    ggplot2::scale_x_continuous(breaks=taula_betas %>% dplyr:: pull(id),labels=labels_scaleX)  +
     ylim(xmin,xmax)
 
   fp<-fp + theme_minimal(base_size = 12) + ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 0,vjust=0,size=11)) +
     ggplot2::labs(title = title, x=label_Xvertical,y=label_X, col="Method \n") +
     ggplot2::theme(legend.position="top") +
-    annotate("text", x=ymaxim+1,y=1,label=label_Favors, colour = "black",size=2.5)
+    ggplot::annotate("text", x=ymaxim+1,y=1,label=label_Favors, colour = "black",size=2.5)
 
   # caption = "SGLT-2: sodium-glucose co-transporter-2 inhibitors | oGLD-2 \n created by Jordi Real & Rai Puig ")
 
@@ -2967,15 +2967,15 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
   # Afegir nivell amb etiqueta si cal
   if (nivell!="") {
     dt_temp<- dt_temp %>%
-      dplyr::left_join(dt_temp %>% dplyr::distinct(nivell) %>% dplyr::mutate(id_nivell=1:n()),.id="nivell",by = "nivell") %>%
+      dplyr::left_join(dt_temp %>% dplyr::distinct(nivell) %>% dplyr::mutate(id_nivell=1:dplyr::n()),.id="nivell",by = "nivell") %>%
       dplyr::mutate(label=paste0("           ",label)) %>%
       split(.$nivell) %>%
-      purrr::map_dfr(~add_row(.x,.before = 0),.id = "nivell" ) %>%
+      purrr::map_dfr(~dplyr::add_row(.x,.before = 0),.id = "nivell" ) %>%
       dplyr::mutate(label=dplyr::if_else(is.na(label),nivell,label)) %>%
       dplyr::group_by(nivell) %>%
       dplyr::mutate(id_nivell=max(id_nivell,na.rm = T)) %>% dplyr::ungroup() %>%
       dplyr::arrange(id_nivell) %>%
-      dplyr::mutate(id=n():1)
+      dplyr::mutate(id=dplyr::n():1)
     # reemplenar categoria missing de factor (si existeix)
     dt_temp<-dt_temp %>% dplyr::group_by(id_nivell) %>% dplyr::mutate(factor=dplyr::if_else(is.na(factor),max(factor,na.rm = T),factor))
   }
@@ -2989,7 +2989,7 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
     ggplot2::geom_hline(yintercept=intercept, lty=2) +  # add a dotted line at x=1 after flip
     ggplot2::coord_flip() +  # flip coordinates (puts labels on y axis)
     ggplot2::xlab("") + ggplot2::ylab(label_X) +
-    scale_x_continuous(breaks=dt_temp %>%  dplyr::pull(id),labels=dt_temp %>% dplyr:: pull(label)) +
+    ggplot2::scale_x_continuous(breaks=dt_temp %>%  dplyr::pull(id),labels=dt_temp %>% dplyr:: pull(label)) +
     # ylim(-0.5,10) +
     theme_minimal()
 
@@ -3000,7 +3000,7 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
   # tituls + labs
   pplot +
     ggplot2::labs(title = title, subtitle = subtitle,caption = caption) +
-    annotate("text", x=-0.8,y=1,label=label_Favors, colour = "black",size=4)
+    ggplot::annotate("text", x=-0.8,y=1,label=label_Favors, colour = "black",size=4)
 
 
 }
@@ -3105,7 +3105,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   set.seed(123)
 
   # Formula matching
-  formulaPS<-formula.text("matching",y="grup_dic",taulavariables=conductor) %>% as.formula()
+  formulaPS<-formula.text("matching",y="grup_dic",taulavariables=conductor) %>% stats::as.formula()
 
   # Genero index de grup
   dt_temp<-dt %>% dplyr::select(!!grups) %>% dplyr::distinct() %>%dplyr:: mutate(id_grup=row_number())
@@ -3185,7 +3185,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
 ##  Retorna Subset matxejat per grup (event) en data index (dtindex.random, control) DE dt_pacients_dindex
 ##  Llista de variables variables.ps
 
-matching_case_control<-function(dt="PACIENTS",variables.ps=llistaPS,dt_pacients_dindex=BD_PAC_DINDEX) {
+matching_case_control<-function(dt="PACIENTS",variables.ps="llistaPS",dt_pacients_dindex=BD_PAC_DINDEX) {
 
   # dt=PACIENTS
   # variables.ps=c("edat","dtindex","sexe") # covaribles
@@ -3226,7 +3226,7 @@ matching_case_control<-function(dt="PACIENTS",variables.ps=llistaPS,dt_pacients_
   dadesmatching<-dt.total %>% dplyr::select(idp,edat,dtindex,event,sexe)
 
   # Genero llista de covaraibles
-  formulaPS<-as.formula(paste("event", paste(variables.ps, collapse=" + "), sep=" ~ "))
+  formulaPS<-stats::as.formula(paste("event", paste(variables.ps, collapse=" + "), sep=" ~ "))
 
   dt.matched<-formulaPS %>%
     matchit(method="nearest",data=dadesmatching,ratio=4,caliper=0.01,distance = "logit") %>%    # FAig el matching 4 a 1
@@ -3452,19 +3452,19 @@ extreure_Pglobal_SigTest<-function(dt=dades,vars_pre=vars_pre,vars_post=vars_pos
     tidyr::pivot_longer(cols=-1, names_pattern = "(.*)(....)$", names_to = c("var", "temps")) %>%
     dplyr::mutate(temps=dplyr::if_else(temps=="_pre","0","1")) %>%
     tidyr::pivot_wider(id_cols = c(id,temps), names_from = var, values_from = value, names_repair = "check_unique") %>%
-    na.omit()
+    stats::na.omit()
 
   vars<-paste0("var",c(1:length(vars_post)))
 
   dt_fi<-longer %>% dplyr::group_by(id) %>% dplyr::summarise_at(vars,list(dif=~.-dplyr::lag(.))) %>%
-    slice(2) %>% dplyr::ungroup() %>%
+    dplyr::slice(2) %>% dplyr::ungroup() %>%
     tidyr::pivot_longer(cols=-1) %>%
     dplyr::filter (value!=0) # Elimino els empats
 
   x<-sum(as.numeric(dt_fi$value>0))
   n<-length(dt_fi$value)
 
-  test_bin<-binom.test(x,n,p=0.5)
+  test_bin<-stats::binom.test(x,n,p=0.5)
   if (test_bin$p.value<0.001) result="<0.001" else result=test_bin$p.value
 
   return(result)
