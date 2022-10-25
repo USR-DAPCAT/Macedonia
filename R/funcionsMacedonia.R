@@ -4,11 +4,12 @@
 #' @param taulavariables      Conductor
 #' @param camp                Camp
 #' @param camp_descripcio     Camp DESCRIPCIO
-#' @param ...                 Altres funcions
+#' @param ...                 Altres parametres
 #' @return                    Etiquetar model
 #' @export                    etiquetar_model
 #' @importFrom                dplyr "%>%"
-etiquetar_model<-function(model="kkk",taulavariables="variables_R.xls",
+etiquetar_model<-function(model="kkk",
+                          taulavariables="variables_R.xls",
                           camp="camp",
                           camp_descripcio="descripcio",...) {
 
@@ -52,23 +53,42 @@ etiquetar_model<-function(model="kkk",taulavariables="variables_R.xls",
 }
 
 
-# dades<-etiquetar(dades)
-# dades<-etiquetar(dades,"variables_R.xls")
 
-#  FORMULA A PARTIR DE VARIABLES----------------------
-#####       hi envio la columna de variables amb que vull generar la formula pel compare
-formula=function(x="taula1",y="grup",eliminar=c("idp",y)) {
+#' @title                     FORMULA A PARTIR DE VARIABLES
+#' @description               FORMULA A PARTIR DE VARIABLES
+#' @param x                   x
+#' @param y                   y
+#' @param eliminar            eliminar
+#' @return                    FORMULA
+#' @export                    formula
+#' @importFrom                dplyr "%>%"
+formula=function(x="taula1",
+                 y="grup",
+                 eliminar=c("idp","y")) {
   pepito<-paste("as.vector(variables[variables$",x,"==1,]$camp)[!as.vector(variables[variables$",x,"==1,]$camp)%in%eliminar]",sep="")
   llistataula<-eval(parse(text=pepito))
   y<-stats::as.formula(paste(y, paste(llistataula, collapse=" + "), sep=" ~ "))
 }
 
-#  FORMULA MILLORADA --------------------------
-#
-# Te en compte l'Ordre que està posada en el conductor taulavariables
-#
-#
-formula_compare=function(x="taula1",y="grup",elimina=c("IDP"),taulavariables="variables_R.xls", dt="No",...) {
+
+
+
+#' @title                     FORMULA A PARTIR DE VARIABLES
+#' @description               FORMULA A PARTIR DE VARIABLES:compte l'Ordre que està posada en el conductor taulavariables
+#' @param x                   x
+#' @param y                   y
+#' @param elimina             elimina
+#' @param taulavariables      taulavariables
+#' @param dt                  dt
+#' @return                    FORMULA
+#' @export                    formula_compare
+#' @importFrom                dplyr "%>%"
+#' @param ...                 Altres parametres
+formula_compare<-function(x="taula1",
+                          y="grup",
+                          elimina=c("IDP"),
+                          taulavariables="variables_R.xls",
+                          dt="No",...) {
 
   # x="table5"
   # y="grup"
@@ -105,8 +125,37 @@ formula_compare=function(x="taula1",y="grup",elimina=c("IDP"),taulavariables="va
 
 }
 
-#  Llistat de taules a partir de Llista de factors de Y's i em retorna una llista de taules -----
-llista.compare.Ys<-function(dt=dades,llista.y=c("CODGLP1","CKDEPI_cat2"),llista.x=c("canvi612.pes.perc","canvi612M.pes"),show.ratio=F,byrow=T,show.n=T,show.all=T,show.descr=T,digits=NA,digits.ratio=NA,hide.no = c('NA','No'),ref.no=NA){
+
+
+#' @title                     Llistat de taules a partir de Llista de factors de Y's
+#' @description               Llistat de taules a partir de Llista de factors de Y's i em retorna una llista de taules
+#' @param dt                  dt
+#' @param llista.y            llista.y
+#' @param llista.x            llista.x
+#' @param show.ratio          show.ratio
+#' @param byrow               byrow
+#' @param show.n              show.n
+#' @param show.all            show.all
+#' @param show.descr          show.descr
+#' @param digits              digits
+#' @param digits.ratio        digits.ratio
+#' @param hide.no             hide.no
+#' @param ref.no              ref.no
+#' @return                    llista
+#' @export                    llista.compare.Ys
+#' @importFrom                dplyr "%>%"
+llista.compare.Ys<-function(dt="dades",
+                            llista.y=c("CODGLP1","CKDEPI_cat2"),
+                            llista.x=c("canvi612.pes.perc","canvi612M.pes"),
+                            show.ratio=F,
+                            byrow=T,
+                            show.n=T,
+                            show.all=T,
+                            show.descr=T,
+                            digits=NA,
+                            digits.ratio=NA,
+                            hide.no = c('NA','No'),
+                            ref.no=NA){
 
   # dt=dt.matched
   # llista.y = c("event")
@@ -123,8 +172,8 @@ llista.compare.Ys<-function(dt=dades,llista.y=c("CODGLP1","CKDEPI_cat2"),llista.
     # i<-1
 
     restab.llista[[i]]<-stats::as.formula(paste(llista.y[[i]], paste(llista.x, collapse=" + "), sep=" ~ ")) %>%
-      compareGroups(data=dt,include.miss = F,include.label=T,byrow = byrow,ref.no=ref.no) %>%
-      createTable(show.ratio = show.ratio , hide.no = hide.no, show.p.overall=T,show.n=show.n,show.all=show.all,show.descr=show.descr,digits=digits,digits.ratio=digits.ratio)
+      compareGroups::compareGroups(data=dt,include.miss = F,include.label=T,byrow = byrow,ref.no=ref.no) %>%
+      compareGroups::createTable(show.ratio = show.ratio , hide.no = hide.no, show.p.overall=T,show.n=show.n,show.all=show.all,show.descr=show.descr,digits=digits,digits.ratio=digits.ratio)
 
   }
 
@@ -133,8 +182,15 @@ llista.compare.Ys<-function(dt=dades,llista.y=c("CODGLP1","CKDEPI_cat2"),llista.
 }
 
 
-# Retorna objecte Surv en dt a partir de dades (dt), event("20150531" / NA), dtindex(Date), dtsortida(20171231),
+
+
+
+
+
 generar_Surv<-function(dt,event,dtindex="dtindex",dtsortida="sortida"){
+
+  # Retorna objecte Surv en dt a partir de dades (dt), event("20150531" / NA), dtindex(Date), dtsortida(20171231),
+
 
   # dt=dades_dt
   # event="DG.MCV"
@@ -168,7 +224,7 @@ generar_Surv<-function(dt,event,dtindex="dtindex",dtsortida="sortida"){
   temp<- temp %>% dplyr::mutate(temps=(data_final-dtindex) %>% as.numeric())
 
   # Genero l'objecte Surv
-  temp$event_surv<-Surv(temp$temps,temp$event)
+  temp$event_surv<-survival::Surv(temp$temps,temp$event)
 
   # Selecciono i renombro
   nom_surv=paste0(event,".surv")
@@ -199,13 +255,17 @@ generar_Surv_to_column<-function(dt="dadestotal", event="EV.AVC_DIC",temps="EV.A
 }
 
 
-#  formula COX ajustat per event="Yes" -------------
-#
-###       incorpora efecte cluster
 
-###       incorpora variables a evaluar a=Llista de variables a avaluar     ###
 
 formulaCOX=function(x="",event="event",temps="temps",elimina="",cluster="",a="",taulavariables="variables.xls",codievent='1') {
+
+  #  formula COX ajustat per event="Yes" -------------
+  #
+  ###       incorpora efecte cluster
+
+  ###       incorpora variables a evaluar a=Llista de variables a avaluar     ###
+
+
   # taulavariables<-conductor_variables
   # x=""
   # a="grup"
@@ -239,9 +299,11 @@ formulaCOX=function(x="",event="event",temps="temps",elimina="",cluster="",a="",
 
 }
 
-#  Retorna Ngran, Events, coef, HR, IC95, IC95, se.coef, p ---------
 
 HRadj=function(x="v.ajust",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",c="",d="dadesDF",taulavariables="variables.xls",codievent='1') {
+
+
+  #  Retorna Ngran, Events, coef, HR, IC95, IC95, se.coef, p ---------
 
   # x="v.ajust"
   # event="exitusCV"
@@ -284,11 +346,14 @@ HRadj=function(x="v.ajust",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",c="",d=
   result
 }
 
-#  HRestratificats  ----------------------
-###   FUNCIiÓ QUE LLANÇO event, temps adjusted i em retorna un data frame amb tot global+ estratificat  ###
-###     ENVIO exitus, temps i dades i em retorna data frame amb estratificats
-####    camp estratificat conte variables estratificades tipo="v.ajust" / "crude"
+
 HRestratificats<-function(event="exitus",t="temps",tipo="v.ajust",c="",taulavariables='variables.xls') {
+
+
+  #  HRestratificats  ----------------------
+  ###   FUNCIiÓ QUE LLANÇO event, temps adjusted i em retorna un data frame amb tot global+ estratificat  ###
+  ###     ENVIO exitus, temps i dades i em retorna data frame amb estratificats
+  ####    camp estratificat conte variables estratificades tipo="v.ajust" / "crude"
 
   HRestratificats=data.frame()
   outDf<-data.frame(Subgroup="Total",HRadj(x=tipo,event=event,t=t,d=dades,c=c))
@@ -318,12 +383,14 @@ HRestratificats<-function(event="exitus",t="temps",tipo="v.ajust",c="",taulavari
 }
 
 
-#  Formula.LOGIT segons LLISTA DE VARIABLES  D'AJUST     #######################
-#      hi envio la columna de variables amb que vull generar la formula pel compare
 
-#####     x= variables d'ajust / y = resposta / eliminar /  a = Avaluar
 
 formula.LOGIT=function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavariables='variables.xls') {
+
+  #  Formula.LOGIT segons LLISTA DE VARIABLES  D'AJUST     #######################
+  #      hi envio la columna de variables amb que vull generar la formula pel compare
+
+  #####     x= variables d'ajust / y = resposta / eliminar /  a = Avaluar
 
   # x="regicor_alone"
   # y="event"
@@ -352,10 +419,14 @@ formula.LOGIT=function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavari
 }
 
 
-#  OR.ajustats(x,ajust,y)         ###########
-#
 
 OR.ajustats=function(x="lipos",ajust="V.ajust",y="prediabetis",d="dadestotal",taulavariables='variables.xls') {
+
+
+  #  OR.ajustats(x,ajust,y)         ###########
+  #
+
+
   #
   # d=dades
   # taulavariables = "VARIABLES.xls"
@@ -417,19 +488,24 @@ OR.ajustats=function(x="lipos",ajust="V.ajust",y="prediabetis",d="dadestotal",ta
 }
 
 
-#  Variables.ajust   -----------------
-#####       hi envio la columna de variables amb que vull generar la formula pel compare
-#             FUNCIO variables.ajust
-variables.ajust=function(x="taula1",variables=variables) {
+
+variables.ajust<-function(x="taula1",variables=variables) {
+
+  #  Variables.ajust   -----------------
+  #####       hi envio la columna de variables amb que vull generar la formula pel compare
+  #             FUNCIO variables.ajust
+
   pepito<-paste("as.vector(variables[variables$",x,"==1,]$camp)[!as.vector(variables[variables$",x,"==1,]$camp)%in%c('idp','grup')]",sep="")
   llistataula<-eval(parse(text=pepito))
   z<-paste(llistataula, collapse=" + ")
 }
 
 
-#  GLM  COEFICIENTS      ###########################################################
-#################   EXTREU COEFICIENTS glm, IC95 , p valors  GLM a partir de llista d'outcomes, X, i llista de v.ajust
+
 extreure_coef_glm<-function(dt="dades",outcomes="OFT_WORST",x="DM",z="",taulavariables="variables_R.xls"){
+
+  #  GLM  COEFICIENTS      ###########################################################
+  #################   EXTREU COEFICIENTS glm, IC95 , p valors  GLM a partir de llista d'outcomes, X, i llista de v.ajust
 
   # dt=dades
   # outcomes="lipos"
@@ -486,8 +562,10 @@ extreure_coef_glm<-function(dt="dades",outcomes="OFT_WORST",x="DM",z="",taulavar
 
 }
 
-#  EXTREU COEFICIENTS glm, IC95 , p valors  GLM a outcome, X, i llista de v.ajust
+
 extreure_coef_glm_v2<-function(dt="dades",outcome="OFT_WORST",x="DM",v.ajust="",level_conf=0.95){
+
+  #  EXTREU COEFICIENTS glm, IC95 , p valors  GLM a outcome, X, i llista de v.ajust
 
   # dt=dades_long %>% filter(.imp==0),outcome=outcome,x=grups,v.ajust=""
   # dt=dades_long %>% filter(.imp==0)
@@ -579,9 +657,12 @@ extreure_coef_glm_v2<-function(dt="dades",outcome="OFT_WORST",x="DM",v.ajust="",
   resumtotal %>% head(Ncat.x+1)
 }
 
-#  GLM (Logistic o Lineal) dades imputades --------------------
-## Retorn de coeficients glm() amb dades imputades d'una variable independent X ~ Y
+
 extreure_coef_glm_mi<-function(dt="tempData",outcome="valor612M.GLICADA",x="SEXE",v.ajust="",level_conf=0.95) {
+
+
+  #  GLM (Logistic o Lineal) dades imputades --------------------
+  ## Retorn de coeficients glm() amb dades imputades d'una variable independent X ~ Y
 
   # dt=mice::as.mids(dades_long)
   # outcome=outcome
@@ -674,9 +755,12 @@ extreure_coef_glm_mi<-function(dt="tempData",outcome="valor612M.GLICADA",x="SEXE
 }
 
 
-#  Coeficients GLM(lineal/logistica) MICE estratificats  ---------------------
-# Arguments: Objecte MICE i data_list imputats, vector de X , Y , logit=T/F
+
 extreure_coef_mice_estrats<-function(tempData,data_list,X=c("bmi","hyp"),Y="chl",grups="age",logit=F) {
+
+
+  #  Coeficients GLM(lineal/logistica) MICE estratificats  ---------------------
+  # Arguments: Objecte MICE i data_list imputats, vector de X , Y , logit=T/F
 
   # tempData
   # data_list
@@ -716,9 +800,11 @@ extreure_coef_mice_estrats<-function(tempData,data_list,X=c("bmi","hyp"),Y="chl"
   models_dt
 }
 
-# extreure.dif.proporcions() : Diferencia de % respecte una categoria ref + interval de confiança
-# Extreu : Diferencia de % respecte una categoria ref + interval de confiança
+
 extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups="Sex") {
+
+  # extreure.dif.proporcions() : Diferencia de % respecte una categoria ref + interval de confiança
+  # Extreu : Diferencia de % respecte una categoria ref + interval de confiança
 
   # dades=dades
   # outcome="Prediabetes"
@@ -805,9 +891,11 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
 }
 
 
-# Funció que retorna summari (Beta/OR , IC95%, mean) amb dades imputades i completes crudes i ajustades d'un outcome en relació a un grup
-# Objecte dades_long es fitxer de dades amb dades completes (.imp==0) + imputades (.imp>0)
 extreure_resum_outcomes_imputation<-function(dades_long=dades,outcome="HBA1C.dif324m",grups="grup",v.ajust=c("sexe","edat"),level_conf=0.95) {
+
+  # Funció que retorna summari (Beta/OR , IC95%, mean) amb dades imputades i completes crudes i ajustades d'un outcome en relació a un grup
+  # Objecte dades_long es fitxer de dades amb dades completes (.imp==0) + imputades (.imp>0)
+
 
   # dades_long=dades_temp
   # outcome="HBA1C.dif324m.cat"
@@ -871,8 +959,10 @@ extreure_resum_outcomes_imputation<-function(dades_long=dades,outcome="HBA1C.dif
 }
 
 
-#  K-M   plot #####
-plotKM=function(y=exitus.surv,grup=grup,d=dades,caption="",llegenda=c("No","Yes")) {
+
+plotKM=function(y="exitus.surv",grup="grup",d="dades",caption="",llegenda=c("No","Yes")) {
+
+  #  K-M   plot #####
 
   # y=dadesDF$exitus_surv
   # grup=dadesDF$hta
@@ -886,7 +976,7 @@ plotKM=function(y=exitus.surv,grup=grup,d=dades,caption="",llegenda=c("No","Yes"
   # llegenda=c("<45", "[45-55)", "[55-65)", "[65-75)", "[75-85)","85+")
 
   # Basic survival curves
-  p <- survminer::ggsurvplot(survfit(y ~ grup, data = d), data = d,
+  p <- survminer::ggsurvplot(survival::survfit(y ~ grup, data = d), data = d,
                              main = "Survival curve",
                              title= caption,
                              size = 0.5,
@@ -900,8 +990,10 @@ plotKM=function(y=exitus.surv,grup=grup,d=dades,caption="",llegenda=c("No","Yes"
   p
 }
 
-#  K-M   plot #####
-plotKM_Incidence=function(y=exitus.surv,grup=grup,d=dades,caption="",llegenda=c("No","Yes")) {
+
+plotKM_Incidence=function(y="exitus.surv",grup="grup",d="dades",caption="",llegenda=c("No","Yes")) {
+
+  #  K-M   plot #####
 
   # caption=""
   # llegenda=c("No","Yes")
@@ -911,7 +1003,7 @@ plotKM_Incidence=function(y=exitus.surv,grup=grup,d=dades,caption="",llegenda=c(
   # llegenda=c("85+","[75-85)", "[65-75)", "[55-65)", "[45-55)","<45")
 
   # Basic survival curves
-  p <- survminer::ggsurvplot(survfit(y ~ grup, data = d), data = d,
+  p <- survminer::ggsurvplot(survival::survfit(y ~ grup, data = d), data = d,
                              main = "Survival curve",
                              title= caption,
                              size = 0.5,
@@ -926,7 +1018,7 @@ plotKM_Incidence=function(y=exitus.surv,grup=grup,d=dades,caption="",llegenda=c(
                              legend.labs=llegenda,
                              legend="right",
                              fun="event",
-                             ggtheme = theme_bw(),
+                             ggtheme = ggplot2::theme_bw(),
                              palette = c("black","black","black","black","black","black"))
   p
 }
@@ -934,9 +1026,10 @@ plotKM_Incidence=function(y=exitus.surv,grup=grup,d=dades,caption="",llegenda=c(
 
 
 
-#  Box-plot -----------------
+
 boxplot_variables_grup<-function(dt=dades,variables="OFT_WORST",grup="DM", taulavariables="variables_R.xls") {
 
+  #  Box-plot -----------------
   # dt=dades
   # variables="OFT_WORST"
   # grup="DM"
@@ -958,29 +1051,38 @@ boxplot_variables_grup<-function(dt=dades,variables="OFT_WORST",grup="DM", taula
   figura1
 
 
+  ###   FAi ggplot
+  #figura1<-popes %>% ggplot2::ggplot(aes_string(x=variables, y="valor",fill=grup))+geom_boxplot()
+  #figura1
+
 }
 
-#  Figura Spline Y~x per grups  --------------------
-#  Spline Y ~ x (continua) estratificat per grups)
-#  Requereix Y, X, grup y dades
 
 ggplot_grups<-function(Y="DIS_estatina",dt=dades,X="edat",grup="sexe") {
 
+  #  Figura Spline Y~x per grups  --------------------
+  #  Spline Y ~ x (continua) estratificat per grups)
+  #  Requereix Y, X, grup y dades
+
+
+
   figuragamX<-ggplot2::ggplot(dt, ggplot2::aes_string(x=X, y=Y,group=grup,shape=grup, color=grup))+
-    geom_smooth(method = stats::lm, formula = y ~ splines::bs(x, 3), se = T)+
-    xlab(Hmisc::label(dades[X]))+
-    ylab(Hmisc::label(dades[Y]))+
-    theme_bw()+
+    ggplot2::geom_smooth(method = stats::lm, formula = y ~ splines::bs(x, 3), se = T)+
+    ggplot2::xlab(Hmisc::label(dades[X]))+
+    ggplot2::ylab(Hmisc::label(dades[Y]))+
+    ggplot2::theme_bw()+
     ggplot2::labs(colour =grup)+
     ggplot2::theme(legend.position="none")
   figuragamX
 }
 
 
-# Retorna un mapa temporal (datainicial-datafinal per grups) Individus a partir de:
-# dades, datainicial, data final, id, grup color, grup linea, finestra (porca1,porca2)
 
 MAP_ggplot<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp",grup_color=NA,grup_linea=NA,lim_inf=-Inf,lim_sup=Inf,add_point=NA) {
+
+  # Retorna un mapa temporal (datainicial-datafinal per grups) Individus a partir de:
+  # dades, datainicial, data final, id, grup color, grup linea, finestra (porca1,porca2)
+
 
   # dades=mostra_dt
   # datainicial="datainicial"
@@ -1043,9 +1145,11 @@ MAP_ggplot<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp
 
 }
 
-# Retorna llista amb dos data_frames de farmacs i dos plots pre i post
+
 
 Gaps<-function(dt=dades,K=14,Nmostra=10,finestraX=c(NA,NA),llavor=123){
+
+  # Retorna llista amb dos data_frames de farmacs i dos plots pre i post
 
   # dt=temp_dades
   # K=14
@@ -1131,13 +1235,16 @@ Gaps<-function(dt=dades,K=14,Nmostra=10,finestraX=c(NA,NA),llavor=123){
 
 
 }
-#
-
-# Historic de farmacs: idp, datinici,datafi, gap
-# Elimina solapaments i discontinuitats petites i retorna dades sense discontinuitats ni solapaments amb igual o menys registres
-# Retorna dades amb : id, datainici i datafi amb menys registres, havent eliminat solapaments i gaps (discontinuitat petita)
 
 agregar_solapaments_gaps<-function(dt=dades,id="idp",datainici="data",datafinal="datafi",gap=5,sel=F){
+
+  #
+
+  # Historic de farmacs: idp, datinici,datafi, gap
+  # Elimina solapaments i discontinuitats petites i retorna dades sense discontinuitats ni solapaments amb igual o menys registres
+  # Retorna dades amb : id, datainici i datafi amb menys registres, havent eliminat solapaments i gaps (discontinuitat petita)
+
+
 
   # dt=FX.FACTURATS_PRESCRITS_GRUPS
   # gap=60
@@ -1186,8 +1293,10 @@ agregar_solapaments_gaps<-function(dt=dades,id="idp",datainici="data",datafinal=
 
 }
 
-# Dibuixa mapa temporal univariant per verificar solapaments
+
 MAP_ggplot_univariant<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp", Nmostra=10,add_point=NA,add_final=NA,set_seed=123) {
+
+  # Dibuixa mapa temporal univariant per verificar solapaments
 
   # dades=dades %>% dplyr::filter(situacio=="T" | situacio=="D")
   # datainicial="dtindex"
@@ -1235,8 +1344,7 @@ MAP_ggplot_univariant<-function(dades=dt,datainicial="data",datafinal="datafi",i
 
 
 
-#  Analitiques (Y=Individu, X=data, Tamany=Valor, Color=tipus analitica) -----------------
-#
+
 MAP_punts_ggplot<-function(
   dt="mostra50",
   id="idp",
@@ -1249,6 +1357,9 @@ MAP_punts_ggplot<-function(
   id_AGG=F
 )
 {
+
+  #  Analitiques (Y=Individu, X=data, Tamany=Valor, Color=tipus analitica) -----------------
+  #
 
   # dt=VARIABLES
   # id="idp"
@@ -1315,7 +1426,7 @@ MAP_punts_ggplot<-function(
 }
 
 
-#  Analitiques (Y=Individu, X=data, Tamany=Valor, Color=tipus analitica) -----------------
+
 MAP_valor_ggplot<-function(
   dt="mostra50",
   id="idp",
@@ -1328,6 +1439,8 @@ MAP_valor_ggplot<-function(
   title="Evolució de valors"
 )
 {
+
+  #  Analitiques (Y=Individu, X=data, Tamany=Valor, Color=tipus analitica) -----------------
 
   # dt=VARIABLES %>% dplyr::filter(cod %in% c("HBA1C"))
   # datainicial ="dat"
@@ -1389,9 +1502,12 @@ MAP_valor_ggplot<-function(
 
 
 
-#  HR.COX  --------------------
-####      funció que retorna MATRIU-->Ngran, Events, HR, IC951, IC952, p
-HR.COX=function(x="",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",d="dadesDF",taulavariables="variables.xls",c="",...) {
+
+#' @param ...                 Altres parametres
+HR.COX<-function(x="",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",d="dadesDF",taulavariables="variables.xls",c="",...) {
+
+  #  HR.COX  --------------------
+  ####      funció que retorna MATRIU-->Ngran, Events, HR, IC951, IC952, p
 
   # x=""
   # event = "event_tbc"
@@ -1432,9 +1548,11 @@ HR.COX=function(x="",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",d="dadesDF",t
 }
 
 
-#  HR CRUS ------------------
+
 
 HR.COX.CRU=function(x="lipos",event="EVENT_MCV",t="temps_exitus",e="",d="dadesDF",variables="variables_R.xls",evento="Si") {
+
+  #  HR CRUS ------------------
 
   # x="Baseline"
   # event="RD"
@@ -1475,11 +1593,7 @@ HR.COX.CRU=function(x="lipos",event="EVENT_MCV",t="temps_exitus",e="",d="dadesDF
 }
 
 
-# HR RISCOS COMPETITIUS  -------------
-# Funció Riscos competitius Fine & Grey
-# Donat un event, temps de seguiment, grup, eventcompetitiu retorna tibble:
-# Beta, SE, p-value, HR, Li95%CI, Ls95%CI
-# Afegit cluster
+
 extreure_HRFG=function(event="exitusCV",
                        temps="temps_seguiment",
                        grup="diabetis",
@@ -1489,6 +1603,12 @@ extreure_HRFG=function(event="exitusCV",
                        codievent="Si",
                        refcat=NA,
                        cluster=""){
+
+  # HR RISCOS COMPETITIUS  -------------
+  # Funció Riscos competitius Fine & Grey
+  # Donat un event, temps de seguiment, grup, eventcompetitiu retorna tibble:
+  # Beta, SE, p-value, HR, Li95%CI, Ls95%CI
+  # Afegit cluster
 
   # dt=dades
   # event="event_tbc"
@@ -1592,9 +1712,11 @@ extreure_model_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure_
   model
 }
 
-## Extreure cuminc competitive risk
+
 
 extreure_cuminc_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure_amputa",competitiu="Ha_muerto",codievent="Yes",group=NULL,strata=NULL) {
+
+  ## Extreure cuminc competitive risk
 
   # dt=dades
   # event="amputacio_cat"
@@ -1628,9 +1750,11 @@ extreure_cuminc_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure
 
 }
 
-# D'un model cmprisk extrec coeficients
 
 extreure_coef_cmprisk<-function(model_cmrisk){
+
+
+  # D'un model cmprisk extrec coeficients
 
   summary(model_cmrisk)$coef %>%
     as.data.frame() %>%
@@ -1641,8 +1765,11 @@ extreure_coef_cmprisk<-function(model_cmrisk){
               `p-value`) %>% dplyr::as_tibble()
 }
 
-# CORRELACIONS, P VALORS ENTRE var1 i llista de quantis de dades  --------------
-extreure_cor=function(var1="CD36",var="quantis",d="dades",taulavariables="VARIABLES.xls",...) {
+
+#' @param ...                 Altres parametres
+extreure_cor<-function(var1="CD36",var="quantis",d="dades",taulavariables="VARIABLES.xls",...) {
+
+  # CORRELACIONS, P VALORS ENTRE var1 i llista de quantis de dades  --------------
 
   # var1="HbA1c"
   # var="lipos2"
@@ -1682,12 +1809,15 @@ extreure_cor=function(var1="CD36",var="quantis",d="dades",taulavariables="VARIAB
 }
 
 
-# Correlacions , matriu i plot de quantis de dades  ----------------------
 
-# Retorna matriu de correlacions, i plot bivariant (Correlograma) de ggcorrplot
-# Requereix dades, llista1, llista2
-
+#' @param ...                 Altres parametres
 extreure_cor_multi<-function(dades=dt,llistavar1=c("Age","BMI"),llistavar2=c("Large_PER_HDL","Medium_HDL_P_molL"),etiquetar=F,coductor_variables="conductor_variables",method = "circle",...){
+
+  # Correlacions , matriu i plot de quantis de dades  ----------------------
+
+  # Retorna matriu de correlacions, i plot bivariant (Correlograma) de ggcorrplot
+  # Requereix dades, llista1, llista2
+
 
   # dt=dt
   # llistavar1=vars1
@@ -1733,10 +1863,12 @@ extreure_cor_multi<-function(dades=dt,llistavar1=c("Age","BMI"),llistavar2=c("La
 
 
 
-#  Extreure OR (segons formula, i dades)  --------------------
-#       LLANÇO UNA FORMULA les dades per executar un model i retorno OR , CI95% i p-valor en una tibble()
+
 
 extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades="dt",conditional=F,strata="caseid") {
+
+  #  Extreure OR (segons formula, i dades)  --------------------
+  #       LLANÇO UNA FORMULA les dades per executar un model i retorno OR , CI95% i p-valor en una tibble()
 
   # formu<-formula.LOGIT(x="article.model",y="canvi312M.GLICADA.inputCAT2",taulavariables='variables_v2.xls')
   # dades=tempData
@@ -1797,8 +1929,10 @@ extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades="dt",conditional=F,str
 }
 
 
-# Taula variables segons formula i dades genera la taula de coeficients
+
 generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",dades=dt) {
+
+  # Taula variables segons formula i dades genera la taula de coeficients
 
   # formu=formu
   # dt=dades
@@ -1808,15 +1942,16 @@ generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",dades=dt) 
     purrr::map(~paste0(.x,levels(dades[[.x]]),"/",.x)) %>%
     unlist() %>%
     dplyr::tibble() %>% dplyr::rename("var"=".") %>%
-    separate(col=var, into=c("Categoria","Variable"), sep = "/") %>%
+    tidyr::separate(col=var, into=c("Categoria","Variable"), sep = "/") %>%
     dplyr::mutate(nivell=stringr::str_remove(Categoria,Variable),
            tipo=dplyr::if_else(nivell=="","Continua","Cat"))
 }
 
 
-# Retorno model amb ORs, curva ROC , auc IC95% etc... a partir de formula glm , i dades
+
 extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariables="conductorvariables",dades=dades,elimina=c("IDP"),a="", valor_outcome="Yes",conditional=F,strata="caseid") {
 
+  # Retorno model amb ORs, curva ROC , auc IC95% etc... a partir de formula glm , i dades
 
   # x="regicor_alone_continu"
   # y="event"
@@ -1849,7 +1984,8 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
 
   # Ojo que variables no factoritzades --> error
   formu=formula.LOGIT(x=x,y=y,taulavariables=taulavariables,eliminar = var_eliminar)
-  formu_text<-formula.text(x=x,y=y,taulavariables=taulavariables,eliminar = var_eliminar)
+  #formu_text<-formula.text(x=x,y=y,taulavariables=taulavariables,eliminar = var_eliminar)
+  formu_text<-formula_text(x=x,y=y,taulavariables=taulavariables,eliminar = var_eliminar)
 
   # Subselecciono dades completes amb només variables utilitzades i elimino nivells sense utilitzar (Sinó peta en ROC curve)
   if (conditional) {dades<-dades %>% dplyr::select(c(all.vars(formu),strata)) %>% stats::na.omit()}
@@ -1861,7 +1997,8 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
   fit<-stats::glm(formu, family = stats::binomial, data=dades)
 
   # Customitzo el valor del outcome
-  formu_text<-formula.text(x=x,y=paste0(y,"=='",valor_outcome,"'"),taulavariables=taulavariables,eliminar = var_eliminar)
+  #formu_text<-formula.text(x=x,y=paste0(y,"=='",valor_outcome,"'"),taulavariables=taulavariables,eliminar = var_eliminar)
+  formu_text<-formula_text(x=x,y=paste0(y,"=='",valor_outcome,"'"),taulavariables=taulavariables,eliminar = var_eliminar)
 
   if (conditional==F) {
     taula_OR<-extreure_OR(formu=formu,dades=dades,conditional=conditional,strata=strata)
@@ -1912,7 +2049,7 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
 
   plot_curve<- plot_curve +
     # ggplot::annotate("text", x = .75, y = .25, label = paste("AUC =", round(plotROC::calc_auc(plot_curve)["AUC"], 2))) +
-    ggplot::annotate("text", x = .75, y = .25, label = paste("95 CI%:",round(auc_ci[1],2),"-",round(auc_ci[3],2)))
+    ggplot2::annotate("text", x = .75, y = .25, label = paste("95 CI%:",round(auc_ci[1],2),"-",round(auc_ci[3],2)))
 
   HL_test<-ResourceSelection::hoslem.test(dades_prediccio$event, dades_prediccio$prediccio, g = 10)
 
@@ -1924,15 +2061,18 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
 
 
 
-#  Resum d'un data.table (Mitjana, DT, N etc...)  --------------------
-
-######         RESUM D'UN DATA.TABLE
-
-###   LLANÇO UN DT, VARIABLE I UNA ESTRATIFICACIó I EM TORNA UN DT AMB un resum
-
-### mitjana, DT, N etc... per cada ESTRAT
 
 resum3<-function(dt=dades,x="val_last.HBA1C",estrat="constant"){
+
+
+  #  Resum d'un data.table (Mitjana, DT, N etc...)  --------------------
+
+  ######         RESUM D'UN DATA.TABLE
+
+  ###   LLANÇO UN DT, VARIABLE I UNA ESTRATIFICACIó I EM TORNA UN DT AMB un resum
+
+  ### mitjana, DT, N etc... per cada ESTRAT
+
 
   dt$constant<-1
 
@@ -1940,7 +2080,7 @@ resum3<-function(dt=dades,x="val_last.HBA1C",estrat="constant"){
 
   resum3<-dt[, .(
     Mean=mean(eval(e),na.rm=T),
-    SD=sd(eval(e),na.rm=T),
+    SD=stats::sd(eval(e),na.rm=T),
     Nmenor7=sum(eval(e)<7,na.rm=T),
     Perc_menor7=(sum(eval(e)<7,na.rm=T)/length(which(eval(e) != "NA")))*100,
     N=length(eval(e))
@@ -1950,10 +2090,12 @@ resum3<-function(dt=dades,x="val_last.HBA1C",estrat="constant"){
   resum3
 }
 
-#  Resum quanti  -------------------------
-#####     funció que retorna un summary (mean, sd) de y en funció d'un grup
+
 
 resum_quanti<-function(dt=dades,y="valor_basal.GLICADA",grup="constant") {
+
+  #  Resum quanti  -------------------------
+  #####     funció que retorna un summary (mean, sd) de y en funció d'un grup
 
   dt$constant=1
 
@@ -1977,10 +2119,12 @@ resum_quanti<-function(dt=dades,y="valor_basal.GLICADA",grup="constant") {
 
 }
 
-#  ESTADISTICS RESUMS x grup x estrat ----------------------
-# RETORNA ESTADISTICS RESUMS (mean, sd, p-valor --> ANOVA/t-test) X GRUP  X ESTRAT
+
 
 resum_quanti_estrat<-function(dt=dades,y="valor_basal.GLICADA",grup="CODGLP1",estrat="HBA1C_cat4"){
+
+  #  ESTADISTICS RESUMS x grup x estrat ----------------------
+  # RETORNA ESTADISTICS RESUMS (mean, sd, p-valor --> ANOVA/t-test) X GRUP  X ESTRAT
 
   # dt=dades
   # y="valor_basal.GLICADA"
@@ -2004,11 +2148,13 @@ resum_quanti_estrat<-function(dt=dades,y="valor_basal.GLICADA",grup="CODGLP1",es
 }
 
 
-#  Resum events  ----------------------
-###################         Llan?o dades, event i temps i me fa un resum
+
 
 
 resum_events<-function(dades="dadestotal",evento="RD",temps="temps",valorevent="Si") {
+
+  #  Resum events  ----------------------
+  ###################         Llan?o dades, event i temps i me fa un resum
 
   # dades="dadesDF"
   # evento="EVENT_MORT2014"
@@ -2029,8 +2175,10 @@ resum_events<-function(dades="dadestotal",evento="RD",temps="temps",valorevent="
 }
 
 
-#  Resum events  ----------------------
+
 resum_events_v2<-function(dades=dades,evento="RD",temps="temps") {
+
+  #  Resum events  ----------------------
 
   # dades=dadestotal
   # evento="RD"
@@ -2051,18 +2199,22 @@ resum_events_v2<-function(dades=dades,evento="RD",temps="temps") {
   resum
 }
 
-# Versió millorada, retorna tibble
+
+
+
 resum_events_v3<-function(dt="dadestotal",evento="RD",temps="temps",valorevent="Si") {
+
+  # Versió millorada, retorna tibble
 
   # evento="EV.CVD"
   # temps="EV.CVD_temps"
   # valorevent=1
   # dt=dades
 
-  dt %>% dplyr::summarise(Patients=n(),
+  dt %>% dplyr::summarise(Patients=dplyr::n(),
                    P_Years=sum(!!dplyr::sym(temps)),
                    Years_free_event_mean=mean(!!dplyr::sym(temps)),
-                   Years_free_event_median=median(!!dplyr::sym(temps)),
+                   Years_free_event_median=stats::median(!!dplyr::sym(temps)),
                    N_events=sum(!!dplyr::sym(evento)==valorevent),
                    Event_rate_1000=((N_events/P_Years)*1000),
                    IA_100=(N_events/Patients)*100
@@ -2070,10 +2222,12 @@ resum_events_v3<-function(dt="dadestotal",evento="RD",temps="temps",valorevent="
 }
 
 
-#  Resum events per grup  ------------------
-##########              Llanço dades, event, temps , grup i retorno un resum d'events per grups
+
 
 resum_events_grup=function(d="dadestotal",evento="RD",temps="TEMPS_RD2",grup="sexe") {
+
+  #  Resum events per grup  ------------------
+  ##########              Llanço dades, event, temps , grup i retorno un resum d'events per grups
 
   # d=dadestotal
   # evento="RD"
@@ -2092,9 +2246,12 @@ resum_events_grup=function(d="dadestotal",evento="RD",temps="TEMPS_RD2",grup="se
 
 }
 
-## Retorna taxa d'incidencia + corresponent IC95
 
+
+#' @param ...                 Altres parametres
 Resum_taxa_incidencia<-function(dt=dades,evento="event_tbc",temps="anys_lliure_tbc",valorevent="1",...) {
+
+  ## Retorna taxa d'incidencia + corresponent IC95
 
   # dt=dades_long
   # evento="event_tbc"
@@ -2130,39 +2287,45 @@ Resum_taxa_incidencia_idp<-function(dt=dades,evento="event_tbc",temps="anys_lliu
 
 
 
-#  Llistat de Taules compare ------------------
-#   LLISTA DE noms de taules i retorna llista de taules comparatives
-
-#    Llanço una LLISTA de noms de taules que estan en el Conductor Variables i em retorna una llista de taules ###
 llistadetaules.compare<-function(tablero=c("taula1","taula2","taula3","taula4","taula5"),y="sexe",variables = "variables.xls",dt=dades){
+
+
+  #  Llistat de Taules compare ------------------
+  #   LLISTA DE noms de taules i retorna llista de taules comparatives
+
+  #    Llanço una LLISTA de noms de taules que estan en el Conductor Variables i em retorna una llista de taules ###
+
   restab.llista<-list()
   for (i in 1:length(tablero)) {
     restab.llista[[i]]<-tablero[i] %>%
       formula_compare(y=y,taulavariables = variables) %>%
-      compareGroups(data=dt,include.miss = F,include.label=T) %>%
-      createTable(show.ratio = F, hide.no = c('NA','No'), show.p.overall=T,show.n=T,show.all=T)
+      compareGroups::compareGroups(data=dt,include.miss = F,include.label=T) %>%
+      compareGroups::createTable(show.ratio = F, hide.no = c('NA','No'), show.p.overall=T,show.n=T,show.all=T)
   }
 
   restab.llista
 
 }
 
-#  P-valors ajustats segons multiple test Comparations desde un objecte Compare groups  ------------------
-
-### Llanço un objecte compare groups i em retorna els p-valors + els ajustats en una taula
-
-# p.adjust.methods
-# c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY",
-#   "fdr", "none")
-##    Ajust BH
-# The "BH" (aka "fdr") and "BY" method of Benjamini, Hochberg, and Yekutieli control the false discovery rate,
-# the expected proportion of false discoveries amongst the rejected hypotheses.
-# The false discovery rate is a less stringent condition than the family-wise error rate, so these methods are more powerful than the others.
 
 Pvalors_ajustats_compare<-function(objecte_compare="T1.1.2",
                                    metodo="BH",
                                    p="p.overall",
                                    Sig="No") {
+
+
+  #  P-valors ajustats segons multiple test Comparations desde un objecte Compare groups  ------------------
+
+  ### Llanço un objecte compare groups i em retorna els p-valors + els ajustats en una taula
+
+  # p.adjust.methods
+  # c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY",
+  #   "fdr", "none")
+  ##    Ajust BH
+  # The "BH" (aka "fdr") and "BY" method of Benjamini, Hochberg, and Yekutieli control the false discovery rate,
+  # the expected proportion of false discoveries amongst the rejected hypotheses.
+  # The false discovery rate is a less stringent condition than the family-wise error rate, so these methods are more powerful than the others.
+
 
   # objecte_compare=T2_Lipos
   # metodo = "bonferroni"
@@ -2200,8 +2363,10 @@ Pvalors_ajustats_compare<-function(objecte_compare="T1.1.2",
 
 }
 
-## Actualitzar p-valors d'un objecte CompareGroups
+
 Pvalors_ajustats_Update_Compare<-function(objecte_compare="res",p="p.overall",method ="BH") {
+
+  ## Actualitzar p-valors d'un objecte CompareGroups
 
   # objecte_compare=res
   # p="p.trend"
@@ -2257,12 +2422,15 @@ Pvalors_ajustats_taula<-function(objecte_taula="OR.ajust", p.valors='p valor', m
 
 }
 
-#  APLICA CRITERIS D'EXCLUSIÓ A dades  -----------------------
 
-# Per defecte exclou registres que tenen missings en variables implicades
-# missings=F --> no elimina per criteri amb valors missings
-
+#' @param ...                 Altres parametres
 criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris="exclusio1",missings=T,...) {
+
+  #  APLICA CRITERIS D'EXCLUSIÓ A dades  -----------------------
+
+  # Per defecte exclou registres que tenen missings en variables implicades
+  # missings=F --> no elimina per criteri amb valors missings
+
 
   # dt=dt_matching
   # taulavariables=conductor
@@ -2315,13 +2483,16 @@ criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris
 
 
 
-####  Funció que retorna una taula les N's aplicant els criteris d'exclusió i la N cada vegada que s'aplica un criteri de manera sequencial
-#### dades, conductor i camp on tenim els criteris, i si es vol un camp amb l'ordre
 
+#' @param ...                 Altres parametres
 criteris_exclusio_taula<-function(dt=dades,
                                   taulavariables=here::here("Conductor_CANA.xlsx"),
                                   criteris="exclusio",
                                   ordre=NA,...) {
+
+  ####  Funció que retorna una taula les N's aplicant els criteris d'exclusió i la N cada vegada que s'aplica un criteri de manera sequencial
+  #### dades, conductor i camp on tenim els criteris, i si es vol un camp amb l'ordre
+
 
   # dt=dades
   # taulavariables=here::here("Conductor_CANA.xlsx")
@@ -2361,9 +2532,11 @@ criteris_exclusio_taula<-function(dt=dades,
 }
 
 
-#  CALCULA LA PROPORCIÓ -- RETORNA N I % fila ----------------
+
 
 calcular_proporcio<-function(dt=dades,factor="canvi612M.glicadaCAT2"){
+
+  #  CALCULA LA PROPORCIÓ -- RETORNA N I % fila ----------------
 
   # dt=dades
   # factor="canvi612M.glicadaCAT2"
@@ -2380,9 +2553,11 @@ calcular_proporcio<-function(dt=dades,factor="canvi612M.glicadaCAT2"){
 }
 
 
-#  CALCULA PROPORCIO PER GRUPS I RETORNA P VALOR    --------------
 
 proporcions_grups<-function(dt=dades,factor="canvi612M.glicadaCAT2",estrat="SEXE"){
+
+  #  CALCULA PROPORCIO PER GRUPS I RETORNA P VALOR    --------------
+
 
   # dt=dades
   # factor="canvi612M.glicadaCAT2"
@@ -2404,9 +2579,11 @@ proporcions_grups<-function(dt=dades,factor="canvi612M.glicadaCAT2",estrat="SEXE
 }
 
 
-#  RETORNA UNA LLISTA DE TAULES DE PROPORCIONS PER GRUPS ESTRATIFICAT PER estratificat ----------
 
 proporcio_grups_estratificat<-function(dt=dades,factor.Y="canvi612M.glicadaCAT2",grup=c("SEXE","CODGLP1","anys_DMcat4"),estratificat="HBA1C_cat4") {
+
+  #  RETORNA UNA LLISTA DE TAULES DE PROPORCIONS PER GRUPS ESTRATIFICAT PER estratificat ----------
+
 
   # dt=dades
   # factor.Y="canvi612M.glicadaCAT2"
@@ -2431,11 +2608,13 @@ proporcio_grups_estratificat<-function(dt=dades,factor.Y="canvi612M.glicadaCAT2"
 
 
 
-#  REDUCCIÓ AJUSTADA DIFERENTS METODES D'AJUST-----------------
-
-##    BASAL , POST I RETORNA LA DIFERENCIA AJUSTA SEGONS EL BASAL I ERROR ESTANDARD
 
 reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
+
+  #  REDUCCIÓ AJUSTADA DIFERENTS METODES D'AJUST-----------------
+
+  ##    BASAL , POST I RETORNA LA DIFERENCIA AJUSTA SEGONS EL BASAL I ERROR ESTANDARD
+
 
   #library(mgcv)
 
@@ -2454,7 +2633,7 @@ reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
     dplyr::mutate(canvi=dt[,v.basal]-dt[,v.final])
   # Genero quintils que no els faré servir de moment
   dt<-dt %>%
-    dplyr::mutate(basal_cat5=cut2(dt[,v.basal], g=5))
+    dplyr::mutate(basal_cat5=Hmisc::cut2(dt[,v.basal], g=5))
 
   ## Elimino missings de taula i selecciono variables
   dt<-dt %>%
@@ -2466,10 +2645,10 @@ reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
 
   ## model cru (descriptiu bàsic,+ mean, se )
   taula<-dt %>% dplyr::summarise(
-    n=n(),
+    n=dplyr::n(),
     mean.basal=mean(pre),
     mean.canvi=mean(dif),
-    se=sd(dif)/sqrt(n())
+    se=stats::sd(dif)/sqrt(dplyr::n())
   )
 
   ### arguments de funcions dels models amb les dades, junt amb la mean.basal
@@ -2477,11 +2656,11 @@ reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
   dif<-dt$dif
 
   # funcions dels models
-  model.lineal.w<-function(y=y,x=x)stats::glm(y~x,weights =x,family = gaussian)
-  model.lineal<-function(y=y,x=x)stats::glm(y~x,family = gaussian)
-  model.nolineal<-function(y=y,x=x)stats::glm(y~x+I(x^2)+I(x^3),family = gaussian)
-  model.gam1<-function(y=y,x=x) gam(y~s(x),family = gaussian)
-  model.gam2<-function(y=y,x=x) gam(y~s(x,bs="cc",k=12),family = gaussian)
+  model.lineal.w<-function(y=y,x=x)stats::glm(y~x,weights =x,family = stats::gaussian)
+  model.lineal<-function(y=y,x=x)stats::glm(y~x,family = stats::gaussian)
+  model.nolineal<-function(y=y,x=x)stats::glm(y~x+I(x^2)+I(x^3),family = stats::gaussian)
+  model.gam1<-function(y=y,x=x) mgcv::gam(y~s(x),family = stats::gaussian)
+  model.gam2<-function(y=y,x=x) mgcv::gam(y~s(x,bs="cc",k=12),family = stats::gaussian)
 
   # Genero els models que els poso en una llista
   llista.models<-list(
@@ -2524,12 +2703,15 @@ reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
 
 }
 
-#  Predicció ajustada amb dades imputades   -----------------
-
-#  Envio un dades generades amb MICE , X Y i retorna les prediccions amb ES     ###
-
 
 glance.prediction = function(x) {
+
+  #  Predicció ajustada amb dades imputades   -----------------
+
+  #  Envio un dades generades amb MICE , X Y i retorna les prediccions amb ES     ###
+
+
+
   data.frame(term = 'prediction',
              estimate = x[['fit']],
              std.error = x[['se.fit']],
@@ -2538,7 +2720,13 @@ glance.prediction = function(x) {
 tidy.prediction = function(x, effects = "fixed", exponentiate = FALSE)
 {glance.prediction(x)}
 
-retorn_prediccio_MI<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",dades_origen=dades) {
+
+
+
+retorn_prediccio_MI<-function(data_imp=tempData,
+                              x="HBpreADD",
+                              y="canvi_ADD",
+                              dades_origen=dades) {
 
   # data_imp=tempData
   # x="1"
@@ -2557,7 +2745,7 @@ retorn_prediccio_MI<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",dades
 
   mods.imp = lapply(1:nimp, function(.nimp){
     # m = stats::lm(canvi_ADD~HBpreADD, data = complete(imp, .nimp))
-    m=with(complete(imp,.nimp),stats::lm(eval(parse(text=texto))))
+    m=with(tidyr::complete(imp,.nimp),stats::lm(eval(parse(text=texto))))
 
     mm = predict(m, newdata=df.pred, se.fit = TRUE)
     structure(
@@ -2567,7 +2755,7 @@ retorn_prediccio_MI<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",dades
 
 
 
-  pp<-summary(mice::pool(as.mira(mods.imp)))
+  pp<-summary(mice::pool(mice::as.mira(mods.imp)))
 
   pp
 
@@ -2609,7 +2797,7 @@ retorn_prediccio_MI_STR<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",d
 
 
 
-  pp<-summary(mice::pool(as.mira(mods.imp)))
+  pp<-summary(mice::pool(mice::as.mira(mods.imp)))
 
   pp
 
@@ -2653,7 +2841,7 @@ retorn_prediccio_MI_STR2<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",
 
 
 
-  pp<-summary(mice::pool(as.mira(mods.imp)))
+  pp<-summary(mice::pool(mice::as.mira(mods.imp)))
 
   pp
 
@@ -2661,14 +2849,10 @@ retorn_prediccio_MI_STR2<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",
 
 
 
-#
 
+plot.dispersio.reduccio <-function(dt="dades",v.basal="HBpreADD",v.final="HBpostADD") {
 
-
-#  PLOT dispersió segons PRE-POST , FA DISPERSIÓ DE PRE VS CANVI I SOBREPOSA AJUST------
-
-plot.dispersio.reduccio <-function(dt=dades,v.basal="HBpreADD",v.final="HBpostADD") {
-
+  #  PLOT dispersió segons PRE-POST , FA DISPERSIÓ DE PRE VS CANVI I SOBREPOSA AJUST------
   # library(mgcv)
 
   # #  parametres
@@ -2679,7 +2863,7 @@ plot.dispersio.reduccio <-function(dt=dades,v.basal="HBpreADD",v.final="HBpostAD
 
   dt <-dt %>% dplyr::mutate(canvi=dt[,v.basal]-dt[,v.final])
   # Genero quintils
-  dt<-dt %>% dplyr::mutate(basal_cat5=cut2(dt[,v.basal], g=5))
+  dt<-dt %>% dplyr::mutate(basal_cat5=Hmisc::cut2(dt[,v.basal], g=5))
 
   ## Elimino missings de taula i selecciono variables
 
@@ -2690,34 +2874,36 @@ plot.dispersio.reduccio <-function(dt=dades,v.basal="HBpreADD",v.final="HBpostAD
   ## poso noms
   names(dt)<-c("pre","post","dif","basal_cat")
 
-  lineal<-stats::glm(dif~pre,weights = pre,family = gaussian, data=dt) %>% predict()
-  lineal2<-stats::glm(dif~pre,family = gaussian, data=dt) %>% predict()
-  gam1<-mgcv::gam(dif~s(pre),family = gaussian, data=dt) %>% predict()
-  gam2<-mgcv::gam(dif~s(pre,bs="cc",k=12),family = gaussian, data=dt) %>% predict()
-  model.nolineal<-stats::glm(dif~pre+I(pre^2)+I(pre^3),family = gaussian,data=dt) %>% predict()
+  lineal<-stats::glm(dif~pre,weights = pre,family = stats::gaussian, data=dt) %>% predict()
+  lineal2<-stats::glm(dif~pre,family = stats::gaussian, data=dt) %>% predict()
+  gam1<-mgcv::gam(dif~s(pre),family = stats::gaussian, data=dt) %>% predict()
+  gam2<-mgcv::gam(dif~s(pre,bs="cc",k=12),family = stats::gaussian, data=dt) %>% predict()
+  model.nolineal<-stats::glm(dif~pre+I(pre^2)+I(pre^3),family = stats::gaussian,data=dt) %>% predict()
 
 
   figuraZ<-dt %>%
     ggplot2::ggplot(ggplot2::aes(x=pre, y=dif)) +
     ggplot2::geom_point() +
-    ylab("Change at 6-12 months:HbA1c (%)") +
-    xlab("HbA1c (%) Baseline") +
+    ggplot2::ylab("Change at 6-12 months:HbA1c (%)") +
+    ggplot2::xlab("HbA1c (%) Baseline") +
     ggplot2::geom_point(ggplot2::aes(y=lineal),color="red")+
     ggplot2::geom_point(ggplot2::aes(y=gam1),color="blue") +
     ggplot2::geom_point(ggplot2::aes(y=model.nolineal),color="green")+
-    ggtitle(paste0(v.basal," Versus ",v.final)) # for the main title
+    ggplot2::ggtitle(paste0(v.basal," Versus ",v.final)) # for the main title
 
   figuraZ
 
 
 }
 
-#  Forest.plot --------------------
-
-# A partir de taula amb OR's / Betas genera Forest Plot
-# La taula ha de contenir els seguents camps:Categoria,OR,Linf,Lsup
 
 forest.plot<-function(dadesmodel="ramo",label=dadesmodel$Categoria,mean=dadesmodel$OR,lower=dadesmodel$Linf,upper=dadesmodel$Lsup,label_X="OR (95% CI)", intercept=1) {
+
+  #  Forest.plot --------------------
+
+  # A partir de taula amb OR's / Betas genera Forest Plot
+  # La taula ha de contenir els seguents camps:Categoria,OR,Linf,Lsup
+
 
   # dadesmodel=taula_coefs
   # label=taula_editada$Categoria
@@ -2730,17 +2916,19 @@ forest.plot<-function(dadesmodel="ramo",label=dadesmodel$Categoria,mean=dadesmod
   dadesmodel<-dadesmodel %>% dplyr::mutate(id=seq(length(label),1))
 
   fp <- ggplot2::ggplot(data=dadesmodel,ggplot2::aes(x=dadesmodel$id, y=dadesmodel$OR, ymin=dadesmodel$Linf, ymax=dadesmodel$Lsup)) +
-    geom_pointrange() +
-    geom_hline(yintercept=intercept, lty=2) +  # add a dotted line at x=1 after flip
-    coord_flip() +  # flip coordinates (puts labels on y axis)
-    xlab("Label") + ylab(label_X) +
+    ggplot2::geom_pointrange() +
+    ggplot2::geom_hline(yintercept=intercept, lty=2) +  # add a dotted line at x=1 after flip
+    ggplot2::coord_flip() +  # flip coordinates (puts labels on y axis)
+    ggplot2::xlab("Label") + ggplot2::ylab(label_X) +
     ggplot2::scale_x_continuous(breaks=dadesmodel %>%  dplyr::pull(id) ,labels=dadesmodel %>% dplyr:: pull(Categoria))
 
   fp
 }
 
-# Forest plot versió 2 millorada per tal que funcioni
+
 forest.plot.v2<-function(dadesmodel="ramo",label="Categoria",mean="OR",lower="Linf",upper="Lsup",label_X="OR (95% CI)", intercept=1) {
+
+  # Forest plot versió 2 millorada per tal que funcioni
 
   # dadesmodel=dt_dif
   # label="lipo"
@@ -2756,10 +2944,10 @@ forest.plot.v2<-function(dadesmodel="ramo",label="Categoria",mean="OR",lower="Li
   dadestemp <- dadesmodel %>% dplyr::select(etiqueta=!!label,valor=!!mean,Linf=!!lower,Lsup=!!upper,id)
 
   fp <- ggplot2::ggplot(data=dadestemp,ggplot2::aes(x=id, y=valor, ymin=Linf, ymax=Lsup)) +
-    geom_pointrange() +
-    geom_hline(yintercept=intercept, lty=2) +  # add a dotted line at x=1 after flip
-    coord_flip() +  # flip coordinates (puts labels on y axis)
-    xlab("Label") + ylab(label_X) +
+    ggplot2::geom_pointrange() +
+    ggplot2::geom_hline(yintercept=intercept, lty=2) +  # add a dotted line at x=1 after flip
+    ggplot2::coord_flip() +  # flip coordinates (puts labels on y axis)
+    ggplot2::xlab("Label") + ggplot2::ylab(label_X) +
     ggplot2::scale_x_continuous(breaks=dadestemp %>% dplyr:: pull(id),labels=dadestemp %>% dplyr:: pull(etiqueta))
 
   fp
@@ -2767,10 +2955,20 @@ forest.plot.v2<-function(dadesmodel="ramo",label="Categoria",mean="OR",lower="Li
 }
 
 
-# Forest plot versió 3
-forest.plot.v3<-function(dadesmodel=dt_estimacions,label="Categoria",mean="estimate",lower="Linf",upper="Lsup",label_X="OR (95% CI)",
+
+forest.plot.v3<-function(dadesmodel="dt_estimacions",
+                         label="Categoria",
+                         mean="estimate",
+                         lower="Linf",
+                         upper="Lsup",
+                         label_X="OR (95% CI)",
                          intercept=0,
-                         nivell="outcome", factor1="type",factor2="datos", color=TRUE) {
+                         nivell="outcome",
+                         factor1="type",
+                         factor2="datos",
+                         color=TRUE) {
+
+  # Forest plot versió 3
 
   # dadesmodel=dt_estimacions
   # label="labels"
@@ -2803,7 +3001,7 @@ forest.plot.v3<-function(dadesmodel=dt_estimacions,label="Categoria",mean="estim
                                       etiqueta3=dplyr::if_else(is.na(etiqueta3),"",etiqueta3))
 
   # Generar id
-  taula_betas<-taula_betas %>% dplyr::mutate(id=seq(n())) %>% dplyr::mutate(id=n()-id+1)
+  taula_betas<-taula_betas %>% dplyr::mutate(id=seq(dplyr::n())) %>% dplyr::mutate(id=dplyr::n()-id+1)
 
   # REomplir missings en factor1 i factor2
   taula_betas<-taula_betas %>% fill(c(factor1,factor2,Method),.direction="updown")
@@ -2813,32 +3011,34 @@ forest.plot.v3<-function(dadesmodel=dt_estimacions,label="Categoria",mean="estim
   taula_betas$Method<-factor(taula_betas$Method, levels = ordre_levels)
 
   fp <- ggplot2::ggplot(data=taula_betas,ggplot2::aes(x=id, y=valor, ymin=Linf, ymax=Lsup)) +
-    geom_pointrange(size=0.2) +
-    geom_hline(yintercept=intercept, lty=1) +  # add a dotted line at x=1 after flip
-    coord_flip() +  # flip coordinates (puts labels on y axis)
-    xlab("Outcome") + ylab(label_X) +
+    ggplot2::geom_pointrange(size=0.2) +
+    ggplot2::geom_hline(yintercept=intercept, lty=1) +  # add a dotted line at x=1 after flip
+    ggplot2::coord_flip() +  # flip coordinates (puts labels on y axis)
+    ggplot2::xlab("Outcome") + ggplot2::ylab(label_X) +
     ggplot2::scale_x_continuous(breaks=taula_betas %>% dplyr:: pull(id),labels=taula_betas %>% dplyr:: pull(etiqueta3))
 
-  fp<-fp + theme_minimal() + ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 0,vjust=0,size=10))
+  fp<-fp + ggplot2::theme_minimal() + ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 0,vjust=0,size=10))
 
   if (color) {fp<-fp + ggplot2::geom_point(ggplot2::aes(color=Method),size=3)} else
   {fp<-fp + ggplot2::geom_point(ggplot2::aes(shape=Method),size=3)}
 
   # Add banda d'error
-  fp<-fp + geom_hline(yintercept = c(intercept+0.1,intercept-0.1),linetype=2)
+  fp<-fp + ggplot2::geom_hline(yintercept = c(intercept+0.1,intercept-0.1),linetype=2)
 
   fp
 
 }
 
 
-# Forest plot estratificar, label de categoria, mean , nivell per fer un salt, i un factor per posar llegenda
 
 forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Linf",upper="Lsup",label_X="OR (95% CI)",
                          intercept=1,
                          nivell="outcome", factor1="type",color=F, label_Xvertical="Cardiovascular event",nolabels=TRUE,
                          title = "Forest plot of hazard hatios and confidence interval (95%CI)",
                          label_Favors="Favors SGLT-2        Favors oGLD-2") {
+
+  # Forest plot estratificar, label de categoria, mean , nivell per fer un salt, i un factor per posar llegenda
+
 
   # dadesmodel=dt_fig
   # label="label"
@@ -2871,11 +3071,11 @@ forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Lin
                                       etiqueta3=dplyr::if_else(is.na(etiqueta3),"",etiqueta3))
 
   # Reordenar outcomes segons origen de taula inicial
-  dt_ordre<-dadesmodel %>% dplyr::distinct(outcome=nivell) %>% dplyr::mutate(seq=seq(1:n()))
+  dt_ordre<-dadesmodel %>% dplyr::distinct(outcome=nivell) %>% dplyr::mutate(seq=seq(1:dplyr::n()))
   taula_betas<-taula_betas %>% dplyr::left_join(dt_ordre,by="outcome") %>%dplyr:: arrange(seq)
 
   # Generar id
-  taula_betas<-taula_betas %>% dplyr::mutate(id=seq(n())) %>% dplyr::mutate(id=n()-id+1)
+  taula_betas<-taula_betas %>% dplyr::mutate(id=seq(dplyr::n())) %>% dplyr::mutate(id=dplyr::n()-id+1)
 
   # REomplir missings en factor1 i factor2
   taula_betas<-taula_betas %>% fill(c(factor1,Group),.direction="updown")
@@ -2894,16 +3094,16 @@ forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Lin
 
   fp <- ggplot2::ggplot(data=taula_betas,ggplot2::aes(x=id, y=valor, ymin=Linf, ymax=Lsup)) +
     # geom_pointrange(size=0.6) +
-    geom_pointrange(size=0.2) +
-    geom_hline(yintercept=intercept, lty=1,colour="grey") +  # add a dotted line at x=1 after flip
-    coord_flip() +  # flip coordinates (puts labels on y axis)
+    ggplot2::geom_pointrange(size=0.2) +
+    ggplot2::geom_hline(yintercept=intercept, lty=1,colour="grey") +  # add a dotted line at x=1 after flip
+    ggplot2::coord_flip() +  # flip coordinates (puts labels on y axis)
     ggplot2::scale_x_continuous(breaks=taula_betas %>% dplyr:: pull(id),labels=labels_scaleX)  +
-    ylim(xmin,xmax)
+    ggplot2::ylim(xmin,xmax)
 
-  fp<-fp + theme_minimal(base_size = 12) + ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 0,vjust=0,size=11)) +
+  fp<-fp + ggplot2::theme_minimal(base_size = 12) + ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 0,vjust=0,size=11)) +
     ggplot2::labs(title = title, x=label_Xvertical,y=label_X, col="Method \n") +
     ggplot2::theme(legend.position="top") +
-    ggplot::annotate("text", x=ymaxim+1,y=1,label=label_Favors, colour = "black",size=2.5)
+    ggplot2::annotate("text", x=ymaxim+1,y=1,label=label_Favors, colour = "black",size=2.5)
 
   # caption = "SGLT-2: sodium-glucose co-transporter-2 inhibitors | oGLD-2 \n created by Jordi Real & Rai Puig ")
 
@@ -2991,7 +3191,7 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
     ggplot2::xlab("") + ggplot2::ylab(label_X) +
     ggplot2::scale_x_continuous(breaks=dt_temp %>%  dplyr::pull(id),labels=dt_temp %>% dplyr:: pull(label)) +
     # ylim(-0.5,10) +
-    theme_minimal()
+    ggplot2::theme_minimal()
 
   if (nivell!="") {pplot <- pplot + ggplot2::geom_point(ggplot2::aes(color=nivell),size=4,shape=15) + ggplot2::labs(color=nivell)}
 
@@ -3000,19 +3200,22 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
   # tituls + labs
   pplot +
     ggplot2::labs(title = title, subtitle = subtitle,caption = caption) +
-    ggplot::annotate("text", x=-0.8,y=1,label=label_Favors, colour = "black",size=4)
+    ggplot2::annotate("text", x=-0.8,y=1,label=label_Favors, colour = "black",size=4)
 
 
 }
 
 
 
-#
-#  Random dates i marcar potencials CONTROLS-----------
-#
-# Genero N dates random entre 2010-2016 el mateix nombre que
 
 dt_index_data_random<-function(dt="PACIENTS") {
+
+
+
+  #
+  #  Random dates i marcar potencials CONTROLS-----------
+  #
+  # Genero N dates random entre 2010-2016 el mateix nombre que
 
   # dt=PACIENTS
   # Necessito camp dtsortida (ymd)
@@ -3039,12 +3242,14 @@ dt_index_data_random<-function(dt="PACIENTS") {
 
 }
 
-#
 
-#  GENERA UNA DATA INDEX SEGONS UNA DETERMINACIÓ ----------------------
-## RETORNA DADES AMB idp + dtindex.semirandom
 
 dt_index_data_semirandom<-function(dt="PACIENTS",dt.variables="VARIABLES",codi="EK201"){
+
+  #
+
+  #  GENERA UNA DATA INDEX SEGONS UNA DETERMINACIÓ ----------------------
+  ## RETORNA DADES AMB idp + dtindex.semirandom
 
   # dt=PACIENTS
   # dt.variables=VARIABLES
@@ -3089,12 +3294,14 @@ dt_index_data_semirandom<-function(dt="PACIENTS",dt.variables="VARIABLES",codi="
 
 }
 
-# Funció que retorna 4 grups aparellats per 4 grups (2 x 2) de 2 variables
-# Entra una base de dades (dades) i una variable factor amb 4 nivells
-# Retorna dades aparellades en dos fases a) 1vs3 2vs4  Fusió --> b) 1vs2 3vs4
-
 
 matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conductor="vars_ilerbus.xls",caliper=0.01) {
+
+  # Funció que retorna 4 grups aparellats per 4 grups (2 x 2) de 2 variables
+  # Entra una base de dades (dades) i una variable factor amb 4 nivells
+  # Retorna dades aparellades en dos fases a) 1vs3 2vs4  Fusió --> b) 1vs2 3vs4
+
+
 
   # dt=dadesini
   # grups="grup"
@@ -3105,10 +3312,11 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   set.seed(123)
 
   # Formula matching
-  formulaPS<-formula.text("matching",y="grup_dic",taulavariables=conductor) %>% stats::as.formula()
+  #formulaPS<-formula.text("matching",y="grup_dic",taulavariables=conductor) %>% stats::as.formula()
+  formulaPS<-formula_text("matching",y="grup_dic",taulavariables=conductor) %>% stats::as.formula()
 
   # Genero index de grup
-  dt_temp<-dt %>% dplyr::select(!!grups) %>% dplyr::distinct() %>%dplyr:: mutate(id_grup=row_number())
+  dt_temp<-dt %>% dplyr::select(!!grups) %>% dplyr::distinct() %>%dplyr:: mutate(id_grup=dplyr::row_number())
   # Fusiono id_grup
   dt<-dt %>% dplyr::left_join(dt_temp)  # + id_grup
 
@@ -3120,7 +3328,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   names(dades)[length(names(dades))]<-"grup_dic"
 
   # MATCHING 1VS3
-  m.out<-matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
+  m.out<-MatchIt::matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
   # Filtro per ps
   dades_match_13<-dades %>% dplyr::bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
 
@@ -3133,7 +3341,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   names(dades)[length(names(dades))]<-"grup_dic"
 
   # Matching 2VS4
-  m.out<-matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
+  m.out<-MatchIt::matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
 
   # Filtro per ps
   dades_match_24<-dades %>%dplyr:: bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
@@ -3144,14 +3352,15 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   #  -----------------  1 vs 2 ---------------------- dades_match12
   dades<-dt %>% dplyr::filter(id_grup==1 | id_grup==2 ) # Filtro dos grups
   # Validació prematch
-  formu<-formula.text("match_desc","grup",taulavariables = conductor)
+  #formu<-formula.text("match_desc","grup",taulavariables = conductor)
+  formu<-formula_text("match_desc","grup",taulavariables = conductor)
 
   # Dicotomitzar id_grup
   dades<-make_dummies(dades,"id_grup","gr_")
   names(dades)[length(names(dades))]<-"grup_dic"
 
   # MATCHING 1VS2
-  m.out<-matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
+  m.out<-MatchIt::matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
 
   # Filtro per ps
   dades_match_12<-dades %>% dplyr::bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
@@ -3164,7 +3373,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   names(dades)[length(names(dades))]<-"grup_dic"
 
   # MATCHING 3VS4
-  m.out<-matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
+  m.out<-MatchIt::matchit(formulaPS,method="nearest",data=dades,caliper=caliper,ratio=1,exact=c("gender"))
   # Filtro per ps
   dades_match_34<-dades %>%dplyr:: bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
 
@@ -3180,12 +3389,15 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
 
 
 
-#  MATCHING CAS-CONTROL SEGONS MÉTODE DENSITY-INCIDENCE ------------------
+matching_case_control<-function(dt="PACIENTS",variables.ps="llistaPS",dt_pacients_dindex="BD_PAC_DINDEX") {
 
-##  Retorna Subset matxejat per grup (event) en data index (dtindex.random, control) DE dt_pacients_dindex
-##  Llista de variables variables.ps
 
-matching_case_control<-function(dt="PACIENTS",variables.ps="llistaPS",dt_pacients_dindex=BD_PAC_DINDEX) {
+
+  #  MATCHING CAS-CONTROL SEGONS MÉTODE DENSITY-INCIDENCE ------------------
+
+  ##  Retorna Subset matxejat per grup (event) en data index (dtindex.random, control) DE dt_pacients_dindex
+  ##  Llista de variables variables.ps
+
 
   # dt=PACIENTS
   # variables.ps=c("edat","dtindex","sexe") # covaribles
@@ -3229,8 +3441,8 @@ matching_case_control<-function(dt="PACIENTS",variables.ps="llistaPS",dt_pacient
   formulaPS<-stats::as.formula(paste("event", paste(variables.ps, collapse=" + "), sep=" ~ "))
 
   dt.matched<-formulaPS %>%
-    matchit(method="nearest",data=dadesmatching,ratio=4,caliper=0.01,distance = "logit") %>%    # FAig el matching 4 a 1
-    weights() %>%                                                            # Guardo els pesos
+    MatchIt::matchit(method="nearest",data=dadesmatching,ratio=4,caliper=0.01,distance = "logit") %>%    # FAig el matching 4 a 1
+    stats::weights() %>%                                                            # Guardo els pesos
     data.table::data.table() %>%
     'colnames<-'(c("PS")) %>%
     dplyr::bind_cols(dt.total) %>%                                                 # Ho junto al dt.total
@@ -3240,12 +3452,16 @@ matching_case_control<-function(dt="PACIENTS",variables.ps="llistaPS",dt_pacient
 
 }
 
-# Retorna a Covariate_plot d'un objecte matchit()  -------------------------
-# Llances un objecte m-out, variables que vols eliminar i si vols etiquetar segons conductor
+
+#' @param ...                 Altres parametres
 covariate_plot<-function(dt="m.out",
                          vars_remove=NULL,
                          etiquetar=F,
                          subtitle="oGLD vs SGLT-2i group",...) {
+
+
+  # Retorna a Covariate_plot d'un objecte matchit()  -------------------------
+  # Llances un objecte m-out, variables que vols eliminar i si vols etiquetar segons conductor
 
   # vars_remove<-c("age", "sexe","tempsdm_cat4", "iyearsem","qmedea")
   # m.out,vars_remove = c("qmedea","age"),etiquetar = T
@@ -3314,7 +3530,6 @@ covariate_plot<-function(dt="m.out",
                    legend.background = ggplot2::element_blank(),
                    legend.key = ggplot2::element_blank()) +
     ggplot2::geom_point(ggplot2::aes(colour=Sample),size=3) +
-
     ggplot2::geom_vline(xintercept = c(-0.1,0,0.1) , linetype = 2, color = "gray8")+
     ggplot2::theme(legend.position = "top")+
     ggplot2::labs(y = NULL, x = "Standardized mean difference",
@@ -3345,7 +3560,6 @@ covariate_plot_dades<-function(dt="dt_total",var="name",stat="stat",title="Covar
                    legend.background = ggplot2::element_blank(),
                    legend.key = ggplot2::element_blank()) +
     ggplot2::geom_point(ggplot2::aes(colour=Sample),size=3) +
-
     ggplot2::geom_vline(xintercept = c(-0.1,0,0.1) , linetype = 2, color = "gray8")+
     ggplot2::theme(legend.position = "top")+
     ggplot2::labs(y = NULL, x = labx, title=title)+
@@ -3354,9 +3568,11 @@ covariate_plot_dades<-function(dt="dt_total",var="name",stat="stat",title="Covar
 
 }
 
-# mostreig_ids () Mostreja ids d'una base de dades  ---------------------
+
 
 mostreig_ids<-function(dt,id="idp",n_mostra=100,set_seed=123) {
+
+  # mostreig_ids () Mostreja ids d'una base de dades  ---------------------
 
   # n_mostra<-100
   # dt<-dades
@@ -3377,16 +3593,20 @@ mostreig_ids<-function(dt,id="idp",n_mostra=100,set_seed=123) {
 }
 
 
-#
-# Funció per calcular el risc REGICOR (regicor)  -----------------
-#
-# age: númerica (anys)
-# sex: text, 'H'  homes i 'D' dones
-# smoker, diabetes: binària (0 no i 1 si)
-# coltot i colhdl: en mg/dL
-# sbp i dbp: númeric (mmHg)
+
 
 regicor <- function(age, sex, smoker, diabetes, coltot, colhdl, sbp, dbp, divide = 1){
+
+  #
+  # Funció per calcular el risc REGICOR (regicor)  -----------------
+  #
+  # age: númerica (anys)
+  # sex: text, 'H'  homes i 'D' dones
+  # smoker, diabetes: binària (0 no i 1 si)
+  # coltot i colhdl: en mg/dL
+  # sbp i dbp: númeric (mmHg)
+
+
   n <- length(age)
   diabetes <- as.numeric(diabetes)
   bp_opti <- ifelse(sbp <  120 & dbp < 80, 1, 0)
@@ -3430,10 +3650,12 @@ regicor <- function(age, sex, smoker, diabetes, coltot, colhdl, sbp, dbp, divide
   result
 }
 
-## Llista 2 parells de llistes de variables tipus pre-post i retorna un únic p-valor test del signes (canvi) de la binomial
-## S'espera que tots els canvis van cap al mateix sentit (o tots baixen o tots pujen)
 
 extreure_Pglobal_SigTest<-function(dt=dades,vars_pre=vars_pre,vars_post=vars_post) {
+
+  ## Llista 2 parells de llistes de variables tipus pre-post i retorna un únic p-valor test del signes (canvi) de la binomial
+  ## S'espera que tots els canvis van cap al mateix sentit (o tots baixen o tots pujen)
+
   # vars_pre<-c("VLDL_C","IDL_C")
   # vars_post<-c("VLDL_C_FU","IDL_C_FU")
   # dt<-dades
@@ -3471,7 +3693,6 @@ extreure_Pglobal_SigTest<-function(dt=dades,vars_pre=vars_pre,vars_post=vars_pos
 
 }
 
-## Funcio per canviar noms de variables del data frame
 
 
 

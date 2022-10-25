@@ -154,7 +154,7 @@ formula_vector<-function(vector=c("sex","age","age"),y="y",logit=F,eliminar=NA){
 
 #' @title                Formula Text.
 #' @description          Retorna Data.frame or tibble amb
-#' @param x              Indicador de cadena del camp del fitxer extern amb indicador de la posició de la fórmula (1,2....)
+#' @param x              Indicador de cadena del camp del fitxer extern amb indicador de la posició
 #' @param y              Indicador de resposta de cadena (default "."): ". ~ x1 +x2 + x3 "
 #' @param eliminar       Caracter que indica si alguna variable ha de ser eliminada
 #' @param a              Caracter , indica si cal afegir alguna variable en la primera posició
@@ -199,51 +199,16 @@ formula_text<-function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavari
 }
 
 
-#' @title                Formula Text.
-#' @description          Retorna Data.frame or tibble amb
-#' @param x              Indicador de cadena del camp del fitxer extern amb indicador de la posició de la fórmula (1,2....)
-#' @param y              Indicador de resposta de cadena (default "."): ". ~ x1 +x2 + x3 "
-#' @param eliminar       Caracter que indica si alguna variable ha de ser eliminada
-#' @param a              Caracter , indica si cal afegir alguna variable en la primera posició
-#' @param taulavariables Conductor , a on triem l'orde de les variables de la formula
-#' @param dt             data.frame o base de dades
-#' @return               formula
-#' @export               formula.text
-#' @importFrom           dplyr "%>%"
-#' @examples
-#'
-#' Hmisc::label(iris)
-#' conductor_iris<-data.frame(camp=names(iris),formu=c(1,2,3,4,5))
-#' formula_iris1<-formula.text(x="formu",y="RESPOSTA",taulavariables = conductor_iris)
-#' formula_iris1
 
-formula.text<-function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavariables,dt=NA) {
 
-  #variables<-read_conductor(conductor_iris)
-  variables<-read_conductor(taulavariables)
-  # variables <- data.frame(readxl::read_excel(taulavariables))
-  # variables[is.na(variables)]<- 0
-  x_sym<-rlang::sym(x)
-  variables<-variables %>% dplyr::filter(!is.na(!!x_sym))
 
-  variables<-variables %>%
-    dplyr::filter(!!x_sym>0) %>%
-    dplyr::arrange(!!x_sym)
 
-  # Verificar si dades estan en conductor
-  if (is.data.frame(dt)) {
-    vars_not_dt<-variables %>% dplyr::anti_join(names(dt) %>%tibble:: as_tibble(camp=value),by=c("camp"="value"))
-    variables<-variables %>%dplyr:: semi_join(names(dt) %>%tibble:: as_tibble(camp=value),by=c("camp"="value"))
-    warning(paste0("Variables not in data ",vars_not_dt["camp"], ". So, it is not included in formula"))}
 
-  pepito<-paste("as.vector(variables[variables$",x,">0,]$camp)[!as.vector(variables[variables$",x,">0,]$camp)%in%eliminar]",sep="")
 
-  llistataula<-eval(parse(text=pepito))
-  if (a!="") llistataula<-c(a,llistataula,a)
 
-  y<-paste(y, paste(llistataula, collapse=" + "), sep=" ~ ")
 
-}
+
+
 
 
 #' @title                 Genera dummis

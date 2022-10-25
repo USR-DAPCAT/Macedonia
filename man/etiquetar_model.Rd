@@ -21,7 +21,7 @@ etiquetar_model(
 
 \item{camp_descripcio}{Camp DESCRIPCIO}
 
-\item{...}{Altres funcions}
+\item{...}{Altres parametres}
 }
 \value{
 Etiquetar model

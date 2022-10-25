@@ -14,7 +14,7 @@ formula_text(
 )
 }
 \arguments{
-\item{x}{Indicador de cadena del camp del fitxer extern amb indicador de la posició de la fórmula (1,2....)}
+\item{x}{Indicador de cadena del camp del fitxer extern amb indicador de la posició}
 
 \item{y}{Indicador de resposta de cadena (default "."): ". ~ x1 +x2 + x3 "}
 

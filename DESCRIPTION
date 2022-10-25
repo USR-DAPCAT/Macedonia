@@ -33,14 +33,19 @@ Imports:
       crrSC,
       epiR,
       ggcorrplot,
-      ggplot2,
+      ggplot2
+Suggests:
       mice,
       pROC,
       parameters,
       plotROC,
       survival,
       survminer,
-      graphics
+      graphics,
+      MatchIt,
+      mgcv,
+      tidyverse
+
       
       
       
