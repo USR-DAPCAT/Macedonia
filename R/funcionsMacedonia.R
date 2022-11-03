@@ -8,11 +8,13 @@
 #' @return                    Etiquetar model
 #' @export                    etiquetar_model
 #' @importFrom                dplyr "%>%"
+#' @export                    etiquetar_model
 etiquetar_model<-function(model="kkk",
                           taulavariables="variables_R.xls",
                           camp="camp",
                           camp_descripcio="descripcio",...) {
 
+  # 1)
   # model=model1
   # taulavariables=conductor_variables
   # camp="camp"
@@ -62,7 +64,8 @@ etiquetar_model<-function(model="kkk",
 #' @return                    FORMULA
 #' @export                    formula
 #' @importFrom                dplyr "%>%"
-formula=function(x="taula1",
+#' @export                    formula
+formula<-function(x="taula1",
                  y="grup",
                  eliminar=c("idp","y")) {
   pepito<-paste("as.vector(variables[variables$",x,"==1,]$camp)[!as.vector(variables[variables$",x,"==1,]$camp)%in%eliminar]",sep="")
@@ -84,12 +87,13 @@ formula=function(x="taula1",
 #' @export                    formula_compare
 #' @importFrom                dplyr "%>%"
 #' @param ...                 Altres parametres
+#' @export                    formula_compare
 formula_compare<-function(x="taula1",
                           y="grup",
                           elimina=c("IDP"),
                           taulavariables="variables_R.xls",
                           dt="No",...) {
-
+  # 2)
   # x="table5"
   # y="grup"
   # taulavariables =conductor_variables
@@ -144,6 +148,7 @@ formula_compare<-function(x="taula1",
 #' @return                    llista
 #' @export                    llista.compare.Ys
 #' @importFrom                dplyr "%>%"
+#' @export                    llista.compare.Ys
 llista.compare.Ys<-function(dt="dades",
                             llista.y=c("CODGLP1","CKDEPI_cat2"),
                             llista.x=c("canvi612.pes.perc","canvi612M.pes"),
@@ -156,7 +161,7 @@ llista.compare.Ys<-function(dt="dades",
                             digits.ratio=NA,
                             hide.no = c('NA','No'),
                             ref.no=NA){
-
+  # 3)
   # dt=dt.matched
   # llista.y = c("event")
   # llista.x=llistaPS
@@ -186,8 +191,17 @@ llista.compare.Ys<-function(dt="dades",
 
 
 
-
-generar_Surv<-function(dt,event,dtindex="dtindex",dtsortida="sortida"){
+#' @title                     generar Surv
+#' @description               generar_Surv
+#' @param dt                  dt
+#' @param event               event
+#' @param dtindex             dtindex
+#' @param dtsortida           dtsortida
+#' @export                    generar_Surv
+generar_Surv<-function(dt,
+                       event,
+                       dtindex="dtindex",
+                       dtsortida="sortida"){
 
   # Retorna objecte Surv en dt a partir de dades (dt), event("20150531" / NA), dtindex(Date), dtsortida(20171231),
 
@@ -234,8 +248,17 @@ generar_Surv<-function(dt,event,dtindex="dtindex",dtsortida="sortida"){
   temp
 }
 
-
-generar_Surv_to_column<-function(dt="dadestotal", event="EV.AVC_DIC",temps="EV.AVC_temps",codievent=1) {
+#' @title                     generar Surv to column
+#' @description               generar Surv to column
+#' @param dt                  dt
+#' @param event               event
+#' @param temps               temps
+#' @param codievent           codievent
+#' @export                    generar_Surv_to_column
+generar_Surv_to_column<-function(dt="dadestotal",
+                                 event="EV.AVC_DIC",
+                                 temps="EV.AVC_temps",
+                                 codievent=1) {
 
   # dt=dadestotal
   # event="EV.AVC_DIC"
@@ -256,8 +279,25 @@ generar_Surv_to_column<-function(dt="dadestotal", event="EV.AVC_DIC",temps="EV.A
 
 
 
-
-formulaCOX=function(x="",event="event",temps="temps",elimina="",cluster="",a="",taulavariables="variables.xls",codievent='1') {
+#' @title                     formula COX
+#' @description               formula COX
+#' @param x                   x
+#' @param event               event
+#' @param temps               temps
+#' @param elimina             elimina
+#' @param cluster             cluster
+#' @param a                   a
+#' @param taulavariables      taulavariables
+#' @param codievent           codievent
+#' @export                    formulaCOX
+formulaCOX<-function(x="",
+                    event="event",
+                    temps="temps",
+                    elimina="",
+                    cluster="",
+                    a="",
+                    taulavariables="variables.xls",
+                    codievent='1') {
 
   #  formula COX ajustat per event="Yes" -------------
   #
@@ -299,8 +339,25 @@ formulaCOX=function(x="",event="event",temps="temps",elimina="",cluster="",a="",
 
 }
 
-
-HRadj=function(x="v.ajust",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",c="",d="dadesDF",taulavariables="variables.xls",codievent='1') {
+#' @title                     HRadj
+#' @description               HRadj
+#' @param x                   x
+#' @param event               event
+#' @param t                   t
+#' @param e                   e
+#' @param c                   c
+#' @param d                   d
+#' @param taulavariables      taulavariables
+#' @param codievent           codievent
+#' @export                    HRadj
+HRadj<-function(x="v.ajust",
+               event="EV.INSUF_CARD",
+               t="tmp_insuf_card",
+               e="",
+               c="",
+               d="dadesDF",
+               taulavariables="variables.xls",
+               codievent='1') {
 
 
   #  Retorna Ngran, Events, coef, HR, IC95, IC95, se.coef, p ---------
@@ -346,12 +403,23 @@ HRadj=function(x="v.ajust",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",c="",d=
   result
 }
 
-
-HRestratificats<-function(event="exitus",t="temps",tipo="v.ajust",c="",taulavariables='variables.xls') {
+#' @title                    HRestratificats
+#' @description              HRestratificats
+#' @param event              event
+#' @param t                  t
+#' @param tipo               tipo
+#' @param c                  c
+#' @param taulavariables     taulavariables
+#' @export                   HRestratificats
+HRestratificats<-function(event="exitus",
+                          t="temps",
+                          tipo="v.ajust",
+                          c="",
+                          taulavariables='variables.xls') {
 
 
   #  HRestratificats  ----------------------
-  ###   FUNCIiÓ QUE LLANÇO event, temps adjusted i em retorna un data frame amb tot global+ estratificat  ###
+  ###   FUNCIio QUE LLANÇO event, temps adjusted i em retorna un data frame amb tot global+ estratificat  ###
   ###     ENVIO exitus, temps i dades i em retorna data frame amb estratificats
   ####    camp estratificat conte variables estratificades tipo="v.ajust" / "crude"
 
@@ -385,42 +453,19 @@ HRestratificats<-function(event="exitus",t="temps",tipo="v.ajust",c="",taulavari
 
 
 
-formula.LOGIT=function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavariables='variables.xls') {
-
-  #  Formula.LOGIT segons LLISTA DE VARIABLES  D'AJUST     #######################
-  #      hi envio la columna de variables amb que vull generar la formula pel compare
-
-  #####     x= variables d'ajust / y = resposta / eliminar /  a = Avaluar
-
-  # x="regicor_alone"
-  # y="event"
-  # taulavariables = conductor_variables
-  # eliminar=c("IDP")
-  # a=""
-
-  # Llegir variables
-  variables<-read_conductor(taulavariables)
-  # variables[is.na(variables)]<- 0
-  x_sym<-dplyr::sym(x)
-
-  variables<-variables %>% dplyr::filter(!is.na(!!x_sym))
-
-  llistataula<-variables %>%
-    dplyr::filter(!!x_sym>0) %>%
-    dplyr::arrange(!!x_sym) %>%
-    dplyr::pull(camp)
-
-  llistataula<-llistataula[!llistataula%in%eliminar]
-
-  if (a!="") llistataula<-c(a,llistataula)
-
-  y<-stats::as.formula(paste(y, paste(llistataula, collapse=" + "), sep=" ~ "))
-
-}
-
-
-
-OR.ajustats=function(x="lipos",ajust="V.ajust",y="prediabetis",d="dadestotal",taulavariables='variables.xls') {
+#' @title                    OR ajustats
+#' @description              OR ajustats
+#' @param x                  x
+#' @param ajust              ajust
+#' @param y                  y
+#' @param d                  d
+#' @param taulavariables     taulavariables
+#' @export                   OR.ajustats
+OR.ajustats<-function(x="lipos",
+                     ajust="V.ajust",
+                     y="prediabetis",
+                     d="dadestotal",
+                     taulavariables='variables.xls') {
 
 
   #  OR.ajustats(x,ajust,y)         ###########
@@ -488,8 +533,13 @@ OR.ajustats=function(x="lipos",ajust="V.ajust",y="prediabetis",d="dadestotal",ta
 }
 
 
-
-variables.ajust<-function(x="taula1",variables=variables) {
+#' @title                    variables ajust
+#' @description              variables ajust
+#' @param x                  x
+#' @param variables          variables
+#' @export                   variables.ajust
+variables.ajust<-function(x="taula1",
+                          variables=variables) {
 
   #  Variables.ajust   -----------------
   #####       hi envio la columna de variables amb que vull generar la formula pel compare
@@ -501,8 +551,19 @@ variables.ajust<-function(x="taula1",variables=variables) {
 }
 
 
-
-extreure_coef_glm<-function(dt="dades",outcomes="OFT_WORST",x="DM",z="",taulavariables="variables_R.xls"){
+#' @title                    extreure coef glm
+#' @description              extreure coef glm
+#' @param dt                 dt
+#' @param outcomes           outcomes
+#' @param x                  x
+#' @param z                  z
+#' @param taulavariables     taulavariables
+#' @export                   extreure_coef_glm
+extreure_coef_glm<-function(dt="dades",
+                            outcomes="OFT_WORST",
+                            x="DM",
+                            z="",
+                            taulavariables="variables_R.xls"){
 
   #  GLM  COEFICIENTS      ###########################################################
   #################   EXTREU COEFICIENTS glm, IC95 , p valors  GLM a partir de llista d'outcomes, X, i llista de v.ajust
@@ -535,11 +596,11 @@ extreure_coef_glm<-function(dt="dades",outcomes="OFT_WORST",x="DM",z="",taulavar
     rownames %>% tail(1)
 
   # names(table(dt[x]))[2:Ncat.x]
-  if (Ncat.x==1) models1_oft<-models1_oft %>%                       # Si es continua només un coef de X
+  if (Ncat.x==1) models1_oft<-models1_oft %>%                       # Si es continua nomes un coef de X
     purrr::map(tail,Ncat.x) %>%
     purrr::map_dfr(data.table::data.table)
 
-  if (Ncat.x>1) models1_oft<-models1_oft %>%                          ## Select només num de coeficients necessaris de X
+  if (Ncat.x>1) models1_oft<-models1_oft %>%                          ## Select nomes num de coeficients necessaris de X
     purrr::map(tail,Ncat.x-1) %>%
     purrr::map_dfr(data.table::data.table)
 
@@ -562,8 +623,19 @@ extreure_coef_glm<-function(dt="dades",outcomes="OFT_WORST",x="DM",z="",taulavar
 
 }
 
-
-extreure_coef_glm_v2<-function(dt="dades",outcome="OFT_WORST",x="DM",v.ajust="",level_conf=0.95){
+#' @title                    extreure coef glm v2
+#' @description              extreure coef glm v2
+#' @param dt                 dt
+#' @param outcome            outcome
+#' @param x                  x
+#' @param v.ajust            v.ajust
+#' @param level_conf         level_conf
+#' @export                   extreure_coef_glm_v2
+extreure_coef_glm_v2<-function(dt="dades",
+                               outcome="OFT_WORST",
+                               x="DM",
+                               v.ajust="",
+                               level_conf=0.95){
 
   #  EXTREU COEFICIENTS glm, IC95 , p valors  GLM a outcome, X, i llista de v.ajust
 
@@ -647,7 +719,7 @@ extreure_coef_glm_v2<-function(dt="dades",outcome="OFT_WORST",x="DM",v.ajust="",
   # Afegir categoria
   resumtotal<-resumtotal %>% dplyr::left_join(resum_model,by="categoria")
 
-  # Només en GLM afegir mitjana estimada per categoria
+  # Nomes en GLM afegir mitjana estimada per categoria
   if (outcome_es_factor==F) {
     resumtotal<-resumtotal %>%
       dplyr::mutate (beta0=resumtotal$Estimate[1],estimate=ifelse(is.na(Estimate),0,Estimate)) %>%
@@ -657,8 +729,19 @@ extreure_coef_glm_v2<-function(dt="dades",outcome="OFT_WORST",x="DM",v.ajust="",
   resumtotal %>% head(Ncat.x+1)
 }
 
-
-extreure_coef_glm_mi<-function(dt="tempData",outcome="valor612M.GLICADA",x="SEXE",v.ajust="",level_conf=0.95) {
+#' @title                    extreure_coef_glm mi
+#' @description              extreure_coef_glm mi
+#' @param dt                 dt
+#' @param outcome            outcome
+#' @param x                  x
+#' @param v.ajust            v.ajust
+#' @param level_conf         level_conf
+#' @export                   extreure_coef_glm_mi
+extreure_coef_glm_mi<-function(dt="tempData",
+                               outcome="valor612M.GLICADA",
+                               x="SEXE",
+                               v.ajust="",
+                               level_conf=0.95) {
 
 
   #  GLM (Logistic o Lineal) dades imputades --------------------
@@ -671,7 +754,7 @@ extreure_coef_glm_mi<-function(dt="tempData",outcome="valor612M.GLICADA",x="SEXE
   # v.ajust=c("sexe","edat","qmedea")
   # level_conf=0.95
 
-  # Funció que extreu parametres estandaritzats Overall (mitjana Cutre)
+  # Funcio que extreu parametres estandaritzats Overall (mitjana Cutre)
   Standarditzar_mice_fits<-function(fits,level_conf=0.95) {
     pars_Std<-fits$analyses %>%
       purrr::map(~parameters::model_parameters(.x,standardize="basic",ci=level_conf)) %>%
@@ -742,7 +825,7 @@ extreure_coef_glm_mi<-function(dt="tempData",outcome="valor612M.GLICADA",x="SEXE
   # Afegir categoria
   resumtotal<-resumtotal %>% dplyr::left_join(resum_model,by="categoria")  %>% dplyr::select(-term)
 
-  # Només en GLM calcular la mitjana estimada per categoria
+  # Nomes en GLM calcular la mitjana estimada per categoria
   if (outcome_es_factor==F) {
     resumtotal<-resumtotal %>%
       dplyr::mutate (beta0=resumtotal$estimate[1],
@@ -755,8 +838,21 @@ extreure_coef_glm_mi<-function(dt="tempData",outcome="valor612M.GLICADA",x="SEXE
 }
 
 
-
-extreure_coef_mice_estrats<-function(tempData,data_list,X=c("bmi","hyp"),Y="chl",grups="age",logit=F) {
+#' @title                    extreure_coef_mice_estrats
+#' @description              extreure_coef_mice_estrats
+#' @param tempData           tempData
+#' @param data_list          data_list
+#' @param X                  X
+#' @param Y                  Y
+#' @param grups              grups
+#' @param logit              logit
+#' @export                   extreure_coef_mice_estrats
+extreure_coef_mice_estrats<-function(tempData,
+                                     data_list,
+                                     X=c("bmi","hyp"),
+                                     Y="chl",
+                                     grups="age",
+                                     logit=F) {
 
 
   #  Coeficients GLM(lineal/logistica) MICE estratificats  ---------------------
@@ -800,8 +896,17 @@ extreure_coef_mice_estrats<-function(tempData,data_list,X=c("bmi","hyp"),Y="chl"
   models_dt
 }
 
-
-extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups="Sex") {
+#' @title                    extreure.dif.proporcions
+#' @description              extreure.dif.proporcions
+#' @param dades              dades
+#' @param outcome            outcome
+#' @param ref_cat            ref_cat
+#' @param grups              grups
+#' @export                   extreure.dif.proporcions
+extreure.dif.proporcions<-function(dades,
+                                   outcome="Prediabetes",
+                                   ref_cat=NA,
+                                   grups="Sex") {
 
   # extreure.dif.proporcions() : Diferencia de % respecte una categoria ref + interval de confiança
   # Extreu : Diferencia de % respecte una categoria ref + interval de confiança
@@ -890,10 +995,21 @@ extreure.dif.proporcions<-function(dades,outcome="Prediabetes",ref_cat=NA,grups=
 
 }
 
+#' @title                    extreure_resum_outcomes_imputation
+#' @description              extreure_resum_outcomes_imputation
+#' @param dades_long         dades_long
+#' @param outcome            outcome
+#' @param v.ajust            v.ajust
+#' @param grups              grups
+#' @param level_conf         level_conf
+#' @export                   extreure.dif.proporcions
+extreure_resum_outcomes_imputation<-function(dades_long=dades,
+                                             outcome="HBA1C.dif324m",
+                                             grups="grup",
+                                             v.ajust=c("sexe","edat"),
+                                             level_conf=0.95) {
 
-extreure_resum_outcomes_imputation<-function(dades_long=dades,outcome="HBA1C.dif324m",grups="grup",v.ajust=c("sexe","edat"),level_conf=0.95) {
-
-  # Funció que retorna summari (Beta/OR , IC95%, mean) amb dades imputades i completes crudes i ajustades d'un outcome en relació a un grup
+  # Funcio que retorna summari (Beta/OR , IC95%, mean) amb dades imputades i completes crudes i ajustades d'un outcome en relacio a un grup
   # Objecte dades_long es fitxer de dades amb dades completes (.imp==0) + imputades (.imp>0)
 
 
@@ -959,8 +1075,19 @@ extreure_resum_outcomes_imputation<-function(dades_long=dades,outcome="HBA1C.dif
 }
 
 
-
-plotKM=function(y="exitus.surv",grup="grup",d="dades",caption="",llegenda=c("No","Yes")) {
+#' @title                    plotKM
+#' @description              plotKM
+#' @param y                  y
+#' @param grup               grup
+#' @param d                  d
+#' @param caption            caption
+#' @param llegenda           legenda
+#' @export                   plotKM
+plotKM<-function(y="exitus.surv",
+                grup="grup",
+                d="dades",
+                caption="",
+                llegenda=c("No","Yes")) {
 
   #  K-M   plot #####
 
@@ -991,7 +1118,20 @@ plotKM=function(y="exitus.surv",grup="grup",d="dades",caption="",llegenda=c("No"
 }
 
 
-plotKM_Incidence=function(y="exitus.surv",grup="grup",d="dades",caption="",llegenda=c("No","Yes")) {
+
+#' @title                    plotKM_Incidence
+#' @description              plotKM_Incidence
+#' @param y                  y
+#' @param grup               grup
+#' @param d                  d
+#' @param caption            caption
+#' @param llegenda           legenda
+#' @export                   plotKM_Incidence
+plotKM_Incidence<-function(y="exitus.surv",
+                          grup="grup",
+                          d="dades",
+                          caption="",
+                          llegenda=c("No","Yes")) {
 
   #  K-M   plot #####
 
@@ -1026,8 +1166,17 @@ plotKM_Incidence=function(y="exitus.surv",grup="grup",d="dades",caption="",llege
 
 
 
-
-boxplot_variables_grup<-function(dt=dades,variables="OFT_WORST",grup="DM", taulavariables="variables_R.xls") {
+#' @title                    boxplot_variables_grup
+#' @description              boxplot_variables_grup
+#' @param dt                 dt
+#' @param variables          variables
+#' @param grup               grup
+#' @param taulavariables     taulavariables
+#' @export                   boxplot_variables_grup
+boxplot_variables_grup<-function(dt=dades,
+                                 variables="OFT_WORST",
+                                 grup="DM",
+                                 taulavariables="variables_R.xls") {
 
   #  Box-plot -----------------
   # dt=dades
@@ -1057,8 +1206,17 @@ boxplot_variables_grup<-function(dt=dades,variables="OFT_WORST",grup="DM", taula
 
 }
 
-
-ggplot_grups<-function(Y="DIS_estatina",dt=dades,X="edat",grup="sexe") {
+#' @title                    ggplot_grups
+#' @description              ggplot_grups
+#' @param Y                  Y
+#' @param dt                 dt
+#' @param X                  X
+#' @param grup               grup
+#' @export                   ggplot_grups
+ggplot_grups<-function(Y="DIS_estatina",
+                       dt=dades,
+                       X="edat",
+                       grup="sexe") {
 
   #  Figura Spline Y~x per grups  --------------------
   #  Spline Y ~ x (continua) estratificat per grups)
@@ -1077,8 +1235,27 @@ ggplot_grups<-function(Y="DIS_estatina",dt=dades,X="edat",grup="sexe") {
 }
 
 
-
-MAP_ggplot<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp",grup_color=NA,grup_linea=NA,lim_inf=-Inf,lim_sup=Inf,add_point=NA) {
+#' @title                    MAP_ggplot
+#' @description              MAP_ggplot
+#' @param dades              dades
+#' @param datainicial        datainicial
+#' @param datafinal          datafinal
+#' @param id                 id
+#' @param grup_color         grup_color
+#' @param grup_linea         grup_linea
+#' @param lim_inf            lim_inf
+#' @param lim_sup            lim_sup
+#' @param add_point          add_point
+#' @export                   MAP_ggplot
+MAP_ggplot<-function(dades=dt,
+                     datainicial="data",
+                     datafinal="datafi",
+                     id="idp_temp",
+                     grup_color=NA,
+                     grup_linea=NA,
+                     lim_inf=-Inf,
+                     lim_sup=Inf,
+                     add_point=NA) {
 
   # Retorna un mapa temporal (datainicial-datafinal per grups) Individus a partir de:
   # dades, datainicial, data final, id, grup color, grup linea, finestra (porca1,porca2)
@@ -1110,14 +1287,14 @@ MAP_ggplot<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp
   porca1=lubridate::ymd(porca1)
   porca2=lubridate::ymd(porca2)
 
-  # Conversió a Sym per evaluació
+  # Conversio a Sym per evaluacio
   datainicial<-rlang::sym(datainicial)
   datafinal<-rlang::sym(datafinal)
   id<-rlang::sym(id)
   grup_color<-rlang::sym(grup_color)
   grup_linea<-rlang::sym(grup_linea)
 
-  # Calculo dies de duració
+  # Calculo dies de duracio
   dades<-dades %>%
     dplyr::mutate(
       dia0=lubridate::ymd(!!datainicial),
@@ -1146,8 +1323,19 @@ MAP_ggplot<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp
 }
 
 
-
-Gaps<-function(dt=dades,K=14,Nmostra=10,finestraX=c(NA,NA),llavor=123){
+#' @title                    Gaps
+#' @description              Gaps
+#' @param dt                 dt
+#' @param K                  K
+#' @param Nmostra            Nmostra
+#' @param finestraX          finestraX
+#' @param llavor             llavor
+#' @export                   Gaps
+Gaps<-function(dt=dades,
+               K=14,
+               Nmostra=10,
+               finestraX=c(NA,NA),
+               llavor=123){
 
   # Retorna llista amb dos data_frames de farmacs i dos plots pre i post
 
@@ -1172,7 +1360,7 @@ Gaps<-function(dt=dades,K=14,Nmostra=10,finestraX=c(NA,NA),llavor=123){
   dt<-id_sample %>% dplyr::left_join(dt,by="idp")
   dt<-dt%>%dplyr::select(idp,agr,data=dat,datafi,FACTPRESC=tipus)
 
-  # Calculo dies de duració
+  # Calculo dies de duracio
   dt<-dt %>%
     dplyr::mutate(
       data=lubridate::ymd(data),
@@ -1236,7 +1424,21 @@ Gaps<-function(dt=dades,K=14,Nmostra=10,finestraX=c(NA,NA),llavor=123){
 
 }
 
-agregar_solapaments_gaps<-function(dt=dades,id="idp",datainici="data",datafinal="datafi",gap=5,sel=F){
+#' @title                    agregar_solapaments_gaps
+#' @description              agregar_solapaments_gaps
+#' @param dt                 dt
+#' @param id                 id
+#' @param datainici          datainici
+#' @param datafinal          datafinal
+#' @param gap                gap
+#' @param sel                sel
+#' @export                   agregar_solapaments_gaps
+agregar_solapaments_gaps<-function(dt=dades,
+                                   id="idp",
+                                   datainici="data",
+                                   datafinal="datafi",
+                                   gap=5,
+                                   sel=F){
 
   #
 
@@ -1252,7 +1454,7 @@ agregar_solapaments_gaps<-function(dt=dades,id="idp",datainici="data",datafinal=
   # datafinal="datafi"
   # id="idp"
 
-  # Conversió a Sym per evaluació
+  # Conversio a Sym per evaluacio
   datainici_sym<-rlang::sym(datainici)
   datafinal_sym<-rlang::sym(datafinal)
   idp_sym=rlang::sym(id)
@@ -1270,7 +1472,7 @@ agregar_solapaments_gaps<-function(dt=dades,id="idp",datainici="data",datafinal=
   # Printa errors
   if(sel){
     errors<-dt %>% dplyr::filter(error == 1)
-    warning("ull! aquests són possibles d'errors de dates!,que s'han ELIMINAT!")
+    warning("ull! aquests son possibles d'errors de dates!,que s'han ELIMINAT!")
   }
   # Filtra
   if (sel) { dt<-dt %>% dplyr::filter(error == 0) }
@@ -1293,8 +1495,25 @@ agregar_solapaments_gaps<-function(dt=dades,id="idp",datainici="data",datafinal=
 
 }
 
-
-MAP_ggplot_univariant<-function(dades=dt,datainicial="data",datafinal="datafi",id="idp_temp", Nmostra=10,add_point=NA,add_final=NA,set_seed=123) {
+#' @title                    MAP_ggplot_univariant
+#' @description              MAP_ggplot_univariant
+#' @param dades              dades
+#' @param datainicial        datainicial
+#' @param datafinal          datafinal
+#' @param id                 id
+#' @param Nmostra            Nmostra
+#' @param add_point          add_point
+#' @param add_final          add_final
+#' @param set_seed           set_seed
+#' @export                   MAP_ggplot_univariant
+MAP_ggplot_univariant<-function(dades=dt,
+                                datainicial="data",
+                                datafinal="datafi",
+                                id="idp_temp",
+                                Nmostra=10,
+                                add_point=NA,
+                                add_final=NA,
+                                set_seed=123) {
 
   # Dibuixa mapa temporal univariant per verificar solapaments
 
@@ -1306,7 +1525,7 @@ MAP_ggplot_univariant<-function(dades=dt,datainicial="data",datafinal="datafi",i
   # add_point=NA
   # add_final="situacio"
 
-  # Conversió a Sym per evaluació
+  # Conversio a Sym per evaluacio
   datainicial<-rlang::sym(datainicial)
   datafinal<-rlang::sym(datafinal)
   id_sym<-rlang::sym(id)
@@ -1317,7 +1536,7 @@ MAP_ggplot_univariant<-function(dades=dt,datainicial="data",datafinal="datafi",i
   # if (Nmostra!=Inf) id_sample<-dades %>% dplyr::distinct(!!id) %>% dplyr:: sample_n(size=Nmostra)
   # dt<-id_sample %>% dplyr::left_join(dt,by=dplyr::quo_name(id)) #
 
-  # Calculo dies de duració
+  # Calculo dies de duracio
   dades<-dades %>%  dplyr::mutate(dia0=!!datainicial,diaf=!!datafinal,days_duration=diaf-dia0)
 
   # Gráfico el tema
@@ -1344,7 +1563,18 @@ MAP_ggplot_univariant<-function(dades=dt,datainicial="data",datafinal="datafi",i
 
 
 
-
+#' @title                    MAP_punts_ggplot
+#' @description              MAP_punts_ggplot
+#' @param dt                 dt
+#' @param id                 id
+#' @param datainicial        datainicial
+#' @param val                val
+#' @param grup_color         grup_color
+#' @param Nmostra            Nmostra
+#' @param llavor             llavor
+#' @param finestraX          finestraX
+#' @param id_AGG             id_AGG
+#' @export                   MAP_punts_ggplot
 MAP_punts_ggplot<-function(
   dt="mostra50",
   id="idp",
@@ -1410,7 +1640,7 @@ MAP_punts_ggplot<-function(
   ggplot2::ggplot(dt,ggplot2::aes(x =!!datainicial,y =id_plot,color=!!grup_color))+
     ggplot2::geom_point(ggplot2::aes(!!datainicial, id_plot)) +
     ggplot2::geom_point(ggplot2::aes(size = !!val))+
-    ggplot2::labs(title = "Històric de determinacions")+ggplot2::theme(plot.title = ggplot2::element_text(size=30,hjust = 0.5))+
+    ggplot2::labs(title = "Historic de determinacions")+ggplot2::theme(plot.title = ggplot2::element_text(size=30,hjust = 0.5))+
 
     ggplot2::theme(axis.text = ggplot2::element_text(colour = "black",size = 10))+
     ggplot2::theme(panel.grid.major = ggplot2::element_line(colour = "grey80",size=0.001))+
@@ -1426,7 +1656,18 @@ MAP_punts_ggplot<-function(
 }
 
 
-
+#' @title                    MAP_valor_ggplot
+#' @description              MAP_valor_ggplot
+#' @param dt                 dt
+#' @param id                 id
+#' @param datainicial        datainicial
+#' @param val                val
+#' @param grup_color         grup_color
+#' @param Nmostra            Nmostra
+#' @param finestraX          finestraX
+#' @param llavor             llavor
+#' @param title              title
+#' @export                   MAP_valor_ggplot
 MAP_valor_ggplot<-function(
   dt="mostra50",
   id="idp",
@@ -1436,7 +1677,7 @@ MAP_valor_ggplot<-function(
   Nmostra=1,
   finestraX=c(-Inf,Inf),
   llavor=123,
-  title="Evolució de valors"
+  title="Evolucio de valors"
 )
 {
 
@@ -1477,7 +1718,7 @@ MAP_valor_ggplot<-function(
   dt<-id_sample %>% dplyr::left_join(dt,by=dplyr::quo_name(id)) #
   #
 
-  # Construcció del identificador id-grup
+  # Construccio del identificador id-grup
   dt<-dt%>%dplyr::mutate(id_plot=paste0(stringr::str_sub(!!id,1,6),!!grup_color))
 
   # Grafica plot de la variable
@@ -1502,12 +1743,27 @@ MAP_valor_ggplot<-function(
 
 
 
-
+#' @title                    HR.COX
+#' @description              HR.COX
+#' @param x                  x
+#' @param event              event
+#' @param t                  t
+#' @param e                  e
+#' @param d                  d
+#' @param taulavariables     taulavariables
+#' @param c                  c
 #' @param ...                 Altres parametres
-HR.COX<-function(x="",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",d="dadesDF",taulavariables="variables.xls",c="",...) {
+#' @export                   HR.COX
+HR.COX<-function(x="",
+                 event="EV.INSUF_CARD",
+                 t="tmp_insuf_card",
+                 e="",
+                 d="dadesDF",
+                 taulavariables="variables.xls",
+                 c="",...) {
 
   #  HR.COX  --------------------
-  ####      funció que retorna MATRIU-->Ngran, Events, HR, IC951, IC952, p
+  ####      funcio que retorna MATRIU-->Ngran, Events, HR, IC951, IC952, p
 
   # x=""
   # event = "event_tbc"
@@ -1549,8 +1805,23 @@ HR.COX<-function(x="",event="EV.INSUF_CARD",t="tmp_insuf_card",e="",d="dadesDF",
 
 
 
-
-HR.COX.CRU=function(x="lipos",event="EVENT_MCV",t="temps_exitus",e="",d="dadesDF",variables="variables_R.xls",evento="Si") {
+#' @title                    HR.COX.CRU
+#' @description              HR.COX.CRU
+#' @param x                  x
+#' @param event              event
+#' @param t                  t
+#' @param e                  e
+#' @param d                  d
+#' @param variables          variables
+#' @param evento             evento
+#' @export                   HR.COX.CRU
+HR.COX.CRU<-function(x="lipos",
+                    event="EVENT_MCV",
+                    t="temps_exitus",
+                    e="",
+                    d="dadesDF",
+                    variables="variables_R.xls",
+                    evento="Si") {
 
   #  HR CRUS ------------------
 
@@ -1593,8 +1864,19 @@ HR.COX.CRU=function(x="lipos",event="EVENT_MCV",t="temps_exitus",e="",d="dadesDF
 }
 
 
-
-extreure_HRFG=function(event="exitusCV",
+#' @title                    extreure_HRFG
+#' @description              extreure_HRFG
+#' @param event              event
+#' @param temps              temps
+#' @param grup               grup
+#' @param eventcompetitiu    eventcompetitiu
+#' @param dt                 dt
+#' @param covariables        covariables
+#' @param codievent          codievent
+#' @param refcat             refcat
+#' @param cluster            cluster
+#' @export                   extreure_HRFG
+extreure_HRFG<-function(event="exitusCV",
                        temps="temps_seguiment",
                        grup="diabetis",
                        eventcompetitiu="exitus",
@@ -1605,7 +1887,7 @@ extreure_HRFG=function(event="exitusCV",
                        cluster=""){
 
   # HR RISCOS COMPETITIUS  -------------
-  # Funció Riscos competitius Fine & Grey
+  # Funcio Riscos competitius Fine & Grey
   # Donat un event, temps de seguiment, grup, eventcompetitiu retorna tibble:
   # Beta, SE, p-value, HR, Li95%CI, Ls95%CI
   # Afegit cluster
@@ -1674,7 +1956,21 @@ extreure_HRFG=function(event="exitusCV",
 
 }
 
-extreure_model_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure_amputa",competitiu="Ha_muerto",codievent="Yes",covariables=c("Sexo","Edad","Tabaquismo")) {
+#' @title                    extreure_model_cmprisk
+#' @description              extreure_model_cmprisk
+#' @param dt                 dt
+#' @param event              event
+#' @param temps              temps
+#' @param competitiu         competitiu
+#' @param codievent          codievent
+#' @param covariables        covariables
+#' @export                   extreure_model_cmprisk
+extreure_model_cmprisk<-function(dt=dades,
+                                 event="amputacio_cat",
+                                 temps="t_lliure_amputa",
+                                 competitiu="Ha_muerto",
+                                 codievent="Yes",
+                                 covariables=c("Sexo","Edad","Tabaquismo")) {
 
   # dt=dades
   # event="amputacio_cat"
@@ -1713,8 +2009,23 @@ extreure_model_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure_
 }
 
 
-
-extreure_cuminc_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure_amputa",competitiu="Ha_muerto",codievent="Yes",group=NULL,strata=NULL) {
+#' @title                    extreure_cuminc_cmprisk
+#' @description              extreure_cuminc_cmprisk
+#' @param dt                 dt
+#' @param event              event
+#' @param temps              temps
+#' @param competitiu         competitiu
+#' @param codievent          codievent
+#' @param group              group
+#' @param strata             strata
+#' @export                   extreure_cuminc_cmprisk
+extreure_cuminc_cmprisk<-function(dt=dades,
+                                  event="amputacio_cat",
+                                  temps="t_lliure_amputa",
+                                  competitiu="Ha_muerto",
+                                  codievent="Yes",
+                                  group=NULL,
+                                  strata=NULL) {
 
   ## Extreure cuminc competitive risk
 
@@ -1750,7 +2061,10 @@ extreure_cuminc_cmprisk<-function(dt=dades,event="amputacio_cat",temps="t_lliure
 
 }
 
-
+#' @title                    extreure_coef_cmprisk
+#' @description              extreure_coef_cmprisk
+#' @param model_cmrisk       model_cmrisk
+#' @export                   extreure_coef_cmprisk
 extreure_coef_cmprisk<-function(model_cmrisk){
 
 
@@ -1765,9 +2079,18 @@ extreure_coef_cmprisk<-function(model_cmrisk){
               `p-value`) %>% dplyr::as_tibble()
 }
 
-
-#' @param ...                 Altres parametres
-extreure_cor<-function(var1="CD36",var="quantis",d="dades",taulavariables="VARIABLES.xls",...) {
+#' @title                    extreure_cor
+#' @description              extreure_cor
+#' @param var1               var1
+#' @param var                var
+#' @param d                  d
+#' @param taulavariables     taulavariables
+#' @param ...                Altres parametres
+#' @export                   extreure_cor
+extreure_cor<-function(var1="CD36",
+                       var="quantis",
+                       d="dades",
+                       taulavariables="VARIABLES.xls",...) {
 
   # CORRELACIONS, P VALORS ENTRE var1 i llista de quantis de dades  --------------
 
@@ -1810,8 +2133,22 @@ extreure_cor<-function(var1="CD36",var="quantis",d="dades",taulavariables="VARIA
 
 
 
+#' @title                     extreure_cor_multi
+#' @description               extreure_cor_multi
+#' @param dades               dades
+#' @param llistavar1          llistavar1
+#' @param llistavar2          llistavar2
+#' @param etiquetar           etiquetar
+#' @param coductor_variables  coductor_variables
+#' @param method              method
 #' @param ...                 Altres parametres
-extreure_cor_multi<-function(dades=dt,llistavar1=c("Age","BMI"),llistavar2=c("Large_PER_HDL","Medium_HDL_P_molL"),etiquetar=F,coductor_variables="conductor_variables",method = "circle",...){
+#' @export                    extreure_cor_multi
+extreure_cor_multi<-function(dades=dt,
+                             llistavar1=c("Age","BMI"),
+                             llistavar2=c("Large_PER_HDL","Medium_HDL_P_molL"),
+                             etiquetar=F,
+                             coductor_variables="conductor_variables",
+                             method = "circle",...){
 
   # Correlacions , matriu i plot de quantis de dades  ----------------------
 
@@ -1826,7 +2163,7 @@ extreure_cor_multi<-function(dades=dt,llistavar1=c("Age","BMI"),llistavar2=c("La
   # etiquetar=T
   # method = "square"
 
-  # Selecció de variables
+  # Seleccio de variables
   dt<-dades %>% dplyr::select(llistavar1,llistavar2)
 
   # Genero matriu
@@ -1864,8 +2201,17 @@ extreure_cor_multi<-function(dades=dt,llistavar1=c("Age","BMI"),llistavar2=c("La
 
 
 
-
-extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades="dt",conditional=F,strata="caseid") {
+#' @title                     extreure_OR
+#' @description               extreure_OR
+#' @param formu               formu
+#' @param dades               dades
+#' @param conditional         conditional
+#' @param strata              strata
+#' @export                    extreure_OR
+extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",
+                        dades="dt",
+                        conditional=F,
+                        strata="caseid") {
 
   #  Extreure OR (segons formula, i dades)  --------------------
   #       LLANÇO UNA FORMULA les dades per executar un model i retorno OR , CI95% i p-valor en una tibble()
@@ -1929,8 +2275,13 @@ extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",dades="dt",conditional=F,str
 }
 
 
-
-generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",dades=dt) {
+#' @title                     generar_taula_variables_formula
+#' @description               generar_taula_variables_formula
+#' @param formu               formu
+#' @param dades               dades
+#' @export                    generar_taula_variables_formula
+generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",
+                                          dades=dt) {
 
   # Taula variables segons formula i dades genera la taula de coeficients
 
@@ -1948,8 +2299,27 @@ generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",dades=dt) 
 }
 
 
-
-extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariables="conductorvariables",dades=dades,elimina=c("IDP"),a="", valor_outcome="Yes",conditional=F,strata="caseid") {
+#' @title                     extreure_model_logistic
+#' @description               extreure_model_logistic
+#' @param x                   x
+#' @param y                   y
+#' @param taulavariables      taulavariables
+#' @param dades               dades
+#' @param elimina             elimina
+#' @param a                   a
+#' @param valor_outcome       valor_outcome
+#' @param conditional         conditional
+#' @param strata              strata
+#' @export                    extreure_model_logistic
+extreure_model_logistic<-function(x="OS4_GSK",
+                                  y="canvi6M.glipesCAT2",
+                                  taulavariables="conductorvariables",
+                                  dades=dades,
+                                  elimina=c("IDP"),
+                                  a="",
+                                  valor_outcome="Yes",
+                                  conditional=F,
+                                  strata="caseid") {
 
   # Retorno model amb ORs, curva ROC , auc IC95% etc... a partir de formula glm , i dades
 
@@ -1977,7 +2347,7 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
   covariables_character<-dades %>% dplyr::select_at(covariables) %>% dplyr::select_if(is.character) %>% names()
   dades<-dades %>% dplyr::mutate_at(covariables_character,as.factor)
 
-  # Eliminar variable que no hi ha com a mínim 2 nivells
+  # Eliminar variable que no hi ha com a minim 2 nivells
   var_eliminar<-dades %>% dplyr::select_at(covariables) %>% dplyr::select_if(is.factor) %>% purrr::map(~length(unique(.x)))
   var_eliminar<-var_eliminar[var_eliminar==1] %>% names()
   print(paste0("Eliminada del model: ", var_eliminar))
@@ -1987,7 +2357,7 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
   #formu_text<-formula.text(x=x,y=y,taulavariables=taulavariables,eliminar = var_eliminar)
   formu_text<-formula_text(x=x,y=y,taulavariables=taulavariables,eliminar = var_eliminar)
 
-  # Subselecciono dades completes amb només variables utilitzades i elimino nivells sense utilitzar (Sinó peta en ROC curve)
+  # Subselecciono dades completes amb nomes variables utilitzades i elimino nivells sense utilitzar (Sino peta en ROC curve)
   if (conditional) {dades<-dades %>% dplyr::select(c(all.vars(formu),strata)) %>% stats::na.omit()}
   if (conditional==F) {dades<-dades %>% dplyr::select(c(all.vars(formu))) %>% stats::na.omit()}
   # Eliminar nivells que no tenim dades de variables factor
@@ -2061,15 +2431,22 @@ extreure_model_logistic<-function(x="OS4_GSK",y="canvi6M.glipesCAT2",taulavariab
 
 
 
-
-resum3<-function(dt=dades,x="val_last.HBA1C",estrat="constant"){
+#' @title                     resum3
+#' @description               resum3
+#' @param dt                  dt
+#' @param x                   x
+#' @param estrat              estrat
+#' @export                    resum3
+resum3<-function(dt=dades,
+                 x="val_last.HBA1C",
+                 estrat="constant"){
 
 
   #  Resum d'un data.table (Mitjana, DT, N etc...)  --------------------
 
   ######         RESUM D'UN DATA.TABLE
 
-  ###   LLANÇO UN DT, VARIABLE I UNA ESTRATIFICACIó I EM TORNA UN DT AMB un resum
+  ###   LLANÇO UN DT, VARIABLE I UNA ESTRATIFICACIo I EM TORNA UN DT AMB un resum
 
   ### mitjana, DT, N etc... per cada ESTRAT
 
@@ -2091,11 +2468,18 @@ resum3<-function(dt=dades,x="val_last.HBA1C",estrat="constant"){
 }
 
 
-
-resum_quanti<-function(dt=dades,y="valor_basal.GLICADA",grup="constant") {
+#' @title                   resum_quanti
+#' @description             resum_quanti
+#' @param dt                dt
+#' @param y                 y
+#' @param grup              grup
+#' @export                  resum_quanti
+resum_quanti<-function(dt=dades,
+                       y="valor_basal.GLICADA",
+                       grup="constant") {
 
   #  Resum quanti  -------------------------
-  #####     funció que retorna un summary (mean, sd) de y en funció d'un grup
+  #####     funcio que retorna un summary (mean, sd) de y en funcio d'un grup
 
   dt$constant=1
 
@@ -2120,8 +2504,17 @@ resum_quanti<-function(dt=dades,y="valor_basal.GLICADA",grup="constant") {
 }
 
 
-
-resum_quanti_estrat<-function(dt=dades,y="valor_basal.GLICADA",grup="CODGLP1",estrat="HBA1C_cat4"){
+#' @title                   resum_quanti_estrat
+#' @description             resum_quanti_estrat
+#' @param dt                dt
+#' @param y                 y
+#' @param grup              grup
+#' @param estrat            estrat
+#' @export                  resum_quanti_estrat
+resum_quanti_estrat<-function(dt=dades,
+                              y="valor_basal.GLICADA",
+                              grup="CODGLP1",
+                              estrat="HBA1C_cat4"){
 
   #  ESTADISTICS RESUMS x grup x estrat ----------------------
   # RETORNA ESTADISTICS RESUMS (mean, sd, p-valor --> ANOVA/t-test) X GRUP  X ESTRAT
@@ -2150,8 +2543,17 @@ resum_quanti_estrat<-function(dt=dades,y="valor_basal.GLICADA",grup="CODGLP1",es
 
 
 
-
-resum_events<-function(dades="dadestotal",evento="RD",temps="temps",valorevent="Si") {
+#' @title                   resum_events
+#' @description             resum_events
+#' @param dades             dades
+#' @param evento            evento
+#' @param temps             temps
+#' @param valorevent        valorevent
+#' @export                  resum_events
+resum_events<-function(dades="dadestotal",
+                       evento="RD",
+                       temps="temps",
+                       valorevent="Si") {
 
   #  Resum events  ----------------------
   ###################         Llan?o dades, event i temps i me fa un resum
@@ -2175,8 +2577,15 @@ resum_events<-function(dades="dadestotal",evento="RD",temps="temps",valorevent="
 }
 
 
-
-resum_events_v2<-function(dades=dades,evento="RD",temps="temps") {
+#' @title                   resum_events_v2
+#' @description             resum_events_v2
+#' @param dades             dades
+#' @param evento            evento
+#' @param temps             temps
+#' @export                  resum_events_v2
+resum_events_v2<-function(dades=dades,
+                          evento="RD",
+                          temps="temps") {
 
   #  Resum events  ----------------------
 
@@ -2201,10 +2610,19 @@ resum_events_v2<-function(dades=dades,evento="RD",temps="temps") {
 
 
 
+#' @title                   resum_events_v3
+#' @description             resum_events_v3
+#' @param dt                dt
+#' @param evento            evento
+#' @param temps             temps
+#' @param valorevent        valorevent
+#' @export                  resum_events_v3
+resum_events_v3<-function(dt="dadestotal",
+                          evento="RD",
+                          temps="temps",
+                          valorevent="Si") {
 
-resum_events_v3<-function(dt="dadestotal",evento="RD",temps="temps",valorevent="Si") {
-
-  # Versió millorada, retorna tibble
+  # Versio millorada, retorna tibble
 
   # evento="EV.CVD"
   # temps="EV.CVD_temps"
@@ -2223,8 +2641,17 @@ resum_events_v3<-function(dt="dadestotal",evento="RD",temps="temps",valorevent="
 
 
 
-
-resum_events_grup=function(d="dadestotal",evento="RD",temps="TEMPS_RD2",grup="sexe") {
+#' @title                   resum_events grups
+#' @description             resum_events grups
+#' @param d                 d
+#' @param evento            evento
+#' @param temps             temps
+#' @param grup              grup
+#' @export                  resum_events_grup
+resum_events_grup<-function(d="dadestotal",
+                           evento="RD",
+                           temps="TEMPS_RD2",
+                           grup="sexe") {
 
   #  Resum events per grup  ------------------
   ##########              Llanço dades, event, temps , grup i retorno un resum d'events per grups
@@ -2247,9 +2674,18 @@ resum_events_grup=function(d="dadestotal",evento="RD",temps="TEMPS_RD2",grup="se
 }
 
 
-
+#' @title                     Resum_taxa_incidencia
+#' @description               Resum_taxa_incidencia
+#' @param dt                  dt
+#' @param evento              evento
+#' @param temps               temps
+#' @param valorevent          valorevent
 #' @param ...                 Altres parametres
-Resum_taxa_incidencia<-function(dt=dades,evento="event_tbc",temps="anys_lliure_tbc",valorevent="1",...) {
+#' @export                    Resum_taxa_incidencia
+Resum_taxa_incidencia<-function(dt=dades,
+                                evento="event_tbc",
+                                temps="anys_lliure_tbc",
+                                valorevent="1",...) {
 
   ## Retorna taxa d'incidencia + corresponent IC95
 
@@ -2265,7 +2701,19 @@ Resum_taxa_incidencia<-function(dt=dades,evento="event_tbc",temps="anys_lliure_t
   cbind(Patients,PYears,N.Events,rate=pp$est,IC95_Linf=pp$lower,IC95_Lsup=pp$upper)%>%dplyr:: as_tibble()
 }
 
-Resum_taxa_incidencia_idp<-function(dt=dades,evento="event_tbc",temps="anys_lliure_tbc",valorevent="1",...) {
+
+#' @title                     Resum_taxa_incidencia_idp
+#' @description               Resum_taxa_incidencia_idp
+#' @param dt                  dt
+#' @param evento              evento
+#' @param temps               temps
+#' @param valorevent          valorevent
+#' @param ...                 Altres parametres
+#' @export                    Resum_taxa_incidencia_idp
+Resum_taxa_incidencia_idp<-function(dt=dades,
+                                    evento="event_tbc",
+                                    temps="anys_lliure_tbc",
+                                    valorevent="1",...) {
 
   # dades_long %>% Resum_taxa_incidencia_idp(evento="event_tbc_long",temps="tmp_seguiment",valorevent=1)
   # dt=dades_long
@@ -2286,8 +2734,17 @@ Resum_taxa_incidencia_idp<-function(dt=dades,evento="event_tbc",temps="anys_lliu
 }
 
 
-
-llistadetaules.compare<-function(tablero=c("taula1","taula2","taula3","taula4","taula5"),y="sexe",variables = "variables.xls",dt=dades){
+#' @title                     llistadetaules.compare
+#' @description               llistadetaules.compare
+#' @param tablero             tablero
+#' @param y                   y
+#' @param variables           variables
+#' @param dt                  dt
+#' @export                    llistadetaules.compare
+llistadetaules.compare<-function(tablero=c("taula1","taula2","taula3","taula4","taula5"),
+                                 y="sexe",
+                                 variables = "variables.xls",
+                                 dt=dades){
 
 
   #  Llistat de Taules compare ------------------
@@ -2307,7 +2764,13 @@ llistadetaules.compare<-function(tablero=c("taula1","taula2","taula3","taula4","
 
 }
 
-
+#' @title                     Pvalors_ajustats_compare
+#' @description               Pvalors_ajustats_compare
+#' @param objecte_compare     objecte_compare
+#' @param metodo              metodo
+#' @param p                   p
+#' @param Sig                 Sig
+#' @export                    Pvalors_ajustats_compare
 Pvalors_ajustats_compare<-function(objecte_compare="T1.1.2",
                                    metodo="BH",
                                    p="p.overall",
@@ -2364,7 +2827,15 @@ Pvalors_ajustats_compare<-function(objecte_compare="T1.1.2",
 }
 
 
-Pvalors_ajustats_Update_Compare<-function(objecte_compare="res",p="p.overall",method ="BH") {
+#' @title                     Pvalors_ajustats_Update_Compare
+#' @description               Pvalors_ajustats_Update_Compare
+#' @param objecte_compare     objecte_compare
+#' @param p                   p
+#' @param method              method
+#' @export                    Pvalors_ajustats_Update_Compare
+Pvalors_ajustats_Update_Compare<-function(objecte_compare="res",
+                                          p="p.overall",
+                                          method ="BH") {
 
   ## Actualitzar p-valors d'un objecte CompareGroups
 
@@ -2388,7 +2859,16 @@ Pvalors_ajustats_Update_Compare<-function(objecte_compare="res",p="p.overall",me
   objecte_compare
 }
 
-Pvalors_ajustats_taula<-function(objecte_taula="OR.ajust", p.valors='p valor', metodo="BH") {
+
+#' @title                     Pvalors_ajustats_taula
+#' @description               Pvalors_ajustats_taula
+#' @param objecte_taula       objecte_taula
+#' @param p.valors            p.valors
+#' @param metodo              metodo
+#' @export                    Pvalors_ajustats_taula
+Pvalors_ajustats_taula<-function(objecte_taula="OR.ajust",
+                                 p.valors='p valor',
+                                 metodo="BH") {
 
   # objecte_taula=taulacoef
   # p.valors='P_adj'
@@ -2422,11 +2902,21 @@ Pvalors_ajustats_taula<-function(objecte_taula="OR.ajust", p.valors='p valor', m
 
 }
 
-
+#' @title                     criteris_exclusio
+#' @description               criteris_exclusio
+#' @param dt                  dt
+#' @param taulavariables      taulavariables
+#' @param criteris            criteris
+#' @param missings            missings
 #' @param ...                 Altres parametres
-criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris="exclusio1",missings=T,...) {
+#' @export                    criteris_exclusio
+criteris_exclusio<-function(dt=dades,
+                            taulavariables="VARIABLES_R3b.xls",
+                            criteris="exclusio1",
+                            missings=T,
+                            ...) {
 
-  #  APLICA CRITERIS D'EXCLUSIÓ A dades  -----------------------
+  #  APLICA CRITERIS D'EXCLUSIo A dades  -----------------------
 
   # Per defecte exclou registres que tenen missings en variables implicades
   # missings=F --> no elimina per criteri amb valors missings
@@ -2453,7 +2943,7 @@ criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris
   # llista de caracters logics del filtre
   char_logics<-c(">",">=","<","<=","==","!=","is.na") %>% paste0(collapse = '|')
 
-  ##  0. Filtro taula variables només variables implicades en el filtre i el genero
+  ##  0. Filtro taula variables nomes variables implicades en el filtre i el genero
   maco<-variables %>%
     dplyr::filter_(paste0(criteris,"!=0")) %>% dplyr::select_("camp",criteris) %>%
     dplyr::transmute_("camp","crit_temp"=criteris) %>%
@@ -2483,14 +2973,21 @@ criteris_exclusio<-function(dt=dades,taulavariables="VARIABLES_R3b.xls",criteris
 
 
 
-
+#' @title                     criteris_exclusio_taula
+#' @description               criteris_exclusio_taula
+#' @param dt                  dt
+#' @param taulavariables      taulavariables
+#' @param criteris            criteris
+#' @param ordre               ordre
 #' @param ...                 Altres parametres
+#' @export                    criteris_exclusio_taula
 criteris_exclusio_taula<-function(dt=dades,
                                   taulavariables=here::here("Conductor_CANA.xlsx"),
                                   criteris="exclusio",
-                                  ordre=NA,...) {
+                                  ordre=NA,
+                                  ...) {
 
-  ####  Funció que retorna una taula les N's aplicant els criteris d'exclusió i la N cada vegada que s'aplica un criteri de manera sequencial
+  ####  Funcio que retorna una taula les N's aplicant els criteris d'exclusio i la N cada vegada que s'aplica un criteri de manera sequencial
   #### dades, conductor i camp on tenim els criteris, i si es vol un camp amb l'ordre
 
 
@@ -2518,7 +3015,7 @@ criteris_exclusio_taula<-function(dt=dades,
     purrr::map(~dt %>% dplyr::filter(eval(parse(text = .x))))%>%
     purrr::map_df(~dplyr::count(.x),.id="Criteri") %>% dplyr::transmute(N_excluded=dplyr::n)
 
-  # Genero taula de N's després d'aplicar exclusions sequencials
+  # Genero taula de N's despres d'aplicar exclusions sequencials
   dt_temp2<-seq(1:length(vec_excl)) %>%
     purrr::map(~paste0("!",vec_excl[1:.x],collapse = " & ")) %>%
     purrr::map(~dt %>% dplyr::filter(eval(parse(text = .x)))) %>%
@@ -2533,10 +3030,15 @@ criteris_exclusio_taula<-function(dt=dades,
 
 
 
+#' @title                     calcular_proporcio
+#' @description               calcular_proporcio
+#' @param dt                  dt
+#' @param factor              factor
+#' @export                    calcular_proporcio
+calcular_proporcio<-function(dt=dades,
+                             factor="canvi612M.glicadaCAT2"){
 
-calcular_proporcio<-function(dt=dades,factor="canvi612M.glicadaCAT2"){
-
-  #  CALCULA LA PROPORCIÓ -- RETORNA N I % fila ----------------
+  #  CALCULA LA PROPORCIo -- RETORNA N I % fila ----------------
 
   # dt=dades
   # factor="canvi612M.glicadaCAT2"
@@ -2553,8 +3055,15 @@ calcular_proporcio<-function(dt=dades,factor="canvi612M.glicadaCAT2"){
 }
 
 
-
-proporcions_grups<-function(dt=dades,factor="canvi612M.glicadaCAT2",estrat="SEXE"){
+#' @title                     proporcions_grups
+#' @description               proporcions_grups
+#' @param dt                  dt
+#' @param factor              factor
+#' @param estrat              estrat
+#' @export                    proporcions_grups
+proporcions_grups<-function(dt=dades,
+                            factor="canvi612M.glicadaCAT2",
+                            estrat="SEXE"){
 
   #  CALCULA PROPORCIO PER GRUPS I RETORNA P VALOR    --------------
 
@@ -2579,8 +3088,17 @@ proporcions_grups<-function(dt=dades,factor="canvi612M.glicadaCAT2",estrat="SEXE
 }
 
 
-
-proporcio_grups_estratificat<-function(dt=dades,factor.Y="canvi612M.glicadaCAT2",grup=c("SEXE","CODGLP1","anys_DMcat4"),estratificat="HBA1C_cat4") {
+#' @title                     proporcio_grups_estratificat
+#' @description               proporcio_grups_estratificat
+#' @param dt                  dt
+#' @param factor.Y            factor.Y
+#' @param grup                grup
+#' @param estratificat        estratificat
+#' @export                    proporcio_grups_estratificat
+proporcio_grups_estratificat<-function(dt=dades,
+                                       factor.Y="canvi612M.glicadaCAT2",
+                                       grup=c("SEXE","CODGLP1","anys_DMcat4"),
+                                       estratificat="HBA1C_cat4") {
 
   #  RETORNA UNA LLISTA DE TAULES DE PROPORCIONS PER GRUPS ESTRATIFICAT PER estratificat ----------
 
@@ -2608,10 +3126,19 @@ proporcio_grups_estratificat<-function(dt=dades,factor.Y="canvi612M.glicadaCAT2"
 
 
 
+#' @title                     reduccio_ajustada
+#' @description               reduccio_ajustada
+#' @param dt                  dt
+#' @param v.basal             v.basal
+#' @param v.final             v.final
+#' @param mean.basal          mean.basal
+#' @export                    reduccio_ajustada
+reduccio_ajustada<-function(dt=dades,
+                            v.basal,
+                            v.final,
+                            mean.basal=NA) {
 
-reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
-
-  #  REDUCCIÓ AJUSTADA DIFERENTS METODES D'AJUST-----------------
+  #  REDUCCIo AJUSTADA DIFERENTS METODES D'AJUST-----------------
 
   ##    BASAL , POST I RETORNA LA DIFERENCIA AJUSTA SEGONS EL BASAL I ERROR ESTANDARD
 
@@ -2631,7 +3158,7 @@ reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
   #   Calculo la variable canvi
   dt<-dt %>%
     dplyr::mutate(canvi=dt[,v.basal]-dt[,v.final])
-  # Genero quintils que no els faré servir de moment
+  # Genero quintils que no els fare servir de moment
   dt<-dt %>%
     dplyr::mutate(basal_cat5=Hmisc::cut2(dt[,v.basal], g=5))
 
@@ -2683,7 +3210,7 @@ reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
     purrr::map_dbl(function(modelaco) (1-(modelaco$deviance/modelaco$null.deviance))) %>%
     as.data.frame()
 
-  ## Combino informació Rquadrat + prediccions de cada model
+  ## Combino informacio Rquadrat + prediccions de cada model
   taula.models<-cbind(Rquadrat,maquina)
 
   ## poso els noms dels models com una columna
@@ -2703,10 +3230,13 @@ reduccio_ajustada<-function(dt=dades,v.basal,v.final,mean.basal=NA) {
 
 }
 
+#' @title                     glance.prediction
+#' @description               glance.prediction
+#' @param x                   x
+#' @export                    glance.prediction
+glance.prediction <-function(x) {
 
-glance.prediction = function(x) {
-
-  #  Predicció ajustada amb dades imputades   -----------------
+  #  Prediccio ajustada amb dades imputades   -----------------
 
   #  Envio un dades generades amb MICE , X Y i retorna les prediccions amb ES     ###
 
@@ -2722,7 +3252,13 @@ tidy.prediction = function(x, effects = "fixed", exponentiate = FALSE)
 
 
 
-
+#' @title                     retorn_prediccio_MI
+#' @description               retorn_prediccio_MI
+#' @param data_imp            data_imp
+#' @param x                   x
+#' @param y                   y
+#' @param dades_origen        dades_origen
+#' @export                    retorn_prediccio_MI
 retorn_prediccio_MI<-function(data_imp=tempData,
                               x="HBpreADD",
                               y="canvi_ADD",
@@ -2761,7 +3297,21 @@ retorn_prediccio_MI<-function(data_imp=tempData,
 
 }
 
-retorn_prediccio_MI_STR<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",dades_origen=dades,valor_subset="<8",var_subset="HBpreADD") {
+#' @title                     retorn_prediccio_MI_STR
+#' @description               retorn_prediccio_MI_STR
+#' @param data_imp            data_imp
+#' @param x                   x
+#' @param y                   y
+#' @param dades_origen        dades_origen
+#' @param valor_subset        valor_subset
+#' @param var_subset          var_subset
+#' @export                    retorn_prediccio_MI_STR
+retorn_prediccio_MI_STR<-function(data_imp=tempData,
+                                  x="HBpreADD",
+                                  y="canvi_ADD",
+                                  dades_origen=dades,
+                                  valor_subset="<8",
+                                  var_subset="HBpreADD") {
 
   # data_imp=tempData
   # x="1"
@@ -2803,7 +3353,24 @@ retorn_prediccio_MI_STR<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",d
 
 }
 
-retorn_prediccio_MI_STR2<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",dades_origen=dades,valor_subset1=">=8",valor_subset2="<=10",var_subset="HBpreADD") {
+
+#' @title                     retorn_prediccio_MI_STR2
+#' @description               retorn_prediccio_MI_STR2
+#' @param data_imp            data_imp
+#' @param x                   x
+#' @param y                   y
+#' @param dades_origen        dades_origen
+#' @param valor_subset1       valor_subset1
+#' @param valor_subset2       valor_subset2
+#' @param var_subset          var_subset
+#' @export                    retorn_prediccio_MI_STR2
+retorn_prediccio_MI_STR2<-function(data_imp=tempData,
+                                   x="HBpreADD",
+                                   y="canvi_ADD",
+                                   dades_origen=dades,
+                                   valor_subset1=">=8",
+                                   valor_subset2="<=10",
+                                   var_subset="HBpreADD") {
 
   # data_imp=tempData
   # x="1"
@@ -2849,10 +3416,27 @@ retorn_prediccio_MI_STR2<-function(data_imp=tempData,x="HBpreADD",y="canvi_ADD",
 
 
 
+#' @title                     plot.dispersio.reduccio
+#' @description               plot.dispersio.reduccio
+#' @param dt                  dt
+#' @param v.basal             v.basal
+#' @param v.final             v.final
 
-plot.dispersio.reduccio <-function(dt="dades",v.basal="HBpreADD",v.final="HBpostADD") {
+plot.dispersio.reduccio <-function(dt="dades",
+                                   v.basal="HBpreADD",
+                                     v.final="HBpostADD") {
 
-  #  PLOT dispersió segons PRE-POST , FA DISPERSIÓ DE PRE VS CANVI I SOBREPOSA AJUST------
+  # no hem posta export.
+  #See section 'Generic functions and methods' in the 'Writing R
+  #Extensions' manual.
+
+  #Found the following apparent S3 methods exported but not registered:
+  #  formula.LOGIT plot.dispersio.reduccio
+  #See section 'Registering S3 methods' in the 'Writing R Extensions'
+  #manual.
+
+
+  #  PLOT dispersio segons PRE-POST , FA DISPERSIo DE PRE VS CANVI I SOBREPOSA AJUST------
   # library(mgcv)
 
   # #  parametres
@@ -2897,7 +3481,23 @@ plot.dispersio.reduccio <-function(dt="dades",v.basal="HBpreADD",v.final="HBpost
 }
 
 
-forest.plot<-function(dadesmodel="ramo",label=dadesmodel$Categoria,mean=dadesmodel$OR,lower=dadesmodel$Linf,upper=dadesmodel$Lsup,label_X="OR (95% CI)", intercept=1) {
+#' @title                     forest.plot
+#' @description               forest.plot
+#' @param dadesmodel          dadesmodel
+#' @param label               label
+#' @param mean                mean
+#' @param lower               lower
+#' @param upper               upper
+#' @param label_X             label_X
+#' @param intercept           intercept
+#' @export                    forest.plot
+forest.plot<-function(dadesmodel="ramo",
+                      label=dadesmodel$Categoria,
+                      mean=dadesmodel$OR,
+                      lower=dadesmodel$Linf,
+                      upper=dadesmodel$Lsup,
+                      label_X="OR (95% CI)",
+                      intercept=1) {
 
   #  Forest.plot --------------------
 
@@ -2926,9 +3526,25 @@ forest.plot<-function(dadesmodel="ramo",label=dadesmodel$Categoria,mean=dadesmod
 }
 
 
-forest.plot.v2<-function(dadesmodel="ramo",label="Categoria",mean="OR",lower="Linf",upper="Lsup",label_X="OR (95% CI)", intercept=1) {
+#' @title                     forest.plot.v2
+#' @description               forest.plot.v2
+#' @param dadesmodel          dadesmodel
+#' @param label               label
+#' @param mean                mean
+#' @param lower               lower
+#' @param upper               upper
+#' @param label_X             label_X
+#' @param intercept           intercept
+#' @export                    forest.plot.v2
+forest.plot.v2<-function(dadesmodel="ramo",
+                         label="Categoria",
+                         mean="OR",
+                         lower="Linf",
+                         upper="Lsup",
+                         label_X="OR (95% CI)",
+                         intercept=1) {
 
-  # Forest plot versió 2 millorada per tal que funcioni
+  # Forest plot versio 2 millorada per tal que funcioni
 
   # dadesmodel=dt_dif
   # label="lipo"
@@ -2955,7 +3571,20 @@ forest.plot.v2<-function(dadesmodel="ramo",label="Categoria",mean="OR",lower="Li
 }
 
 
-
+#' @title                     forest.plot.v3
+#' @description               forest.plot.v3
+#' @param dadesmodel          dadesmodel
+#' @param label               label
+#' @param mean                mean
+#' @param lower               lower
+#' @param upper               upper
+#' @param label_X             label_X
+#' @param intercept           intercept
+#' @param nivell              nivell
+#' @param factor1             factor1
+#' @param factor2             factor2
+#' @param color               color
+#' @export                    forest.plot.v3
 forest.plot.v3<-function(dadesmodel="dt_estimacions",
                          label="Categoria",
                          mean="estimate",
@@ -2968,7 +3597,7 @@ forest.plot.v3<-function(dadesmodel="dt_estimacions",
                          factor2="datos",
                          color=TRUE) {
 
-  # Forest plot versió 3
+  # Forest plot versio 3
 
   # dadesmodel=dt_estimacions
   # label="labels"
@@ -3030,10 +3659,35 @@ forest.plot.v3<-function(dadesmodel="dt_estimacions",
 }
 
 
-
-forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Linf",upper="Lsup",label_X="OR (95% CI)",
+#' @title                     forest.plot.HR
+#' @description               forest.plot.HR
+#' @param dadesmodel          dadesmodel
+#' @param label               label
+#' @param mean                mean
+#' @param lower               lower
+#' @param upper               upper
+#' @param label_X             label_X
+#' @param intercept           intercept
+#' @param nivell              nivell
+#' @param factor1             factor1
+#' @param color               color
+#' @param label_Xvertical     label_Xvertical
+#' @param nolabels            nolabels
+#' @param title               title
+#' @param label_Favors        label_Favors
+#' @export                    forest.plot.HR
+forest.plot.HR<-function(dadesmodel,
+                         label="Categoria",
+                         mean="estimate",
+                         lower="Linf",
+                         upper="Lsup",
+                         label_X="OR (95% CI)",
                          intercept=1,
-                         nivell="outcome", factor1="type",color=F, label_Xvertical="Cardiovascular event",nolabels=TRUE,
+                         nivell="outcome",
+                         factor1="type",
+                         color=F,
+                         label_Xvertical="Cardiovascular event",
+                         nolabels=TRUE,
                          title = "Forest plot of hazard hatios and confidence interval (95%CI)",
                          label_Favors="Favors SGLT-2        Favors oGLD-2") {
 
@@ -3120,7 +3774,23 @@ forest.plot.HR<-function(dadesmodel,label="Categoria",mean="estimate",lower="Lin
 }
 
 
-
+#' @title                     forest.plot.v4
+#' @description               forest.plot.v4
+#' @param dadesmodel          dadesmodel
+#' @param label               label
+#' @param mean                mean
+#' @param lower               lower
+#' @param upper               upper
+#' @param label_X             label_X
+#' @param intercept           intercept
+#' @param nivell              nivell
+#' @param factor              factor
+#' @param label_Xvertical     label_Xvertical
+#' @param title               title
+#' @param subtitle            subtitle
+#' @param caption             caption
+#' @param label_Favors        label_Favors
+#' @export                    fores.plot.v4
 fores.plot.v4<-function(dadesmodel="dt_outHR",
                         label="etiqueta",
                         mean="estimate",
@@ -3207,7 +3877,10 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
 
 
 
-
+#' @title                     dt_index_data_random
+#' @description               dt_index_data_random
+#' @param dt                  dt
+#' @export                    dt_index_data_random
 dt_index_data_random<-function(dt="PACIENTS") {
 
 
@@ -3236,19 +3909,26 @@ dt_index_data_random<-function(dt="PACIENTS") {
   BD_PAC_DINDEX<-dt %>%
     dplyr::select(idp,dtsortida) %>%
     cbind(data_index_data) %>%                                # Fusiono dates random
-    dplyr::filter(dtindex.random<=lubridate::ymd(dtsortida)) %>%     # Filtro només aquells que dins de la data de seguiment
+    dplyr::filter(dtindex.random<=lubridate::ymd(dtsortida)) %>%     # Filtro nomes aquells que dins de la data de seguiment
     dplyr::select (idp,dtindex.random) %>%
     dplyr::as_tibble()
 
 }
 
 
-
-dt_index_data_semirandom<-function(dt="PACIENTS",dt.variables="VARIABLES",codi="EK201"){
+#' @title                     dt_index_data_semirandom
+#' @description               dt_index_data_semirandom
+#' @param dt                  dt
+#' @param dt.variables        dt.variables
+#' @param codi                codi
+#' @export                   dt_index_data_semirandom
+dt_index_data_semirandom<-function(dt="PACIENTS",
+                                   dt.variables="VARIABLES",
+                                   codi="EK201"){
 
   #
 
-  #  GENERA UNA DATA INDEX SEGONS UNA DETERMINACIÓ ----------------------
+  #  GENERA UNA DATA INDEX SEGONS UNA DETERMINACIo ----------------------
   ## RETORNA DADES AMB idp + dtindex.semirandom
 
   # dt=PACIENTS
@@ -3257,15 +3937,15 @@ dt_index_data_semirandom<-function(dt="PACIENTS",dt.variables="VARIABLES",codi="
 
   # b) SEMI.RANDOM (amb un màxim de data a data sortida)
 
-  # Una data entre tots Colesterol total (prèvies a data sortida)
-  # Si no hi ha cap Colesterol alguna V clínica període (Random)
+  # Una data entre tots Colesterol total (previes a data sortida)
+  # Si no hi ha cap Colesterol alguna V clinica periode (Random)
   set.seed(123)
   ### Per cada pacient selecciono una dat random de entre tots els COLESTEROLS  (2010-2016)
   UN.COLESTEROL<-dt.variables %>%
     dplyr::filter(cod==codi) %>%                       # selecciono colesterols (Validar que es EK201)
     dplyr::left_join(dt,by="idp") %>%           # Junto pacients
     dplyr::select(idp,cod,dat,dtsortida) %>%           # Selecciono camps necessaris
-    dplyr::filter(!is.na(dtsortida)) %>%               # Filtro només pacients (amb dtsortida)
+    dplyr::filter(!is.na(dtsortida)) %>%               # Filtro nomes pacients (amb dtsortida)
     dplyr::filter (dat>=20100101 & dat<=dtsortida) %>%  # filtro Dates dins periode de seguiment
     dplyr::group_by(idp) %>%                           # Agafo un colesterol per cada idp
     dplyr::sample_n(size = 1) %>%                      # Random
@@ -3277,7 +3957,7 @@ dt_index_data_semirandom<-function(dt="PACIENTS",dt.variables="VARIABLES",codi="
   UNA.VARIABLE<-dt.variables %>%                # totes les variables
     dplyr::left_join(dt,by="idp") %>%           # Junto pacients
     dplyr::select(idp,dat,dtsortida) %>%               # Selecciono camps necessaris
-    dplyr::filter(!is.na(dtsortida)) %>%               # Filtro només pacients amb dtsortida
+    dplyr::filter(!is.na(dtsortida)) %>%               # Filtro nomes pacients amb dtsortida
     dplyr::filter (dat>=20100101 & dat<=dtsortida) %>% # Dates possibles dins el seguiment
     dplyr::group_by(idp) %>%                           # Agafo unA fila per cada idp
     dplyr::sample_n(size = 1) %>%                      # RAndom
@@ -3285,7 +3965,7 @@ dt_index_data_semirandom<-function(dt="PACIENTS",dt.variables="VARIABLES",codi="
     dplyr::select(idp, dat) %>%
     dplyr::rename(dat_var=dat)
 
-  ### Fusió d'ambdos fitxers i selecciono una d'elles preferentment colesterol
+  ### Fusio d'ambdos fitxers i selecciono una d'elles preferentment colesterol
 
   BDADES_DT_INDEX<-UNA.VARIABLE %>%
     dplyr::left_join(UN.COLESTEROL,by="idp") %>%
@@ -3294,12 +3974,23 @@ dt_index_data_semirandom<-function(dt="PACIENTS",dt.variables="VARIABLES",codi="
 
 }
 
+#' @title                     matching_4grups
+#' @description               matching_4grups
+#' @param dt                  dt
+#' @param grups               grups
+#' @param vars_match          vars_match
+#' @param conductor           conductor
+#' @param caliper             caliper
+#' @export                    matching_4grups
+matching_4grups<-function(dt=dadesini,
+                          grups="grup",
+                          vars_match="matching",
+                          conductor="vars_ilerbus.xls",
+                          caliper=0.01) {
 
-matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conductor="vars_ilerbus.xls",caliper=0.01) {
-
-  # Funció que retorna 4 grups aparellats per 4 grups (2 x 2) de 2 variables
+  # Funcio que retorna 4 grups aparellats per 4 grups (2 x 2) de 2 variables
   # Entra una base de dades (dades) i una variable factor amb 4 nivells
-  # Retorna dades aparellades en dos fases a) 1vs3 2vs4  Fusió --> b) 1vs2 3vs4
+  # Retorna dades aparellades en dos fases a) 1vs3 2vs4  Fusio --> b) 1vs2 3vs4
 
 
 
@@ -3334,7 +4025,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
 
   #  -----------------  2 vs 4 ---------------------- dades_match13
   dades<-dt %>% dplyr::filter(id_grup==2 | id_grup==4 ) # Filtro dos grups
-  # Validació prematch
+  # Validacio prematch
 
   # Dicotomitzar id_grup
   dades<-make_dummies(dades,"id_grup","gr_")
@@ -3346,12 +4037,12 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   # Filtro per ps
   dades_match_24<-dades %>%dplyr:: bind_cols(ps=m.out$weights) %>% dplyr::filter(ps==1) %>% dplyr::select(-ps)
 
-  # -------------------  Actualitzar dt amb dades només matxejades ---
+  # -------------------  Actualitzar dt amb dades nomes matxejades ---
   dt<-dades_match_13 %>% dplyr::bind_rows(dades_match_24) %>%dplyr:: select(-c(gr_2,gr_1,grup_dic))
 
   #  -----------------  1 vs 2 ---------------------- dades_match12
   dades<-dt %>% dplyr::filter(id_grup==1 | id_grup==2 ) # Filtro dos grups
-  # Validació prematch
+  # Validacio prematch
   #formu<-formula.text("match_desc","grup",taulavariables = conductor)
   formu<-formula_text("match_desc","grup",taulavariables = conductor)
 
@@ -3380,7 +4071,7 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
   # Fusionar dades
   # Juntar tot
 
-  # -------------------  Actualitzar dt amb dades només matxejades ---
+  # -------------------  Actualitzar dt amb dades nomes matxejades ---
   dt<-dades_match_12 %>% dplyr::bind_rows(dades_match_34) %>% dplyr::select(-c(gr_1,gr_3,grup_dic))
 
 }
@@ -3388,12 +4079,19 @@ matching_4grups<-function(dt=dadesini,grups="grup", vars_match="matching",conduc
 
 
 
+#' @title                     matching_case_control
+#' @description               matching_case_control
+#' @param dt                  dt
+#' @param variables.ps        variables.ps
+#' @param dt_pacients_dindex  dt_pacients_dindex
+#' @export                    matching_case_control
+matching_case_control<-function(dt="PACIENTS",
+                                variables.ps="llistaPS",
+                                dt_pacients_dindex="BD_PAC_DINDEX") {
 
-matching_case_control<-function(dt="PACIENTS",variables.ps="llistaPS",dt_pacients_dindex="BD_PAC_DINDEX") {
 
 
-
-  #  MATCHING CAS-CONTROL SEGONS MÉTODE DENSITY-INCIDENCE ------------------
+  #  MATCHING CAS-CONTROL SEGONS MeTODE DENSITY-INCIDENCE ------------------
 
   ##  Retorna Subset matxejat per grup (event) en data index (dtindex.random, control) DE dt_pacients_dindex
   ##  Llista de variables variables.ps
@@ -3452,12 +4150,19 @@ matching_case_control<-function(dt="PACIENTS",variables.ps="llistaPS",dt_pacient
 
 }
 
-
+#' @title                     covariate_plot
+#' @description               covariate_plot
+#' @param dt                  dt
+#' @param vars_remove         vars_remove
+#' @param etiquetar           etiquetar
+#' @param subtitle            subtitle
 #' @param ...                 Altres parametres
+#' @export                    covariate_plot
 covariate_plot<-function(dt="m.out",
                          vars_remove=NULL,
                          etiquetar=F,
-                         subtitle="oGLD vs SGLT-2i group",...) {
+                         subtitle="oGLD vs SGLT-2i group",
+                         ...) {
 
 
   # Retorna a Covariate_plot d'un objecte matchit()  -------------------------
@@ -3539,8 +4244,19 @@ covariate_plot<-function(dt="m.out",
 
 }
 
-
-covariate_plot_dades<-function(dt="dt_total",var="name",stat="stat",title="Covariate plot \n oGLD vs SGLT-2i group", labx="Standardized mean difference") {
+#' @title                     covariate_plot_dades
+#' @description               covariate_plot_dades
+#' @param dt                  dt
+#' @param var                 var
+#' @param stat                stat
+#' @param title               title
+#' @param labx                labx
+#' @export                    covariate_plot_dades
+covariate_plot_dades<-function(dt="dt_total",
+                               var="name",
+                               stat="stat",
+                               title="Covariate plot \n oGLD vs SGLT-2i group",
+                               labx="Standardized mean difference") {
 
   # dt=dt_total
   # var="name"
@@ -3569,8 +4285,17 @@ covariate_plot_dades<-function(dt="dt_total",var="name",stat="stat",title="Covar
 }
 
 
-
-mostreig_ids<-function(dt,id="idp",n_mostra=100,set_seed=123) {
+#' @title                     mostreig_ids
+#' @description               mostreig_ids
+#' @param dt                  dt
+#' @param id                  id
+#' @param n_mostra            n_mostra
+#' @param set_seed            set_seed
+#' @export                    mostreig_ids
+mostreig_ids<-function(dt,
+                       id="idp",
+                       n_mostra=100,
+                       set_seed=123) {
 
   # mostreig_ids () Mostreja ids d'una base de dades  ---------------------
 
@@ -3594,11 +4319,30 @@ mostreig_ids<-function(dt,id="idp",n_mostra=100,set_seed=123) {
 
 
 
-
-regicor <- function(age, sex, smoker, diabetes, coltot, colhdl, sbp, dbp, divide = 1){
+#' @title                     regicor
+#' @description               regicor
+#' @param age                 age
+#' @param sex                 sex
+#' @param smoker              smoker
+#' @param diabetes            diabetes
+#' @param coltot              coltot
+#' @param colhdl              colhdl
+#' @param sbp                 sbp
+#' @param dbp                 dbp
+#' @param divide              divide
+#' @export                    regicor
+regicor <- function(age,
+                    sex,
+                    smoker,
+                    diabetes,
+                    coltot,
+                    colhdl,
+                    sbp,
+                    dbp,
+                    divide = 1){
 
   #
-  # Funció per calcular el risc REGICOR (regicor)  -----------------
+  # Funcio per calcular el risc REGICOR (regicor)  -----------------
   #
   # age: númerica (anys)
   # sex: text, 'H'  homes i 'D' dones
@@ -3650,8 +4394,15 @@ regicor <- function(age, sex, smoker, diabetes, coltot, colhdl, sbp, dbp, divide
   result
 }
 
-
-extreure_Pglobal_SigTest<-function(dt=dades,vars_pre=vars_pre,vars_post=vars_post) {
+#' @title                     extreure_Pglobal_SigTest
+#' @description               extreure_Pglobal_SigTest
+#' @param dt                  dt
+#' @param vars_pre            vars_pre
+#' @param vars_post           vars_post
+#' @export                    extreure_Pglobal_SigTest
+extreure_Pglobal_SigTest<-function(dt=dades,
+                                   vars_pre=vars_pre,
+                                   vars_post=vars_post) {
 
   ## Llista 2 parells de llistes de variables tipus pre-post i retorna un únic p-valor test del signes (canvi) de la binomial
   ## S'espera que tots els canvis van cap al mateix sentit (o tots baixen o tots pujen)
@@ -3693,6 +4444,61 @@ extreure_Pglobal_SigTest<-function(dt=dades,vars_pre=vars_pre,vars_post=vars_pos
 
 }
 
+
+#' @title                    formula LOGIT
+#' @description              formula LOGIT
+#' @param x                  x
+#' @param y                  y
+#' @param eliminar           eliminar
+#' @param a                  a
+#' @param taulavariables     taulavariables
+
+formula.LOGIT<-function(x="taula1",
+                        y="resposta",
+                        eliminar=c("IDP"),
+                        a="",
+                        taulavariables="variables.xls") {
+
+  # no hem posta export.
+  #S3 methods shown with full name in documentation object 'formula.LOGIT':
+  #  'formula.LOGIT'
+  #
+  #The \usage entries for S3 methods should use the \method markup and not
+  #their full name.
+  #See chapter 'Writing R documentation files' in the 'Writing R
+  #Extensions' manual.
+
+
+  #  Formula.LOGIT segons LLISTA DE VARIABLES  D'AJUST     #######################
+  #      hi envio la columna de variables amb que vull generar la formula pel compare
+
+  #####     x= variables d'ajust / y = resposta / eliminar /  a = Avaluar
+
+  # x="regicor_alone"
+  # y="event"
+  # taulavariables = conductor_variables
+  # eliminar=c("IDP")
+  # a=""
+
+  # Llegir variables
+  variables<-read_conductor(taulavariables)
+  # variables[is.na(variables)]<- 0
+  x_sym<-dplyr::sym(x)
+
+  variables<-variables %>% dplyr::filter(!is.na(!!x_sym))
+
+  llistataula<-variables %>%
+    dplyr::filter(!!x_sym>0) %>%
+    dplyr::arrange(!!x_sym) %>%
+    dplyr::pull(camp)
+
+  llistataula<-llistataula[!llistataula%in%eliminar]
+
+  if (a!="") llistataula<-c(a,llistataula)
+
+  y<-stats::as.formula(paste(y, paste(llistataula, collapse=" + "), sep=" ~ "))
+
+}
 
 
 
