@@ -14,7 +14,8 @@ etiquetar_model<-function(model="kkk",
                           camp="camp",
                           camp_descripcio="descripcio",...) {
 
-  # 1)
+  # NUMERO_1)
+
   # model=model1
   # taulavariables=conductor_variables
   # camp="camp"
@@ -68,6 +69,8 @@ etiquetar_model<-function(model="kkk",
 formula<-function(x="taula1",
                  y="grup",
                  eliminar=c("idp","y")) {
+  # NUMERO_2)
+
   pepito<-paste("as.vector(variables[variables$",x,"==1,]$camp)[!as.vector(variables[variables$",x,"==1,]$camp)%in%eliminar]",sep="")
   llistataula<-eval(parse(text=pepito))
   y<-stats::as.formula(paste(y, paste(llistataula, collapse=" + "), sep=" ~ "))
@@ -93,7 +96,8 @@ formula_compare<-function(x="taula1",
                           elimina=c("IDP"),
                           taulavariables="variables_R.xls",
                           dt="No",...) {
-  # 2)
+  # NUMERO_3)
+
   # x="table5"
   # y="grup"
   # taulavariables =conductor_variables
@@ -161,7 +165,8 @@ llista.compare.Ys<-function(dt="dades",
                             digits.ratio=NA,
                             hide.no = c('NA','No'),
                             ref.no=NA){
-  # 3)
+  # NUMERO_4)
+
   # dt=dt.matched
   # llista.y = c("event")
   # llista.x=llistaPS
@@ -202,6 +207,8 @@ generar_Surv<-function(dt,
                        event,
                        dtindex="dtindex",
                        dtsortida="sortida"){
+
+  # NUMERO_5)
 
   # Retorna objecte Surv en dt a partir de dades (dt), event("20150531" / NA), dtindex(Date), dtsortida(20171231),
 
@@ -260,6 +267,8 @@ generar_Surv_to_column<-function(dt="dadestotal",
                                  temps="EV.AVC_temps",
                                  codievent=1) {
 
+  # NUMERO_6)
+
   # dt=dadestotal
   # event="EV.AVC_DIC"
   # temps="EV.AVC_temps"
@@ -298,6 +307,8 @@ formulaCOX<-function(x="",
                     a="",
                     taulavariables="variables.xls",
                     codievent='1') {
+
+  # NUMERO_7)
 
   #  formula COX ajustat per event="Yes" -------------
   #
@@ -358,6 +369,7 @@ HRadj<-function(x="v.ajust",
                d="dadesDF",
                taulavariables="variables.xls",
                codievent='1') {
+  # NUMERO_8)
 
 
   #  Retorna Ngran, Events, coef, HR, IC95, IC95, se.coef, p ---------
@@ -416,6 +428,7 @@ HRestratificats<-function(event="exitus",
                           tipo="v.ajust",
                           c="",
                           taulavariables='variables.xls') {
+  # NUMERO_9)
 
 
   #  HRestratificats  ----------------------
@@ -466,6 +479,7 @@ OR.ajustats<-function(x="lipos",
                      y="prediabetis",
                      d="dadestotal",
                      taulavariables='variables.xls') {
+  # NUMERO_10)
 
 
   #  OR.ajustats(x,ajust,y)         ###########
@@ -540,6 +554,7 @@ OR.ajustats<-function(x="lipos",
 #' @export                   variables.ajust
 variables.ajust<-function(x="taula1",
                           variables=variables) {
+  # NUMERO_11)
 
   #  Variables.ajust   -----------------
   #####       hi envio la columna de variables amb que vull generar la formula pel compare
@@ -564,6 +579,8 @@ extreure_coef_glm<-function(dt="dades",
                             x="DM",
                             z="",
                             taulavariables="variables_R.xls"){
+
+  # NUMERO_12)
 
   #  GLM  COEFICIENTS      ###########################################################
   #################   EXTREU COEFICIENTS glm, IC95 , p valors  GLM a partir de llista d'outcomes, X, i llista de v.ajust
@@ -636,6 +653,8 @@ extreure_coef_glm_v2<-function(dt="dades",
                                x="DM",
                                v.ajust="",
                                level_conf=0.95){
+
+  # NUMERO_13)
 
   #  EXTREU COEFICIENTS glm, IC95 , p valors  GLM a outcome, X, i llista de v.ajust
 
@@ -742,6 +761,8 @@ extreure_coef_glm_mi<-function(dt="tempData",
                                x="SEXE",
                                v.ajust="",
                                level_conf=0.95) {
+
+  # NUMERO_14)
 
 
   #  GLM (Logistic o Lineal) dades imputades --------------------
@@ -854,6 +875,8 @@ extreure_coef_mice_estrats<-function(tempData,
                                      grups="age",
                                      logit=F) {
 
+  # NUMERO_15)
+
 
   #  Coeficients GLM(lineal/logistica) MICE estratificats  ---------------------
   # Arguments: Objecte MICE i data_list imputats, vector de X , Y , logit=T/F
@@ -907,6 +930,8 @@ extreure.dif.proporcions<-function(dades,
                                    outcome="Prediabetes",
                                    ref_cat=NA,
                                    grups="Sex") {
+
+  # NUMERO_16)
 
   # extreure.dif.proporcions() : Diferencia de % respecte una categoria ref + interval de confiança
   # Extreu : Diferencia de % respecte una categoria ref + interval de confiança
@@ -1008,6 +1033,7 @@ extreure_resum_outcomes_imputation<-function(dades_long=dades,
                                              grups="grup",
                                              v.ajust=c("sexe","edat"),
                                              level_conf=0.95) {
+  # NUMERO_17)
 
   # Funcio que retorna summari (Beta/OR , IC95%, mean) amb dades imputades i completes crudes i ajustades d'un outcome en relacio a un grup
   # Objecte dades_long es fitxer de dades amb dades completes (.imp==0) + imputades (.imp>0)
@@ -1089,6 +1115,8 @@ plotKM<-function(y="exitus.surv",
                 caption="",
                 llegenda=c("No","Yes")) {
 
+  # NUMERO_18)
+
   #  K-M   plot #####
 
   # y=dadesDF$exitus_surv
@@ -1132,6 +1160,7 @@ plotKM_Incidence<-function(y="exitus.surv",
                           d="dades",
                           caption="",
                           llegenda=c("No","Yes")) {
+  # NUMERO_19)
 
   #  K-M   plot #####
 
@@ -1178,6 +1207,8 @@ boxplot_variables_grup<-function(dt=dades,
                                  grup="DM",
                                  taulavariables="variables_R.xls") {
 
+  # NUMERO_20)
+
   #  Box-plot -----------------
   # dt=dades
   # variables="OFT_WORST"
@@ -1218,6 +1249,8 @@ ggplot_grups<-function(Y="DIS_estatina",
                        X="edat",
                        grup="sexe") {
 
+  # NUMERO_21)
+
   #  Figura Spline Y~x per grups  --------------------
   #  Spline Y ~ x (continua) estratificat per grups)
   #  Requereix Y, X, grup y dades
@@ -1256,6 +1289,7 @@ MAP_ggplot<-function(dades=dt,
                      lim_inf=-Inf,
                      lim_sup=Inf,
                      add_point=NA) {
+  # NUMERO_22)
 
   # Retorna un mapa temporal (datainicial-datafinal per grups) Individus a partir de:
   # dades, datainicial, data final, id, grup color, grup linea, finestra (porca1,porca2)
@@ -1336,6 +1370,8 @@ Gaps<-function(dt=dades,
                Nmostra=10,
                finestraX=c(NA,NA),
                llavor=123){
+
+  # NUMERO_23)
 
   # Retorna llista amb dos data_frames de farmacs i dos plots pre i post
 
@@ -1440,6 +1476,8 @@ agregar_solapaments_gaps<-function(dt=dades,
                                    gap=5,
                                    sel=F){
 
+  # NUMERO_24)
+
   #
 
   # Historic de farmacs: idp, datinici,datafi, gap
@@ -1457,10 +1495,14 @@ agregar_solapaments_gaps<-function(dt=dades,
   # Conversio a Sym per evaluacio
   datainici_sym<-rlang::sym(datainici)
   datafinal_sym<-rlang::sym(datafinal)
-  idp_sym=rlang::sym(id)
+  # idp_sym=rlang::sym(id)
+  idp_sym=id
 
   # Seleccionar dades necessaries amb noms sense sym::
-  dt<-dt %>% dplyr::select(idp=!!idp_sym, data=!!datainici_sym,datafi=!!datafinal_sym)%>%
+  # dt<-dt %>% dplyr::select(idp=!!idp_sym, data=!!datainici_sym,datafi=!!datafinal_sym)%>%
+  #   mutate(data=lubridate::ymd(data),datafi=lubridate::ymd(datafi))
+
+  dt<-dt %>% dplyr::select(idp_sym, data=!!datainici_sym,datafi=!!datafinal_sym)%>%
     dplyr::mutate(data=lubridate::ymd(data),datafi=lubridate::ymd(datafi))
 
   #filtrem els errors!!!!
@@ -1480,9 +1522,9 @@ agregar_solapaments_gaps<-function(dt=dades,
 
   # 1. Eliminar solapaments [!!!]
   dt2<-dt %>%
-    dplyr::group_by(idp) %>% dplyr::arrange(data) %>%
+    dplyr::group_by_at(idp_sym) %>% dplyr::arrange(data) %>%
     dplyr::mutate(indx = c(0, cumsum(as.numeric(dplyr::lead(data)) >cummax(as.numeric(datafi)+gap))[-dplyr::n()]))%>%
-    dplyr::group_by(idp, indx) %>%
+    dplyr::group_by_at(c(c(idp_sym), "indx")) %>%
     dplyr::summarise(data = min(data), datafi = max(datafi),.groups = 'drop') %>%
     dplyr::select(-indx) %>% dplyr::ungroup()
 
@@ -1514,6 +1556,8 @@ MAP_ggplot_univariant<-function(dades=dt,
                                 add_point=NA,
                                 add_final=NA,
                                 set_seed=123) {
+
+  # NUMERO_25)
 
   # Dibuixa mapa temporal univariant per verificar solapaments
 
@@ -1587,6 +1631,7 @@ MAP_punts_ggplot<-function(
   id_AGG=F
 )
 {
+  # NUMERO_26)
 
   #  Analitiques (Y=Individu, X=data, Tamany=Valor, Color=tipus analitica) -----------------
   #
@@ -1680,6 +1725,7 @@ MAP_valor_ggplot<-function(
   title="Evolucio de valors"
 )
 {
+  # NUMERO_27)
 
   #  Analitiques (Y=Individu, X=data, Tamany=Valor, Color=tipus analitica) -----------------
 
@@ -1761,6 +1807,7 @@ HR.COX<-function(x="",
                  d="dadesDF",
                  taulavariables="variables.xls",
                  c="",...) {
+  # NUMERO_28)
 
   #  HR.COX  --------------------
   ####      funcio que retorna MATRIU-->Ngran, Events, HR, IC951, IC952, p
@@ -1822,6 +1869,7 @@ HR.COX.CRU<-function(x="lipos",
                     d="dadesDF",
                     variables="variables_R.xls",
                     evento="Si") {
+  # NUMERO_29)
 
   #  HR CRUS ------------------
 
@@ -1885,6 +1933,7 @@ extreure_HRFG<-function(event="exitusCV",
                        codievent="Si",
                        refcat=NA,
                        cluster=""){
+  # NUMERO_30)
 
   # HR RISCOS COMPETITIUS  -------------
   # Funcio Riscos competitius Fine & Grey
@@ -1971,6 +2020,7 @@ extreure_model_cmprisk<-function(dt=dades,
                                  competitiu="Ha_muerto",
                                  codievent="Yes",
                                  covariables=c("Sexo","Edad","Tabaquismo")) {
+  # NUMERO_31)
 
   # dt=dades
   # event="amputacio_cat"
@@ -2026,6 +2076,7 @@ extreure_cuminc_cmprisk<-function(dt=dades,
                                   codievent="Yes",
                                   group=NULL,
                                   strata=NULL) {
+  # NUMERO_32)
 
   ## Extreure cuminc competitive risk
 
@@ -2067,6 +2118,8 @@ extreure_cuminc_cmprisk<-function(dt=dades,
 #' @export                   extreure_coef_cmprisk
 extreure_coef_cmprisk<-function(model_cmrisk){
 
+  # NUMERO_33)
+
 
   # D'un model cmprisk extrec coeficients
 
@@ -2091,6 +2144,8 @@ extreure_cor<-function(var1="CD36",
                        var="quantis",
                        d="dades",
                        taulavariables="VARIABLES.xls",...) {
+
+  # NUMERO_34)
 
   # CORRELACIONS, P VALORS ENTRE var1 i llista de quantis de dades  --------------
 
@@ -2149,6 +2204,7 @@ extreure_cor_multi<-function(dades=dt,
                              etiquetar=F,
                              coductor_variables="conductor_variables",
                              method = "circle",...){
+  # NUMERO_35)
 
   # Correlacions , matriu i plot de quantis de dades  ----------------------
 
@@ -2212,6 +2268,8 @@ extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",
                         dades="dt",
                         conditional=F,
                         strata="caseid") {
+
+  # NUMERO_36)
 
   #  Extreure OR (segons formula, i dades)  --------------------
   #       LLANÇO UNA FORMULA les dades per executar un model i retorno OR , CI95% i p-valor en una tibble()
@@ -2283,6 +2341,8 @@ extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",
 generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",
                                           dades=dt) {
 
+  # NUMERO_37)
+
   # Taula variables segons formula i dades genera la taula de coeficients
 
   # formu=formu
@@ -2320,6 +2380,7 @@ extreure_model_logistic<-function(x="OS4_GSK",
                                   valor_outcome="Yes",
                                   conditional=F,
                                   strata="caseid") {
+  # NUMERO_38)
 
   # Retorno model amb ORs, curva ROC , auc IC95% etc... a partir de formula glm , i dades
 
@@ -2440,6 +2501,7 @@ extreure_model_logistic<-function(x="OS4_GSK",
 resum3<-function(dt=dades,
                  x="val_last.HBA1C",
                  estrat="constant"){
+  # NUMERO_39)
 
 
   #  Resum d'un data.table (Mitjana, DT, N etc...)  --------------------
@@ -2477,6 +2539,7 @@ resum3<-function(dt=dades,
 resum_quanti<-function(dt=dades,
                        y="valor_basal.GLICADA",
                        grup="constant") {
+  # NUMERO_40)
 
   #  Resum quanti  -------------------------
   #####     funcio que retorna un summary (mean, sd) de y en funcio d'un grup
@@ -2515,6 +2578,7 @@ resum_quanti_estrat<-function(dt=dades,
                               y="valor_basal.GLICADA",
                               grup="CODGLP1",
                               estrat="HBA1C_cat4"){
+  # NUMERO_41)
 
   #  ESTADISTICS RESUMS x grup x estrat ----------------------
   # RETORNA ESTADISTICS RESUMS (mean, sd, p-valor --> ANOVA/t-test) X GRUP  X ESTRAT
@@ -2554,6 +2618,7 @@ resum_events<-function(dades="dadestotal",
                        evento="RD",
                        temps="temps",
                        valorevent="Si") {
+  # NUMERO_42)
 
   #  Resum events  ----------------------
   ###################         Llan?o dades, event i temps i me fa un resum
@@ -2586,6 +2651,7 @@ resum_events<-function(dades="dadestotal",
 resum_events_v2<-function(dades=dades,
                           evento="RD",
                           temps="temps") {
+  # NUMERO_43)
 
   #  Resum events  ----------------------
 
@@ -2621,6 +2687,7 @@ resum_events_v3<-function(dt="dadestotal",
                           evento="RD",
                           temps="temps",
                           valorevent="Si") {
+  # NUMERO_44)
 
   # Versio millorada, retorna tibble
 
@@ -2652,6 +2719,8 @@ resum_events_grup<-function(d="dadestotal",
                            evento="RD",
                            temps="TEMPS_RD2",
                            grup="sexe") {
+
+  # NUMERO_45)
 
   #  Resum events per grup  ------------------
   ##########              Llanço dades, event, temps , grup i retorno un resum d'events per grups
@@ -2686,6 +2755,7 @@ Resum_taxa_incidencia<-function(dt=dades,
                                 evento="event_tbc",
                                 temps="anys_lliure_tbc",
                                 valorevent="1",...) {
+  # NUMERO_46)
 
   ## Retorna taxa d'incidencia + corresponent IC95
 
@@ -2714,6 +2784,7 @@ Resum_taxa_incidencia_idp<-function(dt=dades,
                                     evento="event_tbc",
                                     temps="anys_lliure_tbc",
                                     valorevent="1",...) {
+  # NUMERO_47)
 
   # dades_long %>% Resum_taxa_incidencia_idp(evento="event_tbc_long",temps="tmp_seguiment",valorevent=1)
   # dt=dades_long
@@ -2745,6 +2816,7 @@ llistadetaules.compare<-function(tablero=c("taula1","taula2","taula3","taula4","
                                  y="sexe",
                                  variables = "variables.xls",
                                  dt=dades){
+  # NUMERO_48)
 
 
   #  Llistat de Taules compare ------------------
@@ -2775,6 +2847,7 @@ Pvalors_ajustats_compare<-function(objecte_compare="T1.1.2",
                                    metodo="BH",
                                    p="p.overall",
                                    Sig="No") {
+  # NUMERO_49)
 
 
   #  P-valors ajustats segons multiple test Comparations desde un objecte Compare groups  ------------------
@@ -2836,6 +2909,7 @@ Pvalors_ajustats_compare<-function(objecte_compare="T1.1.2",
 Pvalors_ajustats_Update_Compare<-function(objecte_compare="res",
                                           p="p.overall",
                                           method ="BH") {
+  # NUMERO_50)
 
   ## Actualitzar p-valors d'un objecte CompareGroups
 
@@ -2869,6 +2943,7 @@ Pvalors_ajustats_Update_Compare<-function(objecte_compare="res",
 Pvalors_ajustats_taula<-function(objecte_taula="OR.ajust",
                                  p.valors='p valor',
                                  metodo="BH") {
+  # NUMERO_51)
 
   # objecte_taula=taulacoef
   # p.valors='P_adj'
@@ -2915,6 +2990,7 @@ criteris_exclusio<-function(dt=dades,
                             criteris="exclusio1",
                             missings=T,
                             ...) {
+  # NUMERO_52)
 
   #  APLICA CRITERIS D'EXCLUSIo A dades  -----------------------
 
@@ -2986,6 +3062,7 @@ criteris_exclusio_taula<-function(dt=dades,
                                   criteris="exclusio",
                                   ordre=NA,
                                   ...) {
+  # NUMERO_53)
 
   ####  Funcio que retorna una taula les N's aplicant els criteris d'exclusio i la N cada vegada que s'aplica un criteri de manera sequencial
   #### dades, conductor i camp on tenim els criteris, i si es vol un camp amb l'ordre
@@ -3037,6 +3114,7 @@ criteris_exclusio_taula<-function(dt=dades,
 #' @export                    calcular_proporcio
 calcular_proporcio<-function(dt=dades,
                              factor="canvi612M.glicadaCAT2"){
+  # NUMERO_54)
 
   #  CALCULA LA PROPORCIo -- RETORNA N I % fila ----------------
 
@@ -3064,6 +3142,7 @@ calcular_proporcio<-function(dt=dades,
 proporcions_grups<-function(dt=dades,
                             factor="canvi612M.glicadaCAT2",
                             estrat="SEXE"){
+  # NUMERO_55)
 
   #  CALCULA PROPORCIO PER GRUPS I RETORNA P VALOR    --------------
 
@@ -3099,6 +3178,7 @@ proporcio_grups_estratificat<-function(dt=dades,
                                        factor.Y="canvi612M.glicadaCAT2",
                                        grup=c("SEXE","CODGLP1","anys_DMcat4"),
                                        estratificat="HBA1C_cat4") {
+  # NUMERO_56)
 
   #  RETORNA UNA LLISTA DE TAULES DE PROPORCIONS PER GRUPS ESTRATIFICAT PER estratificat ----------
 
@@ -3137,6 +3217,7 @@ reduccio_ajustada<-function(dt=dades,
                             v.basal,
                             v.final,
                             mean.basal=NA) {
+  # NUMERO_57)
 
   #  REDUCCIo AJUSTADA DIFERENTS METODES D'AJUST-----------------
 
@@ -3236,6 +3317,8 @@ reduccio_ajustada<-function(dt=dades,
 #' @export                    glance.prediction
 glance.prediction <-function(x) {
 
+  # NUMERO_58)
+
   #  Prediccio ajustada amb dades imputades   -----------------
 
   #  Envio un dades generades amb MICE , X Y i retorna les prediccions amb ES     ###
@@ -3263,6 +3346,7 @@ retorn_prediccio_MI<-function(data_imp=tempData,
                               x="HBpreADD",
                               y="canvi_ADD",
                               dades_origen=dades) {
+  # NUMERO_59)
 
   # data_imp=tempData
   # x="1"
@@ -3312,6 +3396,7 @@ retorn_prediccio_MI_STR<-function(data_imp=tempData,
                                   dades_origen=dades,
                                   valor_subset="<8",
                                   var_subset="HBpreADD") {
+  # NUMERO_60)
 
   # data_imp=tempData
   # x="1"
@@ -3371,6 +3456,7 @@ retorn_prediccio_MI_STR2<-function(data_imp=tempData,
                                    valor_subset1=">=8",
                                    valor_subset2="<=10",
                                    var_subset="HBpreADD") {
+  # NUMERO_61)
 
   # data_imp=tempData
   # x="1"
@@ -3425,6 +3511,7 @@ retorn_prediccio_MI_STR2<-function(data_imp=tempData,
 plot.dispersio.reduccio <-function(dt="dades",
                                    v.basal="HBpreADD",
                                      v.final="HBpostADD") {
+  # NUMERO_62)
 
   # no hem posta export.
   #See section 'Generic functions and methods' in the 'Writing R
@@ -3498,6 +3585,7 @@ forest.plot<-function(dadesmodel="ramo",
                       upper=dadesmodel$Lsup,
                       label_X="OR (95% CI)",
                       intercept=1) {
+  # NUMERO_63)
 
   #  Forest.plot --------------------
 
@@ -3543,6 +3631,8 @@ forest.plot.v2<-function(dadesmodel="ramo",
                          upper="Lsup",
                          label_X="OR (95% CI)",
                          intercept=1) {
+  # NUMERO_64)
+
 
   # Forest plot versio 2 millorada per tal que funcioni
 
@@ -3596,6 +3686,7 @@ forest.plot.v3<-function(dadesmodel="dt_estimacions",
                          factor1="type",
                          factor2="datos",
                          color=TRUE) {
+  # NUMERO_65)
 
   # Forest plot versio 3
 
@@ -3690,6 +3781,8 @@ forest.plot.HR<-function(dadesmodel,
                          nolabels=TRUE,
                          title = "Forest plot of hazard hatios and confidence interval (95%CI)",
                          label_Favors="Favors SGLT-2        Favors oGLD-2") {
+  # NUMERO_66)
+
 
   # Forest plot estratificar, label de categoria, mean , nivell per fer un salt, i un factor per posar llegenda
 
@@ -3806,6 +3899,8 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
                         caption="",
                         label_Favors="Favors SGLT-2        Favors oGLD-2") {
 
+  # NUMERO_67)
+
   # dadesmodel=dt_outHR
   # label="Adjusted"
   # mean="Coefficient"
@@ -3883,6 +3978,8 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
 #' @export                    dt_index_data_random
 dt_index_data_random<-function(dt="PACIENTS") {
 
+  # NUMERO_68)
+
 
 
   #
@@ -3925,6 +4022,8 @@ dt_index_data_random<-function(dt="PACIENTS") {
 dt_index_data_semirandom<-function(dt="PACIENTS",
                                    dt.variables="VARIABLES",
                                    codi="EK201"){
+
+  # NUMERO_69)
 
   #
 
@@ -3987,6 +4086,8 @@ matching_4grups<-function(dt=dadesini,
                           vars_match="matching",
                           conductor="vars_ilerbus.xls",
                           caliper=0.01) {
+
+  # NUMERO_70)
 
   # Funcio que retorna 4 grups aparellats per 4 grups (2 x 2) de 2 variables
   # Entra una base de dades (dades) i una variable factor amb 4 nivells
@@ -4089,6 +4190,8 @@ matching_case_control<-function(dt="PACIENTS",
                                 variables.ps="llistaPS",
                                 dt_pacients_dindex="BD_PAC_DINDEX") {
 
+  # NUMERO_71)
+
 
 
   #  MATCHING CAS-CONTROL SEGONS MeTODE DENSITY-INCIDENCE ------------------
@@ -4163,6 +4266,8 @@ covariate_plot<-function(dt="m.out",
                          etiquetar=F,
                          subtitle="oGLD vs SGLT-2i group",
                          ...) {
+
+  # NUMERO_72)
 
 
   # Retorna a Covariate_plot d'un objecte matchit()  -------------------------
@@ -4257,6 +4362,8 @@ covariate_plot_dades<-function(dt="dt_total",
                                stat="stat",
                                title="Covariate plot \n oGLD vs SGLT-2i group",
                                labx="Standardized mean difference") {
+  # NUMERO_73)
+
 
   # dt=dt_total
   # var="name"
@@ -4296,6 +4403,7 @@ mostreig_ids<-function(dt,
                        id="idp",
                        n_mostra=100,
                        set_seed=123) {
+  # NUMERO_74)
 
   # mostreig_ids () Mostreja ids d'una base de dades  ---------------------
 
@@ -4340,6 +4448,7 @@ regicor <- function(age,
                     sbp,
                     dbp,
                     divide = 1){
+  # NUMERO_75)
 
   #
   # Funcio per calcular el risc REGICOR (regicor)  -----------------
@@ -4403,6 +4512,7 @@ regicor <- function(age,
 extreure_Pglobal_SigTest<-function(dt=dades,
                                    vars_pre=vars_pre,
                                    vars_post=vars_post) {
+  # NUMERO_76)
 
   ## Llista 2 parells de llistes de variables tipus pre-post i retorna un únic p-valor test del signes (canvi) de la binomial
   ## S'espera que tots els canvis van cap al mateix sentit (o tots baixen o tots pujen)
@@ -4458,6 +4568,8 @@ formula.LOGIT<-function(x="taula1",
                         eliminar=c("IDP"),
                         a="",
                         taulavariables="variables.xls") {
+
+  # NUMERO_77)
 
   # no hem posta export.
   #S3 methods shown with full name in documentation object 'formula.LOGIT':
