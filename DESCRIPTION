@@ -44,7 +44,9 @@ Suggests:
       graphics,
       MatchIt,
       mgcv,
-      tidyverse
+      tidyverse,
+      furrr,
+      future
 
       
       
