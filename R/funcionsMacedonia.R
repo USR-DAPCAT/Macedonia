@@ -8,7 +8,6 @@
 #' @return                    Etiquetar model
 #' @export                    etiquetar_model
 #' @importFrom                dplyr "%>%"
-#' @export                    etiquetar_model
 etiquetar_model<-function(model="kkk",
                           taulavariables="variables_R.xls",
                           camp="camp",
@@ -65,7 +64,6 @@ etiquetar_model<-function(model="kkk",
 #' @return                    FORMULA
 #' @export                    formula
 #' @importFrom                dplyr "%>%"
-#' @export                    formula
 formula<-function(x="taula1",
                  y="grup",
                  eliminar=c("idp","y")) {
@@ -90,7 +88,6 @@ formula<-function(x="taula1",
 #' @export                    formula_compare
 #' @importFrom                dplyr "%>%"
 #' @param ...                 Altres parametres
-#' @export                    formula_compare
 formula_compare<-function(x="taula1",
                           y="grup",
                           elimina=c("IDP"),
@@ -152,7 +149,6 @@ formula_compare<-function(x="taula1",
 #' @return                    llista
 #' @export                    llista.compare.Ys
 #' @importFrom                dplyr "%>%"
-#' @export                    llista.compare.Ys
 llista.compare.Ys<-function(dt="dades",
                             llista.y=c("CODGLP1","CKDEPI_cat2"),
                             llista.x=c("canvi612.pes.perc","canvi612M.pes"),
