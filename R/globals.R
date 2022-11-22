@@ -123,5 +123,21 @@ utils::globalVariables(c("...",
                          "BD_PAC_DINDEX",
                          "ps",
                          "PS",
-                         "pre"
+                         "pre",
+                         "dtindex_case",
+                         "dtindex_control",
+                         "nCIPS",
+                         "eliminar",
+                         "vargrup",
+                         "Nevents",
+                         "NControls",
+                         "eliminar",
+                         "grup",
+                         "event",
+                         ".event",
+                         ".n",
+                         "n",
+                         ".caseid",
+                         ".caseidnew"
+
                          ))
