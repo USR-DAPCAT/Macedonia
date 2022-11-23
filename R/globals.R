@@ -138,6 +138,7 @@ utils::globalVariables(c("...",
                          ".n",
                          "n",
                          ".caseid",
-                         ".caseidnew"
+                         ".caseidnew",
+                         "%dopar%"
 
                          ))

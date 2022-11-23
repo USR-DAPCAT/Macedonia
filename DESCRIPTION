@@ -46,7 +46,10 @@ Suggests:
       mgcv,
       tidyverse,
       furrr,
-      future
+      future,
+      foreach,
+      githubinstall,
+      heaven
 
       
       
