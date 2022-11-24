@@ -26,7 +26,7 @@ buscar_parelles_dtindex<-function(dt,
   } else {dt_controls<-dt %>% dplyr::transmute(idp,dtindex_control=as.numeric(dtindex_control))}
 
   # Generar data frame amb dates dels casos on ha de buscar controls
-  dt_dates<-dt_events %>% dplyr::group_by(dtindex_case) %>% dplyr::summarise(nCIPS=n(),.groups = 'drop') %>%dplyr:: ungroup() %>% dplyr::mutate(nCIPS=nCIPS*Ncontrols)
+  dt_dates<-dt_events %>% dplyr::group_by(dtindex_case) %>% dplyr::summarise(nCIPS=dplyr::n(),.groups = 'drop') %>%dplyr:: ungroup() %>% dplyr::mutate(nCIPS=nCIPS*Ncontrols)
 
   ## Inici bucle
   nvoltes<-dplyr::n_distinct(dt_dates$dtindex_case)
@@ -338,17 +338,22 @@ match_density_incidence<-function(dt="dt_poblacio",
 #'heartdis <- seq(110,2,-2)
 #'diabetes <- c(rep(1,55))
 #'heartdis <- c(rep(100,55))
-#'
+#'library(data.table)
 #'dat <- data.table::data.table(case,ptid,sex,byear,diabetes,heartdis,case.Index,control.Index)
 #'# Very simple match without reuse - no dates to control for
-#'#out <- riskSetMatch("ptid","case",c("byear","sex"),dat,2,NoIndex=TRUE)
+#'
+#'out <- riskSetMatch("ptid","case",'c("byear","sex"),dat,2,NoIndex=TRUE)
+#'
+#'#dat
+#'#out
+#'
 #'# Risk set matching without reusing cases/controls -
 #'# Some cases have no controls
-#'#out2 <- riskSetMatch("ptid","case",'c("byear","sex"),'dat,2,caseIndex="case.Index",
-#'#controlIndex="control.Index")
+#'out2 <- riskSetMatch("ptid","case",c("byear","sex"),dat,2,caseIndex="case.Index",controlIndex="control.Index")
+#'
+#'#dat
 #'#out2
 #'
-
 riskSetMatch<-
 function (ptid,
           event,
@@ -366,8 +371,22 @@ function (ptid,
           dateterms = NULL)
 {
 
+  #ptid=ptid
+  #event=case
+  #terms=c("byear","sex")
+  #dat
+  #Ncontrols=2
+  #oldevent = "oldevent"
+  #caseid = "caseid"
+  #reuseCases = FALSE
+  #reuseControls = FALSE
+  #caseIndex = NULL
+  #controlIndex = NULL
+  #NoIndex = TRUE
+  #cores = 1
+  #dateterms = NULL
 
-  #githubinstall::githubinstall("heaven",ref = "964bbbd",force = T)
+    #githubinstall::githubinstall("heaven",ref = "964bbbd",force = T)
 
   .SD = Internal.ptid = pnrnum = cterms = Internal.event = Internal.cterms = label = Internal.event = pnrnum = random = .N = Internal.controlIndex = Internal.caseIndex = random = Internal.controlIndex = Internal.caseIndex = NULL
   if (!is.character(ptid) | !is.character(event) | (!is.null(caseIndex) &
