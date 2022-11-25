@@ -78,7 +78,7 @@ buscar_parelles_dtindex<-function(dt,
 
   # generar caseid vinculat a data index i nombre de controls per cas
 
-  # dt_parells_controls %>% dplyr::mutate(.caseid=rep(seq(1,n()), each=Ncontrols))
+  # dt_parells_controls %>% dplyr::mutate(.caseid=rep(seq(1,dplyr::n()), each=Ncontrols))
   # %>% dplyr::filter(idp!="")
 
 }
@@ -130,12 +130,12 @@ selecciona_parells<-function(dt="dt_poblacio",
 
     # Genero .caseid controls
     dt_parells_controls<-dt_parells_controls %>%
-      dplyr::arrange(dtindex_case) %>%dplyr::mutate(.caseid=rep(seq(1,n()/Ncontrols), each=Ncontrols)) %>%
+      dplyr::arrange(dtindex_case) %>%dplyr::mutate(.caseid=rep(seq(1,dplyr::n()/Ncontrols), each=Ncontrols)) %>%
       dplyr::filter(idp!="") # elimino idps controls no trobats
 
     # Genero .caseid events (num correlatiu)
     dt_events<-dt %>% dplyr::filter(event==1) %>%
-      dplyr::select(idp,dtindex_case,.event=event) %>% dplyr::arrange(dtindex_case) %>%dplyr:: mutate(.caseid=1:n())
+      dplyr::select(idp,dtindex_case,.event=event) %>% dplyr::arrange(dtindex_case) %>%dplyr:: mutate(.caseid=1:dplyr::n())
 
     # fusió i generar .caseid
     dt_events %>%dplyr:: bind_rows(dt_parells_controls)
@@ -161,18 +161,17 @@ selecciona_parells<-function(dt="dt_poblacio",
 #' @export                    match_density_incidence
 #' @examples
 #'
-#'case <- c(rep(0,40),rep(1,15))
-#'ptid <- paste0("P",1:55)
-#'sex <- c(rep("fem",20),rep("mal",20),rep("fem",8),rep("mal",7))
-#'byear <- c(rep(c(2020,2030),20),rep(2020,7),rep(2030,8))
-#'case.Index <- c(seq(1,40,1),seq(5,47,3))
-#'control.Index <- case.Index
-#'diabetes <- seq(2,110,2)
-#'heartdis <- seq(110,2,-2)
-#'diabetes <- c(rep(1,55))
-#'heartdis <- c(rep(100,55))
+#'dat
 #'
-#'dat <- data.table::data.table(case,ptid,sex,byear,diabetes,heartdis,case.Index,control.Index)
+#'dat2<-match_density_incidence(dt=dat,
+#'id="idp",llistaPS=c("sex"),
+#'eventcontrol=FALSE,
+#'reemplacement=FALSE,
+#'numcores=NA,
+#'Ncontrols=1,
+#'seed=123)
+#'
+#'dat2
 match_density_incidence<-function(dt="dt_poblacio",
                                   id="idp",
                                   llistaPS=c("sexe"),
