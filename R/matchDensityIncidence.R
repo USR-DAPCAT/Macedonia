@@ -161,6 +161,7 @@ selecciona_parells<-function(dt="dt_poblacio",
 #' @export                    match_density_incidence
 #' @examples
 #'
+#'
 #'dat
 #'
 #'dat2<-match_density_incidence(dt=dat,
@@ -338,20 +339,22 @@ match_density_incidence<-function(dt="dt_poblacio",
 #'diabetes <- c(rep(1,55))
 #'heartdis <- c(rep(100,55))
 #'library(data.table)
+#'
 #'dat <- data.table::data.table(case,ptid,sex,byear,diabetes,heartdis,case.Index,control.Index)
 #'# Very simple match without reuse - no dates to control for
 #'
-#'out <- riskSetMatch("ptid","case",'c("byear","sex"),dat,2,NoIndex=TRUE)
+#'out <- riskSetMatch("ptid",event="case",c("byear","sex"),dat,2,NoIndex=TRUE)
 #'
-#'#dat
-#'#out
+#'dat
+#'out
 #'
 #'# Risk set matching without reusing cases/controls -
 #'# Some cases have no controls
-#'out2 <- riskSetMatch("ptid","case",c("byear","sex"),dat,2,caseIndex="case.Index",controlIndex="control.Index")
+#'out2 <- riskSetMatch("ptid",event="case",c("byear","sex"),dat,2,caseIndex="case.Index",
+#'controlIndex="control.Index")
 #'
-#'#dat
-#'#out2
+#'dat
+#'out2
 #'
 riskSetMatch<-
 function (ptid,
@@ -366,7 +369,7 @@ function (ptid,
           caseIndex = NULL,
           controlIndex = NULL,
           NoIndex = FALSE,
-          cores = 1,
+          cores = 2,
           dateterms = NULL)
 {
 
@@ -388,54 +391,54 @@ function (ptid,
     #githubinstall::githubinstall("heaven",ref = "964bbbd",force = T)
 
   .SD = Internal.ptid = pnrnum = cterms = Internal.event = Internal.cterms = label = Internal.event = pnrnum = random = .N = Internal.controlIndex = Internal.caseIndex = random = Internal.controlIndex = Internal.caseIndex = NULL
+
   if (!is.character(ptid) | !is.character(event) | (!is.null(caseIndex) &
                                                     !is.character(caseIndex)) | (!is.null(dateterms) & !is.character(dateterms)) |
       (!is.null(controlIndex) & !is.character(controlIndex)))
     stop(" Variables names must be character")
+
   data.table::setDT(dat)
-  if (!is.integer(cores) & !(is.numeric(cores)))
-    stop("cores must be integer, default 1")
+
+  if (!is.integer(cores) & !(is.numeric(cores))) stop("cores must be integer, default 1")
+
   cores <- as.integer(cores)
   datt <- data.table::copy(dat)
   datt[, `:=`("oldevent", .SD), .SDcols = event]
+
   if (NoIndex)
     noindex <- 1L
   else noindex <- 0L
   data.table::setnames(datt, ptid, "Internal.ptid")
-  repetitians <- length(datt[, Internal.ptid]) - length(unique(datt[,
-                                                                    Internal.ptid]))
+  repetitians <- length(datt[, Internal.ptid]) - length(unique(datt[,Internal.ptid]))
+
   if (repetitians > 0)
-    stop(paste(" Error, participant ID not unique. Number of repeats:",
-               repetitians))
+    stop(paste(" Error, participant ID not unique. Number of repeats:",repetitians))
+
   datt[, `:=`(pnrnum, 1:.N)]
   datt[, `:=`(cterms, do.call(paste0, .SD)), .SDcols = terms]
+
   cols <- c("pnrnum", event, "cterms")
-  if (!NoIndex)
-    cols <- c("pnrnum", caseIndex, controlIndex, event,
-              "cterms")
-  if (!NoIndex & !is.null(dateterms))
-    cols <- c("pnrnum", caseIndex, controlIndex, event,
-              "cterms", dateterms)
+  if (!NoIndex) cols <- c("pnrnum", caseIndex, controlIndex, event,"cterms")
+  if (!NoIndex & !is.null(dateterms))cols <- c("pnrnum", caseIndex, controlIndex, event,"cterms", dateterms)
+
   alldata <- datt[, .SD, .SDcols = cols]
-  if (!NoIndex)
-    RcaseIndex <- caseIndex
-  if (NoIndex)
-    data.table::setnames(alldata, cols, c("pnrnum", "Internal.event",
-                              "Internal.cterms"))
+
+  if (!NoIndex) RcaseIndex <- caseIndex
+  if (NoIndex)  data.table::setnames(alldata, cols, c("pnrnum", "Internal.event","Internal.cterms"))
   else if (!NoIndex & is.null(dateterms))
-    data.table::setnames(alldata, c("pnrnum", "Internal.caseIndex",
-                        "Internal.controlIndex", "Internal.event",
-                        "Internal.cterms"))
+    data.table::setnames(alldata, c("pnrnum", "Internal.caseIndex","Internal.controlIndex", "Internal.event","Internal.cterms"))
   else if (!NoIndex & !is.null(dateterms)) {
     Internal.dateterms <- paste0("V", seq(1, length(dateterms)))
-    data.table::setnames(alldata, c("pnrnum", "Internal.caseIndex",
-                        "InternalInternal.controlIndex", "Internal.event",
-                        "Internal.cterms", Internal.dateterms))
-    alldata[, `:=`((Internal.dateterms), lapply(.SD,
-                                                as.integer)), .SDcols = Internal.dateterms]
+
+    data.table::setnames(alldata, c("pnrnum", "Internal.caseIndex","InternalInternal.controlIndex", "Internal.event","Internal.cterms", Internal.dateterms))
+
+    alldata[, `:=`((Internal.dateterms), lapply(.SD,as.integer)), .SDcols = Internal.dateterms]
   }
+
   data.table::setkey(alldata, Internal.cterms)
+
   split.alldata <- split(alldata, by = "Internal.cterms")
+
   if (cores < 2) {
     totalprogress <- as.numeric(length(split.alldata)/1000)
     pb <- txtProgressBar(min = 0, max = 1000, initial = 0,
@@ -445,27 +448,37 @@ function (ptid,
     selected.controls <- do.call("rbind", lapply(split.alldata,
                                                  function(controls) {
                                                    if (!NoIndex & is.null(dateterms))
-                                                     data.table::setnames(controls, c("pnrnum", "Internal.caseIndex",
-                                                                          "Internal.controlIndex", "Internal.event",
-                                                                          "Internal.cterms"))
+                                                     data.table::setnames(controls, c("pnrnum",
+                                                                                      "Internal.caseIndex",
+                                                                                      "Internal.controlIndex",
+                                                                                      "Internal.event",
+                                                                                      "Internal.cterms"))
+
                                                    else if (!NoIndex & !is.null(dateterms))
-                                                     data.table::setnames(controls, c("pnrnum", "Internal.caseIndex",
-                                                                          "Internal.controlIndex", "Internal.event",
-                                                                          "Internal.cterms", Internal.dateterms))
+                                                     data.table::setnames(controls, c("pnrnum",
+                                                                                      "Internal.caseIndex",
+                                                                                      "Internal.controlIndex",
+                                                                                      "Internal.event",
+                                                                                      "Internal.cterms", Internal.dateterms))
                                                    else if (NoIndex)
-                                                     data.table::setnames(controls, c("pnrnum", "Internal.event",
-                                                                          "Internal.cterms"))
+                                                     data.table::setnames(controls,
+                                                                          c("pnrnum",
+                                                                            "Internal.event",
+                                                                            "Internal.cterms"))
+
                                                    data.table::setkey(controls, Internal.event, pnrnum)
                                                    cases <- controls[Internal.event == 1]
+
                                                    data.table::setkey(cases, pnrnum)
                                                    if (!reuseCases)
-                                                     controls <- subset(controls, Internal.event ==
-                                                                          0)
+                                                     controls <- subset(controls, Internal.event ==0)
+
                                                    Tcontrols <- dim(controls)[1]
                                                    Ncases <- dim(cases)[1]
                                                    set.seed(17)
-                                                   controls[, `:=`(random, stats::runif(.N, 1, Ncontrols *
-                                                                                   10))]
+
+                                                   controls[, `:=`(random, stats::runif(.N, 1, Ncontrols * 10))]
+
                                                    data.table::setkey(controls, random)
                                                    NreuseControls <- as.numeric(reuseControls)
                                                    if (!is.null(dateterms))
@@ -490,10 +503,12 @@ function (ptid,
                                                    }
                                                    Output <- .Call("_heaven_Matcher", PACKAGE = "heaven",
                                                                    Ncontrols, Tcontrols, Ncases, NreuseControls,
-                                                                   control.date, case.date, controls[, pnrnum],
-                                                                   cases[, pnrnum], Ndateterms, dates.cases, dates.controls,
-                                                                   noindex)
+                                                                     control.date, case.date, controls[, pnrnum],
+                                                                     cases[, pnrnum], Ndateterms, dates.cases, dates.controls,
+                                                                     noindex)
+
                                                    data.table::setDT(Output)
+
                                                    progress <<- progress + 1/totalprogress
                                                    setTxtProgressBar(pb, progress)
                                                    flush(stdout())
@@ -552,10 +567,10 @@ function (ptid,
                                        dates.controls <- as.matrix(0)
                                      }
                                      Output <- .Call("_heaven_Matcher", PACKAGE = "heaven",
-                                                     Ncontrols, Tcontrols, Ncases, NreuseControls,
-                                                     control.date, case.date, controls[, pnrnum],
-                                                     cases[, pnrnum], Ndateterms, dates.cases, dates.controls,
-                                                     noindex)
+                                                       Ncontrols, Tcontrols, Ncases, NreuseControls,
+                                                       control.date, case.date, controls[, pnrnum],
+                                                       cases[, pnrnum], Ndateterms, dates.cases, dates.controls,
+                                                      noindex)
                                      data.table::setDT(Output)
                                      Output
                                    })

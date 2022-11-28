@@ -40,6 +40,7 @@ match density incidence
 }
 \examples{
 
+
 dat
 
 dat2<-match_density_incidence(dt=dat,
