@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{plotKM_Incidence}
 \alias{plotKM_Incidence}
-\title{PlotKM_Incidence}
+\title{Plot KM_Incidence}
 \usage{
 plotKM_Incidence(
   y = "exitus.surv",
@@ -24,5 +24,5 @@ plotKM_Incidence(
 \item{llegenda}{legenda}
 }
 \description{
-PlotKM_Incidence
+Plot KM_Incidence
 }

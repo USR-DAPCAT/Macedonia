@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{mostreig_ids}
 \alias{mostreig_ids}
-\title{Mostreig_ids}
+\title{Mostreig ids}
 \usage{
 mostreig_ids(dt, id = "idp", n_mostra = 100, set_seed = 123)
 }
@@ -16,5 +16,5 @@ mostreig_ids(dt, id = "idp", n_mostra = 100, set_seed = 123)
 \item{set_seed}{set_seed}
 }
 \description{
-Mostreig_ids
+Mostreig ids
 }

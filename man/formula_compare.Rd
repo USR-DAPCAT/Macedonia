@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{formula_compare}
 \alias{formula_compare}
-\title{FORMULA A PARTIR DE VARIABLES}
+\title{Formula a partir de variables}
 \usage{
 formula_compare(
   x = "taula1",
@@ -30,5 +30,5 @@ formula_compare(
 FORMULA
 }
 \description{
-FORMULA A PARTIR DE VARIABLES:compte l'Ordre que està posada en el conductor taulavariables
+Formula a partir de variables:compte l'Ordre que està posada en el conductor taulavariables
 }

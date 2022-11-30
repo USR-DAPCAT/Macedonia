@@ -128,8 +128,8 @@ etiquetar_taula<-function(taula="resumtotal",
 }
 
 
-#' @title               Formula_vector
-#' @description         Formula_vector, vector amb les variables i y
+#' @title               Formula vector
+#' @description         Formula vector, vector amb les variables i y
 #' @param vector        Vector amb les variables
 #' @param y             Variable dependents
 #' @param logit         Logit

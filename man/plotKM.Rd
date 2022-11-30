@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{plotKM}
 \alias{plotKM}
-\title{PlotKM}
+\title{Plot KM}
 \usage{
 plotKM(
   y = "exitus.surv",
@@ -24,5 +24,5 @@ plotKM(
 \item{llegenda}{legenda}
 }
 \description{
-PlotKM
+Plot KM
 }

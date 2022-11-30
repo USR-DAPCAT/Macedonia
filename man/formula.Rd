@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{formula}
 \alias{formula}
-\title{FORMULA A PARTIR DE VARIABLES}
+\title{Formula a partir de variables}
 \usage{
 formula(x = "taula1", y = "grup", eliminar = c("idp", "y"))
 }
@@ -17,5 +17,5 @@ formula(x = "taula1", y = "grup", eliminar = c("idp", "y"))
 FORMULA
 }
 \description{
-FORMULA A PARTIR DE VARIABLES
+Formula a partir de variables
 }

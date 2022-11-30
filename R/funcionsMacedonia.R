@@ -56,8 +56,8 @@ etiquetar_model<-function(model="kkk",
 
 
 
-#' @title                     FORMULA A PARTIR DE VARIABLES
-#' @description               FORMULA A PARTIR DE VARIABLES
+#' @title                     Formula a partir de variables
+#' @description               Formula a partir de variables
 #' @param x                   x
 #' @param y                   y
 #' @param eliminar            eliminar
@@ -77,8 +77,8 @@ formula<-function(x="taula1",
 
 
 
-#' @title                     FORMULA A PARTIR DE VARIABLES
-#' @description               FORMULA A PARTIR DE VARIABLES:compte l'Ordre que està posada en el conductor taulavariables
+#' @title                     Formula a partir de variables
+#' @description               Formula a partir de variables:compte l'Ordre que està posada en el conductor taulavariables
 #' @param x                   x
 #' @param y                   y
 #' @param elimina             elimina
@@ -1097,8 +1097,8 @@ extreure_resum_outcomes_imputation<-function(dades_long=dades,
 }
 
 
-#' @title                    PlotKM
-#' @description              PlotKM
+#' @title                    Plot KM
+#' @description              Plot KM
 #' @param y                  y
 #' @param grup               grup
 #' @param d                  d
@@ -1143,8 +1143,8 @@ plotKM<-function(y="exitus.surv",
 
 
 
-#' @title                    PlotKM_Incidence
-#' @description              PlotKM_Incidence
+#' @title                    Plot KM_Incidence
+#' @description              Plot KM_Incidence
 #' @param y                  y
 #' @param grup               grup
 #' @param d                  d
@@ -3971,8 +3971,8 @@ matching_4grups<-function(dt=dadesini,
 
 
 
-#' @title                     Matching_case_control
-#' @description               Matching_case_control
+#' @title                     Matching case control
+#' @description               Matching case control
 #' @param dt                  dt
 #' @param variables.ps        variables.ps
 #' @param dt_pacients_dindex  dt_pacients_dindex
@@ -4044,8 +4044,8 @@ matching_case_control<-function(dt="PACIENTS",
 
 }
 
-#' @title                     Covariate_plot
-#' @description               Covariate_plot
+#' @title                     Covariate plot
+#' @description               Covariate plot
 #' @param dt                  dt
 #' @param vars_remove         vars_remove
 #' @param etiquetar           etiquetar
@@ -4183,8 +4183,8 @@ covariate_plot_dades<-function(dt="dt_total",
 }
 
 
-#' @title                     Mostreig_ids
-#' @description               Mostreig_ids
+#' @title                     Mostreig ids
+#' @description               Mostreig ids
 #' @param dt                  dt
 #' @param id                  id
 #' @param n_mostra            n_mostra
