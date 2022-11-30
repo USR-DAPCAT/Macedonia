@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_resum_outcomes_imputation}
 \alias{extreure_resum_outcomes_imputation}
-\title{extreure_resum_outcomes_imputation}
+\title{Extreure resum outcomes imputation}
 \usage{
 extreure_resum_outcomes_imputation(
   dades_long = dades,
@@ -24,5 +24,5 @@ extreure_resum_outcomes_imputation(
 \item{level_conf}{level_conf}
 }
 \description{
-extreure_resum_outcomes_imputation
+Extreure resum outcomes imputation
 }

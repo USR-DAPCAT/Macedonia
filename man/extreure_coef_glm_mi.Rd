@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_coef_glm_mi}
 \alias{extreure_coef_glm_mi}
-\title{extreure_coef_glm mi}
+\title{Extreure coef glm mi}
 \usage{
 extreure_coef_glm_mi(
   dt = "tempData",
@@ -24,5 +24,5 @@ extreure_coef_glm_mi(
 \item{level_conf}{level_conf}
 }
 \description{
-extreure_coef_glm mi
+Extreure coef glm mi
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_model_logistic}
 \alias{extreure_model_logistic}
-\title{extreure_model_logistic}
+\title{Extreure model logistic}
 \usage{
 extreure_model_logistic(
   x = "OS4_GSK",
@@ -36,5 +36,5 @@ extreure_model_logistic(
 \item{strata}{strata}
 }
 \description{
-extreure_model_logistic
+Extreure model logistic
 }

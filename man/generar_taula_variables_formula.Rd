@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{generar_taula_variables_formula}
 \alias{generar_taula_variables_formula}
-\title{generar_taula_variables_formula}
+\title{Generar taula variables formula}
 \usage{
 generar_taula_variables_formula(formu = "AnyPlaqueBasal~CD5L", dades = dt)
 }
@@ -12,5 +12,5 @@ generar_taula_variables_formula(formu = "AnyPlaqueBasal~CD5L", dades = dt)
 \item{dades}{dades}
 }
 \description{
-generar_taula_variables_formula
+Generar taula variables formula
 }

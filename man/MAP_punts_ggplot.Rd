@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{MAP_punts_ggplot}
 \alias{MAP_punts_ggplot}
-\title{MAP_punts_ggplot}
+\title{MAP punts ggplot}
 \usage{
 MAP_punts_ggplot(
   dt = "mostra50",
@@ -36,5 +36,5 @@ MAP_punts_ggplot(
 \item{id_AGG}{id_AGG}
 }
 \description{
-MAP_punts_ggplot
+MAP punts ggplot
 }

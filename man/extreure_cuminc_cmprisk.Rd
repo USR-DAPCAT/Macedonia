@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_cuminc_cmprisk}
 \alias{extreure_cuminc_cmprisk}
-\title{extreure_cuminc_cmprisk}
+\title{Extreure cuminc cmprisk}
 \usage{
 extreure_cuminc_cmprisk(
   dt = dades,
@@ -30,5 +30,5 @@ extreure_cuminc_cmprisk(
 \item{strata}{strata}
 }
 \description{
-extreure_cuminc_cmprisk
+Extreure cuminc cmprisk
 }

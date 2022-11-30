@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{resum_events_grup}
 \alias{resum_events_grup}
-\title{resum_events grups}
+\title{Resum events grups}
 \usage{
 resum_events_grup(
   d = "dadestotal",
@@ -21,5 +21,5 @@ resum_events_grup(
 \item{grup}{grup}
 }
 \description{
-resum_events grups
+Resum events grups
 }

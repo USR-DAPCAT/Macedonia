@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_coef_mice_estrats}
 \alias{extreure_coef_mice_estrats}
-\title{extreure_coef_mice_estrats}
+\title{Extreure coef mice estrats}
 \usage{
 extreure_coef_mice_estrats(
   tempData,
@@ -27,5 +27,5 @@ extreure_coef_mice_estrats(
 \item{logit}{logit}
 }
 \description{
-extreure_coef_mice_estrats
+Extreure coef mice estrats
 }

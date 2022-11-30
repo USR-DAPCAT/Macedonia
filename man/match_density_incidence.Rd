@@ -2,7 +2,7 @@
 % Please edit documentation in R/matchDensityIncidence.R
 \name{match_density_incidence}
 \alias{match_density_incidence}
-\title{match density incidence}
+\title{Match density incidence}
 \usage{
 match_density_incidence(
   dt = "dt_poblacio",
@@ -36,11 +36,10 @@ match_density_incidence(
 match
 }
 \description{
-match density incidence
+Funcio que serveix per fer MATCHING.
 }
 \examples{
-
-
+\dontrun{
 dat
 
 dat2<-match_density_incidence(dt=dat,
@@ -52,4 +51,5 @@ Ncontrols=1,
 seed=123)
 
 dat2
+}
 }

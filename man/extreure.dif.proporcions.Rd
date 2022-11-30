@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure.dif.proporcions}
 \alias{extreure.dif.proporcions}
-\title{extreure.dif.proporcions}
+\title{Extreure dif proporcions}
 \usage{
 extreure.dif.proporcions(
   dades,
@@ -21,5 +21,5 @@ extreure.dif.proporcions(
 \item{grups}{grups}
 }
 \description{
-extreure.dif.proporcions
+Extreure dif proporcions
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_coef_glm}
 \alias{extreure_coef_glm}
-\title{extreure coef glm}
+\title{Extreure coef glm}
 \usage{
 extreure_coef_glm(
   dt = "dades",
@@ -24,5 +24,5 @@ extreure_coef_glm(
 \item{taulavariables}{taulavariables}
 }
 \description{
-extreure coef glm
+Extreure coef glm
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{MAP_ggplot_univariant}
 \alias{MAP_ggplot_univariant}
-\title{MAP_ggplot_univariant}
+\title{MAP ggplot univariant}
 \usage{
 MAP_ggplot_univariant(
   dades = dt,
@@ -18,9 +18,9 @@ MAP_ggplot_univariant(
 \arguments{
 \item{dades}{dades}
 
-\item{datainicial}{datainicial}
+\item{datainicial}{dat}
 
-\item{datafinal}{datafinal}
+\item{datafinal}{dat}
 
 \item{id}{id}
 
@@ -33,5 +33,5 @@ MAP_ggplot_univariant(
 \item{set_seed}{set_seed}
 }
 \description{
-MAP_ggplot_univariant
+MAP ggplot univariant
 }

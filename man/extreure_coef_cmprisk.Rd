@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_coef_cmprisk}
 \alias{extreure_coef_cmprisk}
-\title{extreure_coef_cmprisk}
+\title{Extreure coef cmprisk}
 \usage{
 extreure_coef_cmprisk(model_cmrisk)
 }
@@ -10,5 +10,5 @@ extreure_coef_cmprisk(model_cmrisk)
 \item{model_cmrisk}{model_cmrisk}
 }
 \description{
-extreure_coef_cmprisk
+Extreure coef cmprisk
 }

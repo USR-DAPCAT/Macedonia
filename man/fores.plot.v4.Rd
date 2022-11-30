@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{fores.plot.v4}
 \alias{fores.plot.v4}
-\title{forest.plot.v4}
+\title{Forest.plot.v4}
 \usage{
 fores.plot.v4(
   dadesmodel = "dt_outHR",
@@ -51,5 +51,5 @@ fores.plot.v4(
 \item{label_Favors}{label_Favors}
 }
 \description{
-forest.plot.v4
+Forest.plot.v4
 }

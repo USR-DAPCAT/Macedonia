@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{forest.plot}
 \alias{forest.plot}
-\title{forest.plot}
+\title{Forest.plot}
 \usage{
 forest.plot(
   dadesmodel = "ramo",
@@ -30,5 +30,5 @@ forest.plot(
 \item{intercept}{intercept}
 }
 \description{
-forest.plot
+Forest.plot
 }

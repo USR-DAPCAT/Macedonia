@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{resum_events_v2}
 \alias{resum_events_v2}
-\title{resum_events_v2}
+\title{Resum events v2}
 \usage{
 resum_events_v2(dades = dades, evento = "RD", temps = "temps")
 }
@@ -14,5 +14,5 @@ resum_events_v2(dades = dades, evento = "RD", temps = "temps")
 \item{temps}{temps}
 }
 \description{
-resum_events_v2
+Resum events v2
 }

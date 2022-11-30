@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{formula.LOGIT}
 \alias{formula.LOGIT}
-\title{formula LOGIT}
+\title{Formula LOGIT}
 \usage{
 formula.LOGIT(
   x = "taula1",
@@ -24,5 +24,5 @@ formula.LOGIT(
 \item{taulavariables}{taulavariables}
 }
 \description{
-formula LOGIT
+Formula LOGIT
 }

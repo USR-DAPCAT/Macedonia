@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{proporcions_grups}
 \alias{proporcions_grups}
-\title{proporcions_grups}
+\title{Proporcions grups}
 \usage{
 proporcions_grups(
   dt = dades,
@@ -18,5 +18,5 @@ proporcions_grups(
 \item{estrat}{estrat}
 }
 \description{
-proporcions_grups
+Proporcions grups
 }

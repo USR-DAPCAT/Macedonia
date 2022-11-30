@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_coef_glm_v2}
 \alias{extreure_coef_glm_v2}
-\title{extreure coef glm v2}
+\title{Extreure coef glm v2}
 \usage{
 extreure_coef_glm_v2(
   dt = "dades",
@@ -24,5 +24,5 @@ extreure_coef_glm_v2(
 \item{level_conf}{level_conf}
 }
 \description{
-extreure coef glm v2
+Extreure coef glm v2
 }

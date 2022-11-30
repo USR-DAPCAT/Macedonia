@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_model_cmprisk}
 \alias{extreure_model_cmprisk}
-\title{extreure_model_cmprisk}
+\title{Extreure model cmprisk}
 \usage{
 extreure_model_cmprisk(
   dt = dades,
@@ -27,5 +27,5 @@ extreure_model_cmprisk(
 \item{covariables}{covariables}
 }
 \description{
-extreure_model_cmprisk
+Extreure model cmprisk
 }

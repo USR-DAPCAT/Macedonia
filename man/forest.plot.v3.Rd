@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{forest.plot.v3}
 \alias{forest.plot.v3}
-\title{forest.plot.v3}
+\title{Forest.plot.v3}
 \usage{
 forest.plot.v3(
   dadesmodel = "dt_estimacions",
@@ -42,5 +42,5 @@ forest.plot.v3(
 \item{color}{color}
 }
 \description{
-forest.plot.v3
+Forest.plot.v3
 }

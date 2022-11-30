@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{ggplot_grups}
 \alias{ggplot_grups}
-\title{ggplot_grups}
+\title{GGPLOT grups}
 \usage{
 ggplot_grups(Y = "DIS_estatina", dt = dades, X = "edat", grup = "sexe")
 }
@@ -16,5 +16,5 @@ ggplot_grups(Y = "DIS_estatina", dt = dades, X = "edat", grup = "sexe")
 \item{grup}{grup}
 }
 \description{
-ggplot_grups
+GGPLOT grups
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{generar_Surv}
 \alias{generar_Surv}
-\title{generar Surv}
+\title{Generar Surv}
 \usage{
 generar_Surv(dt, event, dtindex = "dtindex", dtsortida = "sortida")
 }
@@ -16,5 +16,5 @@ generar_Surv(dt, event, dtindex = "dtindex", dtsortida = "sortida")
 \item{dtsortida}{dtsortida}
 }
 \description{
-generar_Surv
+Generar Surv
 }

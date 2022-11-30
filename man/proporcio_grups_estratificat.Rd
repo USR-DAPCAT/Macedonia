@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{proporcio_grups_estratificat}
 \alias{proporcio_grups_estratificat}
-\title{proporcio_grups_estratificat}
+\title{Proporcio grups estratificat}
 \usage{
 proporcio_grups_estratificat(
   dt = dades,
@@ -21,5 +21,5 @@ proporcio_grups_estratificat(
 \item{estratificat}{estratificat}
 }
 \description{
-proporcio_grups_estratificat
+Proporcio grups estratificat
 }

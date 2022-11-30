@@ -1,5 +1,5 @@
-#' @title                     Etiquetar_model
-#' @description               Etiquetar_model
+#' @title                     Etiquetar model
+#' @description               Etiquetar model
 #' @param model               Model
 #' @param taulavariables      Conductor
 #' @param camp                Camp
@@ -192,8 +192,8 @@ llista.compare.Ys<-function(dt="dades",
 
 
 
-#' @title                     generar Surv
-#' @description               generar_Surv
+#' @title                     Generar Surv
+#' @description               Generar Surv
 #' @param dt                  dt
 #' @param event               event
 #' @param dtindex             dtindex
@@ -251,8 +251,8 @@ generar_Surv<-function(dt,
   temp
 }
 
-#' @title                     generar Surv to column
-#' @description               generar Surv to column
+#' @title                     Generar Surv to column
+#' @description               Generar Surv to column
 #' @param dt                  dt
 #' @param event               event
 #' @param temps               temps
@@ -284,8 +284,8 @@ generar_Surv_to_column<-function(dt="dadestotal",
 
 
 
-#' @title                     formula COX
-#' @description               formula COX
+#' @title                     Formula COX
+#' @description               Formula COX
 #' @param x                   x
 #' @param event               event
 #' @param temps               temps
@@ -543,8 +543,8 @@ OR.ajustats<-function(x="lipos",
 }
 
 
-#' @title                    variables ajust
-#' @description              variables ajust
+#' @title                    Variables ajust
+#' @description              Variables ajust
 #' @param x                  x
 #' @param variables          variables
 #' @export                   variables.ajust
@@ -562,8 +562,8 @@ variables.ajust<-function(x="taula1",
 }
 
 
-#' @title                    extreure coef glm
-#' @description              extreure coef glm
+#' @title                    Extreure coef glm
+#' @description              Extreure coef glm
 #' @param dt                 dt
 #' @param outcomes           outcomes
 #' @param x                  x
@@ -636,8 +636,8 @@ extreure_coef_glm<-function(dt="dades",
 
 }
 
-#' @title                    extreure coef glm v2
-#' @description              extreure coef glm v2
+#' @title                    Extreure coef glm v2
+#' @description              Extreure coef glm v2
 #' @param dt                 dt
 #' @param outcome            outcome
 #' @param x                  x
@@ -744,8 +744,8 @@ extreure_coef_glm_v2<-function(dt="dades",
   resumtotal %>% head(Ncat.x+1)
 }
 
-#' @title                    extreure_coef_glm mi
-#' @description              extreure_coef_glm mi
+#' @title                    Extreure coef glm mi
+#' @description              Extreure coef glm mi
 #' @param dt                 dt
 #' @param outcome            outcome
 #' @param x                  x
@@ -855,8 +855,8 @@ extreure_coef_glm_mi<-function(dt="tempData",
 }
 
 
-#' @title                    extreure_coef_mice_estrats
-#' @description              extreure_coef_mice_estrats
+#' @title                    Extreure coef mice estrats
+#' @description              Extreure coef mice estrats
 #' @param tempData           tempData
 #' @param data_list          data_list
 #' @param X                  X
@@ -915,8 +915,8 @@ extreure_coef_mice_estrats<-function(tempData,
   models_dt
 }
 
-#' @title                    extreure.dif.proporcions
-#' @description              extreure.dif.proporcions
+#' @title                    Extreure dif proporcions
+#' @description              Extreure dif proporcions
 #' @param dades              dades
 #' @param outcome            outcome
 #' @param ref_cat            ref_cat
@@ -1016,8 +1016,8 @@ extreure.dif.proporcions<-function(dades,
 
 }
 
-#' @title                    extreure_resum_outcomes_imputation
-#' @description              extreure_resum_outcomes_imputation
+#' @title                    Extreure resum outcomes imputation
+#' @description              Extreure resum outcomes imputation
 #' @param dades_long         dades_long
 #' @param outcome            outcome
 #' @param v.ajust            v.ajust
@@ -1097,8 +1097,8 @@ extreure_resum_outcomes_imputation<-function(dades_long=dades,
 }
 
 
-#' @title                    plotKM
-#' @description              plotKM
+#' @title                    PlotKM
+#' @description              PlotKM
 #' @param y                  y
 #' @param grup               grup
 #' @param d                  d
@@ -1143,8 +1143,8 @@ plotKM<-function(y="exitus.surv",
 
 
 
-#' @title                    plotKM_Incidence
-#' @description              plotKM_Incidence
+#' @title                    PlotKM_Incidence
+#' @description              PlotKM_Incidence
 #' @param y                  y
 #' @param grup               grup
 #' @param d                  d
@@ -1191,8 +1191,8 @@ plotKM_Incidence<-function(y="exitus.surv",
 
 
 
-#' @title                    boxplot_variables_grup
-#' @description              boxplot_variables_grup
+#' @title                    Boxplot variables grup
+#' @description              Boxplot variables grup
 #' @param dt                 dt
 #' @param variables          variables
 #' @param grup               grup
@@ -1233,8 +1233,8 @@ boxplot_variables_grup<-function(dt=dades,
 
 }
 
-#' @title                    ggplot_grups
-#' @description              ggplot_grups
+#' @title                    GGPLOT grups
+#' @description              GGPLOT grups
 #' @param Y                  Y
 #' @param dt                 dt
 #' @param X                  X
@@ -1264,8 +1264,8 @@ ggplot_grups<-function(Y="DIS_estatina",
 }
 
 
-#' @title                    MAP_ggplot
-#' @description              MAP_ggplot
+#' @title                    MAP ggplot
+#' @description              MAP ggplot
 #' @param dades              dades
 #' @param datainicial        datainicial
 #' @param datafinal          datafinal
@@ -1457,11 +1457,11 @@ Gaps<-function(dt=dades,
 }
 
 
-#' @title                    MAP_ggplot_univariant
-#' @description              MAP_ggplot_univariant
+#' @title                    MAP ggplot univariant
+#' @description              MAP ggplot univariant
 #' @param dades              dades
-#' @param datainicial        datainicial
-#' @param datafinal          datafinal
+#' @param datainicial        dat
+#' @param datafinal          dat
 #' @param id                 id
 #' @param Nmostra            Nmostra
 #' @param add_point          add_point
@@ -1527,8 +1527,8 @@ MAP_ggplot_univariant<-function(dades=dt,
 
 
 
-#' @title                    MAP_punts_ggplot
-#' @description              MAP_punts_ggplot
+#' @title                    MAP punts ggplot
+#' @description              MAP punts ggplot
 #' @param dt                 dt
 #' @param id                 id
 #' @param datainicial        datainicial
@@ -1621,8 +1621,8 @@ MAP_punts_ggplot<-function(
 }
 
 
-#' @title                    MAP_valor_ggplot
-#' @description              MAP_valor_ggplot
+#' @title                    MAP valor ggplot
+#' @description              MAP valor ggplot
 #' @param dt                 dt
 #' @param id                 id
 #' @param datainicial        datainicial
@@ -1832,8 +1832,8 @@ HR.COX.CRU<-function(x="lipos",
 }
 
 
-#' @title                    extreure_HRFG
-#' @description              extreure_HRFG
+#' @title                    Extreure HRFG
+#' @description              Extreure HRFG
 #' @param event              event
 #' @param temps              temps
 #' @param grup               grup
@@ -1925,8 +1925,8 @@ extreure_HRFG<-function(event="exitusCV",
 
 }
 
-#' @title                    extreure_model_cmprisk
-#' @description              extreure_model_cmprisk
+#' @title                    Extreure model cmprisk
+#' @description              Extreure model cmprisk
 #' @param dt                 dt
 #' @param event              event
 #' @param temps              temps
@@ -1979,8 +1979,8 @@ extreure_model_cmprisk<-function(dt=dades,
 }
 
 
-#' @title                    extreure_cuminc_cmprisk
-#' @description              extreure_cuminc_cmprisk
+#' @title                    Extreure cuminc cmprisk
+#' @description              Extreure cuminc cmprisk
 #' @param dt                 dt
 #' @param event              event
 #' @param temps              temps
@@ -2032,8 +2032,8 @@ extreure_cuminc_cmprisk<-function(dt=dades,
 
 }
 
-#' @title                    extreure_coef_cmprisk
-#' @description              extreure_coef_cmprisk
+#' @title                    Extreure coef cmprisk
+#' @description              Extreure coef cmprisk
 #' @param model_cmrisk       model_cmrisk
 #' @export                   extreure_coef_cmprisk
 extreure_coef_cmprisk<-function(model_cmrisk){
@@ -2052,8 +2052,8 @@ extreure_coef_cmprisk<-function(model_cmrisk){
               `p-value`) %>% dplyr::as_tibble()
 }
 
-#' @title                    extreure_cor
-#' @description              extreure_cor
+#' @title                    Extreure cor
+#' @description              Extreure cor
 #' @param var1               var1
 #' @param var                var
 #' @param d                  d
@@ -2108,8 +2108,8 @@ extreure_cor<-function(var1="CD36",
 
 
 
-#' @title                     extreure_cor_multi
-#' @description               extreure_cor_multi
+#' @title                     Extreure cor multi
+#' @description               Extreure cor multi
 #' @param dades               dades
 #' @param llistavar1          llistavar1
 #' @param llistavar2          llistavar2
@@ -2177,8 +2177,8 @@ extreure_cor_multi<-function(dades=dt,
 
 
 
-#' @title                     extreure_OR
-#' @description               extreure_OR
+#' @title                     Extreure OR
+#' @description               Extreure OR
 #' @param formu               formu
 #' @param dades               dades
 #' @param conditional         conditional
@@ -2253,8 +2253,8 @@ extreure_OR<- function (formu="AnyPlaqueBasal~CD5L",
 }
 
 
-#' @title                     generar_taula_variables_formula
-#' @description               generar_taula_variables_formula
+#' @title                     Generar taula variables formula
+#' @description               Generar taula variables formula
 #' @param formu               formu
 #' @param dades               dades
 #' @export                    generar_taula_variables_formula
@@ -2279,8 +2279,8 @@ generar_taula_variables_formula<-function(formu="AnyPlaqueBasal~CD5L",
 }
 
 
-#' @title                     extreure_model_logistic
-#' @description               extreure_model_logistic
+#' @title                     Extreure model logistic
+#' @description               Extreure model logistic
 #' @param x                   x
 #' @param y                   y
 #' @param taulavariables      taulavariables
@@ -2412,8 +2412,8 @@ extreure_model_logistic<-function(x="OS4_GSK",
 
 
 
-#' @title                     resum3
-#' @description               resum3
+#' @title                     Resum3
+#' @description               Resum3
 #' @param dt                  dt
 #' @param x                   x
 #' @param estrat              estrat
@@ -2450,8 +2450,8 @@ resum3<-function(dt=dades,
 }
 
 
-#' @title                   resum_quanti
-#' @description             resum_quanti
+#' @title                   Resum quanti
+#' @description             Resum quanti
 #' @param dt                dt
 #' @param y                 y
 #' @param grup              grup
@@ -2527,8 +2527,8 @@ resum_quanti_estrat<-function(dt=dades,
 
 
 
-#' @title                   resum_events
-#' @description             resum_events
+#' @title                   Resum events
+#' @description             Resum events
 #' @param dades             dades
 #' @param evento            evento
 #' @param temps             temps
@@ -2562,8 +2562,8 @@ resum_events<-function(dades="dadestotal",
 }
 
 
-#' @title                   resum_events_v2
-#' @description             resum_events_v2
+#' @title                   Resum events v2
+#' @description             Resum events v2
 #' @param dades             dades
 #' @param evento            evento
 #' @param temps             temps
@@ -2596,8 +2596,8 @@ resum_events_v2<-function(dades=dades,
 
 
 
-#' @title                   resum_events_v3
-#' @description             resum_events_v3
+#' @title                   Resum events v3
+#' @description             Resum events v3
 #' @param dt                dt
 #' @param evento            evento
 #' @param temps             temps
@@ -2628,8 +2628,8 @@ resum_events_v3<-function(dt="dadestotal",
 
 
 
-#' @title                   resum_events grups
-#' @description             resum_events grups
+#' @title                   Resum events grups
+#' @description             Resum events grups
 #' @param d                 d
 #' @param evento            evento
 #' @param temps             temps
@@ -2663,8 +2663,8 @@ resum_events_grup<-function(d="dadestotal",
 }
 
 
-#' @title                     Resum_taxa_incidencia
-#' @description               Resum_taxa_incidencia
+#' @title                     Resum taxa incidencia
+#' @description               Resum taxa incidencia
 #' @param dt                  dt
 #' @param evento              evento
 #' @param temps               temps
@@ -2692,8 +2692,8 @@ Resum_taxa_incidencia<-function(dt=dades,
 }
 
 
-#' @title                     Resum_taxa_incidencia_idp
-#' @description               Resum_taxa_incidencia_idp
+#' @title                     Resum taxa incidencia idp
+#' @description               Resum taxa incidencia idp
 #' @param dt                  dt
 #' @param evento              evento
 #' @param temps               temps
@@ -2725,8 +2725,8 @@ Resum_taxa_incidencia_idp<-function(dt=dades,
 }
 
 
-#' @title                     llistadetaules.compare
-#' @description               llistadetaules.compare
+#' @title                     Llistadetaules.compare
+#' @description               Llistadetaules.compare
 #' @param tablero             tablero
 #' @param y                   y
 #' @param variables           variables
@@ -2756,8 +2756,8 @@ llistadetaules.compare<-function(tablero=c("taula1","taula2","taula3","taula4","
 
 }
 
-#' @title                     Pvalors_ajustats_compare
-#' @description               Pvalors_ajustats_compare
+#' @title                     Pvalors ajustats compare
+#' @description               Pvalors ajustats compare
 #' @param objecte_compare     objecte_compare
 #' @param metodo              metodo
 #' @param p                   p
@@ -2820,8 +2820,8 @@ Pvalors_ajustats_compare<-function(objecte_compare="T1.1.2",
 }
 
 
-#' @title                     Pvalors_ajustats_Update_Compare
-#' @description               Pvalors_ajustats_Update_Compare
+#' @title                     Pvalors ajustats Update Compare
+#' @description               Pvalors ajustats Update Compare
 #' @param objecte_compare     objecte_compare
 #' @param p                   p
 #' @param method              method
@@ -2898,8 +2898,8 @@ Pvalors_ajustats_taula<-function(objecte_taula="OR.ajust",
 }
 
 
-#' @title                     calcular_proporcio
-#' @description               calcular_proporcio
+#' @title                     Calcular proporcio
+#' @description               Calcular proporcio
 #' @param dt                  dt
 #' @param factor              factor
 #' @export                    calcular_proporcio
@@ -2924,8 +2924,8 @@ calcular_proporcio<-function(dt=dades,
 }
 
 
-#' @title                     proporcions_grups
-#' @description               proporcions_grups
+#' @title                     Proporcions grups
+#' @description               Proporcions grups
 #' @param dt                  dt
 #' @param factor              factor
 #' @param estrat              estrat
@@ -2958,8 +2958,8 @@ proporcions_grups<-function(dt=dades,
 }
 
 
-#' @title                     proporcio_grups_estratificat
-#' @description               proporcio_grups_estratificat
+#' @title                     Proporcio grups estratificat
+#' @description               Proporcio grups estratificat
 #' @param dt                  dt
 #' @param factor.Y            factor.Y
 #' @param grup                grup
@@ -2997,8 +2997,8 @@ proporcio_grups_estratificat<-function(dt=dades,
 
 
 
-#' @title                     reduccio_ajustada
-#' @description               reduccio_ajustada
+#' @title                     Reduccio ajustada
+#' @description               Reduccio ajustada
 #' @param dt                  dt
 #' @param v.basal             v.basal
 #' @param v.final             v.final
@@ -3102,8 +3102,8 @@ reduccio_ajustada<-function(dt=dades,
 
 }
 
-#' @title                     glance.prediction
-#' @description               glance.prediction
+#' @title                     Glance.prediction
+#' @description               Glance.prediction
 #' @param x                   x
 #' @export                    glance.prediction
 glance.prediction <-function(x) {
@@ -3126,8 +3126,8 @@ tidy.prediction = function(x, effects = "fixed", exponentiate = FALSE)
 
 
 
-#' @title                     retorn_prediccio_MI
-#' @description               retorn_prediccio_MI
+#' @title                     Retorn prediccio MI
+#' @description               Retorn prediccio MI
 #' @param data_imp            data_imp
 #' @param x                   x
 #' @param y                   y
@@ -3172,8 +3172,8 @@ retorn_prediccio_MI<-function(data_imp=tempData,
 
 }
 
-#' @title                     retorn_prediccio_MI_STR
-#' @description               retorn_prediccio_MI_STR
+#' @title                     Retorn prediccio MI STR
+#' @description               Retorn prediccio MI STR
 #' @param data_imp            data_imp
 #' @param x                   x
 #' @param y                   y
@@ -3230,8 +3230,8 @@ retorn_prediccio_MI_STR<-function(data_imp=tempData,
 }
 
 
-#' @title                     retorn_prediccio_MI_STR2
-#' @description               retorn_prediccio_MI_STR2
+#' @title                     Retorn prediccio MI STR2
+#' @description               Retorn prediccio MI STR2
 #' @param data_imp            data_imp
 #' @param x                   x
 #' @param y                   y
@@ -3293,8 +3293,8 @@ retorn_prediccio_MI_STR2<-function(data_imp=tempData,
 
 
 
-#' @title                     plot.dispersio.reduccio
-#' @description               plot.dispersio.reduccio
+#' @title                     Plot.dispersio.reduccio
+#' @description               Plot.dispersio.reduccio
 #' @param dt                  dt
 #' @param v.basal             v.basal
 #' @param v.final             v.final
@@ -3359,8 +3359,8 @@ plot.dispersio.reduccio <-function(dt="dades",
 }
 
 
-#' @title                     forest.plot
-#' @description               forest.plot
+#' @title                     Forest.plot
+#' @description               Forest.plot
 #' @param dadesmodel          dadesmodel
 #' @param label               label
 #' @param mean                mean
@@ -3405,8 +3405,8 @@ forest.plot<-function(dadesmodel="ramo",
 }
 
 
-#' @title                     forest.plot.v2
-#' @description               forest.plot.v2
+#' @title                     Forest.plot.v2
+#' @description               Forest.plot.v2
 #' @param dadesmodel          dadesmodel
 #' @param label               label
 #' @param mean                mean
@@ -3452,8 +3452,8 @@ forest.plot.v2<-function(dadesmodel="ramo",
 }
 
 
-#' @title                     forest.plot.v3
-#' @description               forest.plot.v3
+#' @title                     Forest.plot.v3
+#' @description               Forest.plot.v3
 #' @param dadesmodel          dadesmodel
 #' @param label               label
 #' @param mean                mean
@@ -3541,8 +3541,8 @@ forest.plot.v3<-function(dadesmodel="dt_estimacions",
 }
 
 
-#' @title                     forest.plot.HR
-#' @description               forest.plot.HR
+#' @title                     Forest.plot.HR
+#' @description               Forest.plot.HR
 #' @param dadesmodel          dadesmodel
 #' @param label               label
 #' @param mean                mean
@@ -3658,8 +3658,8 @@ forest.plot.HR<-function(dadesmodel,
 }
 
 
-#' @title                     forest.plot.v4
-#' @description               forest.plot.v4
+#' @title                     Forest.plot.v4
+#' @description               Forest.plot.v4
 #' @param dadesmodel          dadesmodel
 #' @param label               label
 #' @param mean                mean
@@ -3763,8 +3763,8 @@ fores.plot.v4<-function(dadesmodel="dt_outHR",
 
 
 
-#' @title                     dt_index_data_random
-#' @description               dt_index_data_random
+#' @title                     Dt_index_data_random
+#' @description               Dt_index_data_random
 #' @param dt                  dt
 #' @export                    dt_index_data_random
 dt_index_data_random<-function(dt="PACIENTS") {
@@ -3804,8 +3804,8 @@ dt_index_data_random<-function(dt="PACIENTS") {
 }
 
 
-#' @title                     dt_index_data_semirandom
-#' @description               dt_index_data_semirandom
+#' @title                     Dt_index_data_semirandom
+#' @description               Dt_index_data_semirandom
 #' @param dt                  dt
 #' @param dt.variables        dt.variables
 #' @param codi                codi
@@ -3864,8 +3864,8 @@ dt_index_data_semirandom<-function(dt="PACIENTS",
 
 }
 
-#' @title                     matching_4grups
-#' @description               matching_4grups
+#' @title                     Matching 4grups
+#' @description               Matching 4grups
 #' @param dt                  dt
 #' @param grups               grups
 #' @param vars_match          vars_match
@@ -3971,8 +3971,8 @@ matching_4grups<-function(dt=dadesini,
 
 
 
-#' @title                     matching_case_control
-#' @description               matching_case_control
+#' @title                     Matching_case_control
+#' @description               Matching_case_control
 #' @param dt                  dt
 #' @param variables.ps        variables.ps
 #' @param dt_pacients_dindex  dt_pacients_dindex
@@ -4044,8 +4044,8 @@ matching_case_control<-function(dt="PACIENTS",
 
 }
 
-#' @title                     covariate_plot
-#' @description               covariate_plot
+#' @title                     Covariate_plot
+#' @description               Covariate_plot
 #' @param dt                  dt
 #' @param vars_remove         vars_remove
 #' @param etiquetar           etiquetar
@@ -4140,8 +4140,8 @@ covariate_plot<-function(dt="m.out",
 
 }
 
-#' @title                     covariate_plot_dades
-#' @description               covariate_plot_dades
+#' @title                     Covariate_plot_dades
+#' @description               Covariate_plot_dades
 #' @param dt                  dt
 #' @param var                 var
 #' @param stat                stat
@@ -4183,8 +4183,8 @@ covariate_plot_dades<-function(dt="dt_total",
 }
 
 
-#' @title                     mostreig_ids
-#' @description               mostreig_ids
+#' @title                     Mostreig_ids
+#' @description               Mostreig_ids
 #' @param dt                  dt
 #' @param id                  id
 #' @param n_mostra            n_mostra
@@ -4218,8 +4218,8 @@ mostreig_ids<-function(dt,
 
 
 
-#' @title                     regicor
-#' @description               regicor
+#' @title                     Regicor
+#' @description               Regicor
 #' @param age                 age
 #' @param sex                 sex
 #' @param smoker              smoker
@@ -4294,8 +4294,8 @@ regicor <- function(age,
   result
 }
 
-#' @title                     extreure_Pglobal_SigTest
-#' @description               extreure_Pglobal_SigTest
+#' @title                     Extreure Pglobal SigTest
+#' @description               Extreure Pglobal SigTest
 #' @param dt                  dt
 #' @param vars_pre            vars_pre
 #' @param vars_post           vars_post
@@ -4346,8 +4346,8 @@ extreure_Pglobal_SigTest<-function(dt=dades,
 }
 
 
-#' @title                    formula LOGIT
-#' @description              formula LOGIT
+#' @title                    Formula LOGIT
+#' @description              Formula LOGIT
 #' @param x                  x
 #' @param y                  y
 #' @param eliminar           eliminar

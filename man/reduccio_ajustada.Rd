@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{reduccio_ajustada}
 \alias{reduccio_ajustada}
-\title{reduccio_ajustada}
+\title{Reduccio ajustada}
 \usage{
 reduccio_ajustada(dt = dades, v.basal, v.final, mean.basal = NA)
 }
@@ -16,5 +16,5 @@ reduccio_ajustada(dt = dades, v.basal, v.final, mean.basal = NA)
 \item{mean.basal}{mean.basal}
 }
 \description{
-reduccio_ajustada
+Reduccio ajustada
 }

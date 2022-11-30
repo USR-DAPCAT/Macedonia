@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_OR}
 \alias{extreure_OR}
-\title{extreure_OR}
+\title{Extreure OR}
 \usage{
 extreure_OR(
   formu = "AnyPlaqueBasal~CD5L",
@@ -21,5 +21,5 @@ extreure_OR(
 \item{strata}{strata}
 }
 \description{
-extreure_OR
+Extreure OR
 }

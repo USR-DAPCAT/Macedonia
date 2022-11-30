@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_HRFG}
 \alias{extreure_HRFG}
-\title{extreure_HRFG}
+\title{Extreure HRFG}
 \usage{
 extreure_HRFG(
   event = "exitusCV",
@@ -36,5 +36,5 @@ extreure_HRFG(
 \item{cluster}{cluster}
 }
 \description{
-extreure_HRFG
+Extreure HRFG
 }

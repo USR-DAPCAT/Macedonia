@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{covariate_plot}
 \alias{covariate_plot}
-\title{covariate_plot}
+\title{Covariate_plot}
 \usage{
 covariate_plot(
   dt = "m.out",
@@ -24,5 +24,5 @@ covariate_plot(
 \item{...}{Altres parametres}
 }
 \description{
-covariate_plot
+Covariate_plot
 }

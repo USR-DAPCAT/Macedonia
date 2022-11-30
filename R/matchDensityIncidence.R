@@ -1,5 +1,5 @@
-#' @title                     buscar parelles dtindex
-#' @description               buscar parelles dtindex
+#' @title                     Buscar parelles dtindex
+#' @description               Buscar parelles dtindex
 #' @param dt                  dt
 #' @param eventcontrol        eventcontrol
 #' @param reemplacement       reemplacement
@@ -85,8 +85,8 @@ buscar_parelles_dtindex<-function(dt,
 
 
 
-#' @title                     selecciona parells
-#' @description               selecciona parells
+#' @title                     Selecciona parells
+#' @description               Selecciona parells
 #' @param dt                  dt
 #' @param eventcontrol        eventcontrol
 #' @param reemplacement       reemplacement
@@ -147,8 +147,8 @@ selecciona_parells<-function(dt="dt_poblacio",
 }
 
 
-#' @title                     match density incidence
-#' @description               match density incidence
+#' @title                     Match density incidence
+#' @description               Funcio que serveix per fer MATCHING.
 #' @param dt                  dt
 #' @param id                  id
 #' @param llistaPS            llistaPS
@@ -160,8 +160,7 @@ selecciona_parells<-function(dt="dt_poblacio",
 #' @return                    match
 #' @export                    match_density_incidence
 #' @examples
-#'
-#'
+#'\dontrun{
 #'dat
 #'
 #'dat2<-match_density_incidence(dt=dat,
@@ -173,6 +172,7 @@ selecciona_parells<-function(dt="dt_poblacio",
 #'seed=123)
 #'
 #'dat2
+#'}
 match_density_incidence<-function(dt="dt_poblacio",
                                   id="idp",
                                   llistaPS=c("sexe"),
@@ -308,8 +308,8 @@ match_density_incidence<-function(dt="dt_poblacio",
 
 
 
-#' @title                     riskSetMatch
-#' @description               riskSetMatch
+#' @title                     Funcio que serveix per fer MATCHING.
+#' @description               Aquestes funcions s adapten a les dades del registre danes. Dissenyat per ser utilitzat amb Statistics Denmark
 #' @param ptid                ptid
 #' @param event               event
 #' @param terms               terms
@@ -327,6 +327,11 @@ match_density_incidence<-function(dt="dt_poblacio",
 #' @return                    match
 #' @export                    riskSetMatch
 #' @examples
+#'\dontrun{
+#'
+#'#s ha d instalar aquest package, si no , no funciona :
+#'#githubinstall::githubinstall("heaven",ref = "964bbbd",force = T)
+#'
 #'
 #'case <- c(rep(0,40),rep(1,15))
 #'ptid <- paste0("P",1:55)
@@ -356,6 +361,8 @@ match_density_incidence<-function(dt="dt_poblacio",
 #'dat
 #'out2
 #'
+
+#'}
 riskSetMatch<-
 function (ptid,
           event,
@@ -388,7 +395,7 @@ function (ptid,
   #cores = 1
   #dateterms = NULL
 
-    #githubinstall::githubinstall("heaven",ref = "964bbbd",force = T)
+
 
   .SD = Internal.ptid = pnrnum = cterms = Internal.event = Internal.cterms = label = Internal.event = pnrnum = random = .N = Internal.controlIndex = Internal.caseIndex = random = Internal.controlIndex = Internal.caseIndex = NULL
 

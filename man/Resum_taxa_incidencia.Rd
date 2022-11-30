@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{Resum_taxa_incidencia}
 \alias{Resum_taxa_incidencia}
-\title{Resum_taxa_incidencia}
+\title{Resum taxa incidencia}
 \usage{
 Resum_taxa_incidencia(
   dt = dades,
@@ -24,5 +24,5 @@ Resum_taxa_incidencia(
 \item{...}{Altres parametres}
 }
 \description{
-Resum_taxa_incidencia
+Resum taxa incidencia
 }

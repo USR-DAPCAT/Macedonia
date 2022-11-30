@@ -2,7 +2,7 @@
 % Please edit documentation in R/matchDensityIncidence.R
 \name{riskSetMatch}
 \alias{riskSetMatch}
-\title{riskSetMatch}
+\title{Funcio que serveix per fer MATCHING.}
 \usage{
 riskSetMatch(
   ptid,
@@ -54,9 +54,14 @@ riskSetMatch(
 match
 }
 \description{
-riskSetMatch
+Aquestes funcions s adapten a les dades del registre danes. Dissenyat per ser utilitzat amb Statistics Denmark
 }
 \examples{
+\dontrun{
+
+#s ha d instalar aquest package, si no , no funciona :
+#githubinstall::githubinstall("heaven",ref = "964bbbd",force = T)
+
 
 case <- c(rep(0,40),rep(1,15))
 ptid <- paste0("P",1:55)
@@ -86,4 +91,5 @@ controlIndex="control.Index")
 dat
 out2
 
+}
 }

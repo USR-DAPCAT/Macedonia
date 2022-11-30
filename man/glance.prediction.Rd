@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{glance.prediction}
 \alias{glance.prediction}
-\title{glance.prediction}
+\title{Glance.prediction}
 \usage{
 glance.prediction(x)
 }
@@ -10,5 +10,5 @@ glance.prediction(x)
 \item{x}{x}
 }
 \description{
-glance.prediction
+Glance.prediction
 }

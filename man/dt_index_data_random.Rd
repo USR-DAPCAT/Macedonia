@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{dt_index_data_random}
 \alias{dt_index_data_random}
-\title{dt_index_data_random}
+\title{Dt_index_data_random}
 \usage{
 dt_index_data_random(dt = "PACIENTS")
 }
@@ -10,5 +10,5 @@ dt_index_data_random(dt = "PACIENTS")
 \item{dt}{dt}
 }
 \description{
-dt_index_data_random
+Dt_index_data_random
 }

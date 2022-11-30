@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{generar_Surv_to_column}
 \alias{generar_Surv_to_column}
-\title{generar Surv to column}
+\title{Generar Surv to column}
 \usage{
 generar_Surv_to_column(
   dt = "dadestotal",
@@ -21,5 +21,5 @@ generar_Surv_to_column(
 \item{codievent}{codievent}
 }
 \description{
-generar Surv to column
+Generar Surv to column
 }

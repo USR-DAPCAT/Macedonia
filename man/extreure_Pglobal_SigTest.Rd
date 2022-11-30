@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_Pglobal_SigTest}
 \alias{extreure_Pglobal_SigTest}
-\title{extreure_Pglobal_SigTest}
+\title{Extreure Pglobal SigTest}
 \usage{
 extreure_Pglobal_SigTest(
   dt = dades,
@@ -18,5 +18,5 @@ extreure_Pglobal_SigTest(
 \item{vars_post}{vars_post}
 }
 \description{
-extreure_Pglobal_SigTest
+Extreure Pglobal SigTest
 }

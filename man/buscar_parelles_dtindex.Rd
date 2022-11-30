@@ -2,7 +2,7 @@
 % Please edit documentation in R/matchDensityIncidence.R
 \name{buscar_parelles_dtindex}
 \alias{buscar_parelles_dtindex}
-\title{buscar parelles dtindex}
+\title{Buscar parelles dtindex}
 \usage{
 buscar_parelles_dtindex(dt, eventcontrol, reemplacement, Ncontrols)
 }
@@ -19,5 +19,5 @@ buscar_parelles_dtindex(dt, eventcontrol, reemplacement, Ncontrols)
 base de dades
 }
 \description{
-buscar parelles dtindex
+Buscar parelles dtindex
 }

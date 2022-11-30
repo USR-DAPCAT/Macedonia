@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_cor}
 \alias{extreure_cor}
-\title{extreure_cor}
+\title{Extreure cor}
 \usage{
 extreure_cor(
   var1 = "CD36",
@@ -24,5 +24,5 @@ extreure_cor(
 \item{...}{Altres parametres}
 }
 \description{
-extreure_cor
+Extreure cor
 }

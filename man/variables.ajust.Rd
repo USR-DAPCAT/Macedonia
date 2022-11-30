@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{variables.ajust}
 \alias{variables.ajust}
-\title{variables ajust}
+\title{Variables ajust}
 \usage{
 variables.ajust(x = "taula1", variables = variables)
 }
@@ -12,5 +12,5 @@ variables.ajust(x = "taula1", variables = variables)
 \item{variables}{variables}
 }
 \description{
-variables ajust
+Variables ajust
 }

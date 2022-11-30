@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{extreure_cor_multi}
 \alias{extreure_cor_multi}
-\title{extreure_cor_multi}
+\title{Extreure cor multi}
 \usage{
 extreure_cor_multi(
   dades = dt,
@@ -30,5 +30,5 @@ extreure_cor_multi(
 \item{...}{Altres parametres}
 }
 \description{
-extreure_cor_multi
+Extreure cor multi
 }

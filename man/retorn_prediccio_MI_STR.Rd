@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{retorn_prediccio_MI_STR}
 \alias{retorn_prediccio_MI_STR}
-\title{retorn_prediccio_MI_STR}
+\title{Retorn prediccio MI STR}
 \usage{
 retorn_prediccio_MI_STR(
   data_imp = tempData,
@@ -27,5 +27,5 @@ retorn_prediccio_MI_STR(
 \item{var_subset}{var_subset}
 }
 \description{
-retorn_prediccio_MI_STR
+Retorn prediccio MI STR
 }

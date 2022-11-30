@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{resum3}
 \alias{resum3}
-\title{resum3}
+\title{Resum3}
 \usage{
 resum3(dt = dades, x = "val_last.HBA1C", estrat = "constant")
 }
@@ -14,5 +14,5 @@ resum3(dt = dades, x = "val_last.HBA1C", estrat = "constant")
 \item{estrat}{estrat}
 }
 \description{
-resum3
+Resum3
 }

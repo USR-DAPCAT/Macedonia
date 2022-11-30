@@ -2,7 +2,7 @@
 % Please edit documentation in R/altresFuncions.R
 \name{formula_vector}
 \alias{formula_vector}
-\title{Formula_vector.}
+\title{Formula_vector}
 \usage{
 formula_vector(
   vector = c("sex", "age", "age"),

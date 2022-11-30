@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{covariate_plot_dades}
 \alias{covariate_plot_dades}
-\title{covariate_plot_dades}
+\title{Covariate_plot_dades}
 \usage{
 covariate_plot_dades(
   dt = "dt_total",
@@ -24,5 +24,5 @@ covariate_plot_dades(
 \item{labx}{labx}
 }
 \description{
-covariate_plot_dades
+Covariate_plot_dades
 }

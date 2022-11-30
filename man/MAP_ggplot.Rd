@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{MAP_ggplot}
 \alias{MAP_ggplot}
-\title{MAP_ggplot}
+\title{MAP ggplot}
 \usage{
 MAP_ggplot(
   dades = dt,
@@ -36,5 +36,5 @@ MAP_ggplot(
 \item{add_point}{add_point}
 }
 \description{
-MAP_ggplot
+MAP ggplot
 }

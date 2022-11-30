@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{etiquetar_model}
 \alias{etiquetar_model}
-\title{Etiquetar_model}
+\title{Etiquetar model}
 \usage{
 etiquetar_model(
   model = "kkk",
@@ -27,5 +27,5 @@ etiquetar_model(
 Etiquetar model
 }
 \description{
-Etiquetar_model
+Etiquetar model
 }

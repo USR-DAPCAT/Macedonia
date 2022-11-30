@@ -128,7 +128,7 @@ etiquetar_taula<-function(taula="resumtotal",
 }
 
 
-#' @title               Formula_vector.
+#' @title               Formula_vector
 #' @description         Formula_vector, vector amb les variables i y
 #' @param vector        Vector amb les variables
 #' @param y             Variable dependents
@@ -197,17 +197,6 @@ formula_text<-function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavari
   y<-paste(y, paste(llistataula, collapse=" + "), sep=" ~ ")
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

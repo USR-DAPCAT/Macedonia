@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{resum_events_v3}
 \alias{resum_events_v3}
-\title{resum_events_v3}
+\title{Resum events v3}
 \usage{
 resum_events_v3(
   dt = "dadestotal",
@@ -21,5 +21,5 @@ resum_events_v3(
 \item{valorevent}{valorevent}
 }
 \description{
-resum_events_v3
+Resum events v3
 }

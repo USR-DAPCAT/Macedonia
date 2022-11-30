@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{retorn_prediccio_MI}
 \alias{retorn_prediccio_MI}
-\title{retorn_prediccio_MI}
+\title{Retorn prediccio MI}
 \usage{
 retorn_prediccio_MI(
   data_imp = tempData,
@@ -21,5 +21,5 @@ retorn_prediccio_MI(
 \item{dades_origen}{dades_origen}
 }
 \description{
-retorn_prediccio_MI
+Retorn prediccio MI
 }

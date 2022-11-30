@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{formulaCOX}
 \alias{formulaCOX}
-\title{formula COX}
+\title{Formula COX}
 \usage{
 formulaCOX(
   x = "",
@@ -33,5 +33,5 @@ formulaCOX(
 \item{codievent}{codievent}
 }
 \description{
-formula COX
+Formula COX
 }

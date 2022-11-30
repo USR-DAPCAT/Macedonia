@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{resum_quanti}
 \alias{resum_quanti}
-\title{resum_quanti}
+\title{Resum quanti}
 \usage{
 resum_quanti(dt = dades, y = "valor_basal.GLICADA", grup = "constant")
 }
@@ -14,5 +14,5 @@ resum_quanti(dt = dades, y = "valor_basal.GLICADA", grup = "constant")
 \item{grup}{grup}
 }
 \description{
-resum_quanti
+Resum quanti
 }

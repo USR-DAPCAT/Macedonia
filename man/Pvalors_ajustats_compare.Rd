@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{Pvalors_ajustats_compare}
 \alias{Pvalors_ajustats_compare}
-\title{Pvalors_ajustats_compare}
+\title{Pvalors ajustats compare}
 \usage{
 Pvalors_ajustats_compare(
   objecte_compare = "T1.1.2",
@@ -21,5 +21,5 @@ Pvalors_ajustats_compare(
 \item{Sig}{Sig}
 }
 \description{
-Pvalors_ajustats_compare
+Pvalors ajustats compare
 }

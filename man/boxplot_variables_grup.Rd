@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{boxplot_variables_grup}
 \alias{boxplot_variables_grup}
-\title{boxplot_variables_grup}
+\title{Boxplot variables grup}
 \usage{
 boxplot_variables_grup(
   dt = dades,
@@ -21,5 +21,5 @@ boxplot_variables_grup(
 \item{taulavariables}{taulavariables}
 }
 \description{
-boxplot_variables_grup
+Boxplot variables grup
 }

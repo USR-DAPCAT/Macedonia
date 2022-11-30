@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{matching_4grups}
 \alias{matching_4grups}
-\title{matching_4grups}
+\title{Matching 4grups}
 \usage{
 matching_4grups(
   dt = dadesini,
@@ -24,5 +24,5 @@ matching_4grups(
 \item{caliper}{caliper}
 }
 \description{
-matching_4grups
+Matching 4grups
 }

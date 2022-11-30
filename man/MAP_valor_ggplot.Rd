@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{MAP_valor_ggplot}
 \alias{MAP_valor_ggplot}
-\title{MAP_valor_ggplot}
+\title{MAP valor ggplot}
 \usage{
 MAP_valor_ggplot(
   dt = "mostra50",
@@ -36,5 +36,5 @@ MAP_valor_ggplot(
 \item{title}{title}
 }
 \description{
-MAP_valor_ggplot
+MAP valor ggplot
 }

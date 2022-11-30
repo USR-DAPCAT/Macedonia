@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{llistadetaules.compare}
 \alias{llistadetaules.compare}
-\title{llistadetaules.compare}
+\title{Llistadetaules.compare}
 \usage{
 llistadetaules.compare(
   tablero = c("taula1", "taula2", "taula3", "taula4", "taula5"),
@@ -21,5 +21,5 @@ llistadetaules.compare(
 \item{dt}{dt}
 }
 \description{
-llistadetaules.compare
+Llistadetaules.compare
 }

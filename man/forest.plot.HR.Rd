@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{forest.plot.HR}
 \alias{forest.plot.HR}
-\title{forest.plot.HR}
+\title{Forest.plot.HR}
 \usage{
 forest.plot.HR(
   dadesmodel,
@@ -51,5 +51,5 @@ forest.plot.HR(
 \item{label_Favors}{label_Favors}
 }
 \description{
-forest.plot.HR
+Forest.plot.HR
 }

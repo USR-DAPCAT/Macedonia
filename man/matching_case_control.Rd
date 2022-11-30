@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{matching_case_control}
 \alias{matching_case_control}
-\title{matching_case_control}
+\title{Matching_case_control}
 \usage{
 matching_case_control(
   dt = "PACIENTS",
@@ -18,5 +18,5 @@ matching_case_control(
 \item{dt_pacients_dindex}{dt_pacients_dindex}
 }
 \description{
-matching_case_control
+Matching_case_control
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{dt_index_data_semirandom}
 \alias{dt_index_data_semirandom}
-\title{dt_index_data_semirandom}
+\title{Dt_index_data_semirandom}
 \usage{
 dt_index_data_semirandom(
   dt = "PACIENTS",
@@ -18,5 +18,5 @@ dt_index_data_semirandom(
 \item{codi}{codi}
 }
 \description{
-dt_index_data_semirandom
+Dt_index_data_semirandom
 }

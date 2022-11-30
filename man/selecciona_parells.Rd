@@ -2,7 +2,7 @@
 % Please edit documentation in R/matchDensityIncidence.R
 \name{selecciona_parells}
 \alias{selecciona_parells}
-\title{selecciona parells}
+\title{Selecciona parells}
 \usage{
 selecciona_parells(
   dt = "dt_poblacio",
@@ -24,5 +24,5 @@ selecciona_parells(
 parelles
 }
 \description{
-selecciona parells
+Selecciona parells
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{calcular_proporcio}
 \alias{calcular_proporcio}
-\title{calcular_proporcio}
+\title{Calcular proporcio}
 \usage{
 calcular_proporcio(dt = dades, factor = "canvi612M.glicadaCAT2")
 }
@@ -12,5 +12,5 @@ calcular_proporcio(dt = dades, factor = "canvi612M.glicadaCAT2")
 \item{factor}{factor}
 }
 \description{
-calcular_proporcio
+Calcular proporcio
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{regicor}
 \alias{regicor}
-\title{regicor}
+\title{Regicor}
 \usage{
 regicor(age, sex, smoker, diabetes, coltot, colhdl, sbp, dbp, divide = 1)
 }
@@ -26,5 +26,5 @@ regicor(age, sex, smoker, diabetes, coltot, colhdl, sbp, dbp, divide = 1)
 \item{divide}{divide}
 }
 \description{
-regicor
+Regicor
 }

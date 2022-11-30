@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcionsMacedonia.R
 \name{plot.dispersio.reduccio}
 \alias{plot.dispersio.reduccio}
-\title{plot.dispersio.reduccio}
+\title{Plot.dispersio.reduccio}
 \usage{
 \method{plot}{dispersio.reduccio}(dt = "dades", v.basal = "HBpreADD", v.final = "HBpostADD")
 }
@@ -14,5 +14,5 @@
 \item{v.final}{v.final}
 }
 \description{
-plot.dispersio.reduccio
+Plot.dispersio.reduccio
 }
