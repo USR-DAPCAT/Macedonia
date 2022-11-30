@@ -1,15 +1,15 @@
-Package:            Macedonia
-Type:               Package
-Title:              Macedonia Package
-Version:            0.1.0
-Date:               2022-10-17
-Author:             Jordi Real,Ray Puig
-Maintainer:         Jordi Real <jordireal@gmail.com>
-Description:        Macedonia és un Package que conté les funcions necessàries per treballar en bases de dades mèdiques.
-License:            GPL(>=3)
-Encoding:           UTF-8
-LazyData:           true
-RoxygenNote:        7.2.1
+Package: Macedonia
+Type: Package
+Title: Package Macedonia:Funcions per treballar bases de dades mediques
+Version: 0.1.0
+Date: 2022-10-17
+Author: Jordi Real,Ray Puig
+Maintainer: Jordi Real <jordireal@gmail.com>
+Description: Macedonia és un Package que conté les funcions necessàries per treballar en bases de dades mèdiques.
+License: GPL(>=3)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.1
 Depends:
                     R (>= 3.5.0)
 Imports: 
@@ -35,33 +35,21 @@ Imports:
       ggcorrplot,
       heaven
 Suggests:
-      mice,
-      pROC,
-      parameters,
-      plotROC,
-      survival,
-      survminer,
-      graphics,
-      MatchIt,
-      mgcv,
-      tidyverse,
-      furrr,
-      future,
-      foreach,
-      githubinstall,
-      ggplot2
-      
-      
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+    mice,
+    pROC,
+    parameters,
+    plotROC,
+    survival,
+    survminer,
+    graphics,
+    MatchIt,
+    mgcv,
+    tidyverse,
+    furrr,
+    future,
+    foreach,
+    githubinstall,
+    ggplot2,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

@@ -13,6 +13,19 @@ etiquetar_model<-function(model="kkk",
                           camp="camp",
                           camp_descripcio="descripcio",...) {
 
+
+  #ull mireu aquesta funcio dels conflictes!!!
+
+  #library(conflicted)
+  #
+  #conflict_scout()
+  #Cars93 %>% dplyr::select(Origin)
+  #
+  #conflict_prefer("select", "dplyr")
+  #conflict_scout()
+  #Cars93 %>% select(Origin)
+
+
   # NUMERO_1)
 
   # model=model1

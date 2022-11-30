@@ -1,0 +1,19 @@
+---
+title: "Package Macedonia:Funcions per treballar bases de dades mediques"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Macedonia}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(Macedonia)
+```
