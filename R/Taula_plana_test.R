@@ -8,4 +8,4 @@
 #' \item{DG.AVC}{DG.AVC ()}
 #' \item{DG.DM_ALTRES}{DG.DM_ALTRES ()}
 #' }
-"Taula_plana"
+"Taula_plana_test"

@@ -42,7 +42,7 @@ Funcio que serveix per fer MATCHING.
 \dontrun{
 dat
 
-dat2<-match_density_incidence(dt=dat,
+dat2<-match_density_incidence(dt=dat_test,
 id="idp",llistaPS=c("sex"),
 eventcontrol=FALSE,
 reemplacement=FALSE,

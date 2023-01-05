@@ -163,7 +163,7 @@ selecciona_parells<-function(dt="dt_poblacio",
 #'\dontrun{
 #'dat
 #'
-#'dat2<-match_density_incidence(dt=dat,
+#'dat2<-match_density_incidence(dt=dat_test,
 #'id="idp",llistaPS=c("sex"),
 #'eventcontrol=FALSE,
 #'reemplacement=FALSE,

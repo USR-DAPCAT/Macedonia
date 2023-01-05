@@ -6,7 +6,7 @@
 #' @export            read_conductor
 #' @importFrom        dplyr "%>%"
 #' @examples
-#'k1<-read_conductor(conductor1)
+#'k1<-read_conductor(conductor1_test)
 #'k1
 read_conductor<-function(fitxer,...) {
   # fitxer<-here::here(fitxer_cataleg)

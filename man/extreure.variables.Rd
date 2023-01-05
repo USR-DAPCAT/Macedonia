@@ -31,8 +31,9 @@ Extreure variables seleccionades a partir d un conductor
 }
 \examples{
 
-k1<-extreure.variables(taula="taula1",taulavariables=conductor1,variable_camp="camp",dt=NA)
-k2<-extreure.variables(taula="taula1",taulavariables=conductor1,variable_camp="camp",dt=dt_plana)
+k1<-extreure.variables(taula="taula1",taulavariables=conductor1_test,variable_camp="camp",dt=NA)
+k2<-extreure.variables(taula="taula1",
+taulavariables=conductor1_test,variable_camp="camp",dt=dt_plana_test)
 k1
 k2
 

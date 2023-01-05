@@ -21,7 +21,7 @@ Recodificar. Genera dummis (0/1) a partir d'una variable del data frame
 }
 \examples{
 
-sexe_dummis<-make_dummies(dt_plana,"sexe",prefix="pref.")
+sexe_dummis<-make_dummies(dt_plana_test,"sexe",prefix="pref.")
 sexe_dummis
 
 }

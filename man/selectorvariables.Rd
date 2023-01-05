@@ -24,7 +24,7 @@ Base de dades amb les variables seleccionades
 Seleccionem les variables a partir d'un conductor
 }
 \examples{
-k<-selectorvariables(taula="taula1",taulavariables=conductor1,dt=dt_plana)
-dt_plana
+k<-selectorvariables(taula="taula1",taulavariables=conductor1_test,dt=dt_plana_test)
+dt_plana_test
 k
 }

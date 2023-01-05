@@ -10,4 +10,4 @@
 #' \item{dtindex_case}{data index del cas}
 #' \item{dtindex_control}{data censura}
 #' }
-"dat"
+"dat_test"

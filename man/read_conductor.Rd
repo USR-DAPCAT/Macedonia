@@ -18,6 +18,6 @@ Una taula tibble
 Llegeix el fitxer conductor de diferents formats txt o rds o xls xlsx o data_frame tibble
 }
 \examples{
-k1<-read_conductor(conductor1)
+k1<-read_conductor(conductor1_test)
 k1
 }

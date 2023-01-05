@@ -11,6 +11,6 @@
 #' \item{rang_valid}{rang_valid}
 #' \item{taula1}{taula1}
 #' \item{taula2}{taula2}
-#' \item{ajust4}{ajust4} 
+#' \item{ajust4}{ajust4}
 #' }
-"conductor1"  
+"conductor1_test"
