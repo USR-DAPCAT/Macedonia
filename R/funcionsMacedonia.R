@@ -54,7 +54,7 @@ etiquetar_model<-function(model="kkk",
     tidyr::unnest(cols = c(value),keep_empty = T) %>%
     dplyr::mutate(value=ifelse(is.na(value),"",value)) %>%
     dplyr::mutate(categoria=paste0(name,value)) %>%
-    etiquetar_taula(camp = "name",taulavariables = taulavariables,camp_descripcio = camp_descripcio) %>%
+    etiquetar_taula(camp = "name",taulavariables = taulavariables,camp_descripcio = camp_descripcio,...) %>%
     dplyr::mutate(descripcio_nova=ifelse(value!="",paste0(name,": ",value),name)) %>%
     dplyr::select(Parameter=categoria,descripcio_nova) %>%
     dplyr::filter(Parameter%in%names(model$coefficients)) # filtrar pels coefficients que tenim en el model
@@ -2174,8 +2174,8 @@ extreure_cor_multi<-function(dades=dt,
   # Etiquetar variable
   if (etiquetar) {
     # Si etiquetar llavors capturar etiquetes de conductor
-    rownames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar1),camp="value",taulavariables=conductor_variables,camp_descripcio= "descripcio") %>%  dplyr::pull(value)
-    colnames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar2),camp="value",taulavariables=conductor_variables,camp_descripcio= "descripcio") %>% dplyr:: pull(value)
+    rownames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar1),camp="value",taulavariables=conductor_variables,camp_descripcio= "descripcio",...) %>%  dplyr::pull(value)
+    colnames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar2),camp="value",taulavariables=conductor_variables,camp_descripcio= "descripcio",...) %>% dplyr:: pull(value)
   }
 
   # Ploto el tema
@@ -2382,7 +2382,7 @@ extreure_model_logistic<-function(x="OS4_GSK",
            Lsup=dplyr::if_else(is.na(Lsup),1,Lsup),
            nivell=stringr::str_trim(nivell)) %>%
     dplyr::filter (!is.na(id)) %>% # Eliminar cat de referencia
-    etiquetar_taula("Variable",taulavariables,"descripcio") %>%
+    etiquetar_taula("Variable",taulavariables,"descripcio",...) %>%
     dplyr::mutate(Variable=dplyr::if_else(tipo=="Cat",paste0(Variable,":",nivell),Variable)) %>%
     dplyr::select(Categoria=Variable,OR,Linf,Lsup,p.value)
 

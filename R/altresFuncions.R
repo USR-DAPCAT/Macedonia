@@ -98,7 +98,7 @@ etiquetar_taula<-function(taula="resumtotal",
                           camp="variable",
                           taulavariables="variables_R.xls",
                           camp_descripcio="descripcio",
-                          idcamp="camp") {
+                          idcamp="camp",...) {
 
   # taula=dt_temp
   # taulavariables=conductor
@@ -107,7 +107,7 @@ etiquetar_taula<-function(taula="resumtotal",
   # idcamp="camp"
 
   ####  Llegir etiquetes i variables a analitzar ####
-  variables <- read_conductor(taulavariables)
+  variables <- read_conductor(taulavariables,...)
   camp_sym<-dplyr::sym(camp)
   idcamp_sym<-dplyr::sym(camp_sym)
 
@@ -171,10 +171,10 @@ formula_vector<-function(vector=c("sex","age","age"),y="y",logit=F,eliminar=NA){
 #' formula_iris1<-formula_text(x="formu",y="RESPOSTA",taulavariables = conductor_iris)
 #' formula_iris1
 
-formula_text<-function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavariables,dt=NA) {
+formula_text<-function(x="taula1",y="resposta",eliminar=c("IDP"), a="",taulavariables,dt=NA,...) {
 
   #variables<-read_conductor(conductor_iris)
-  variables<-read_conductor(taulavariables)
+  variables<-read_conductor(taulavariables,...)
   # variables <- data.frame(readxl::read_excel(taulavariables))
   # variables[is.na(variables)]<- 0
   x_sym<-rlang::sym(x)
