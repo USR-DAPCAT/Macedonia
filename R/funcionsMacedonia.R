@@ -2129,14 +2129,15 @@ extreure_cor<-function(var1="CD36",
 #' @param etiquetar           etiquetar
 #' @param coductor_variables  coductor_variables
 #' @param method              method
+#' @param sheet               sheet
 #' @param ...                 Altres parametres
 #' @export                    extreure_cor_multi
 extreure_cor_multi<-function(dades=dt,
                              llistavar1=c("Age","BMI"),
                              llistavar2=c("Large_PER_HDL","Medium_HDL_P_molL"),
                              etiquetar=F,
-                             coductor_variables="conductor_variables",
-                             method = "circle",...){
+                             conductor_variables="conductor_variables",
+                             method = "circle",sheet=NULL,...){
   # NUMERO_35)
 
   # Correlacions , matriu i plot de quantis de dades  ----------------------
@@ -2144,16 +2145,23 @@ extreure_cor_multi<-function(dades=dt,
   # Retorna matriu de correlacions, i plot bivariant (Correlograma) de ggcorrplot
   # Requereix dades, llista1, llista2
 
+  # dades=dt_temp
+  # llistavar1 = llistat_var
+  # llistavar2 = llistat_var
+  # conductor_variables=path_conductor
+  # method = "square"
+  # etiquetar = T
+  # sheet="VarQV"
 
   # dt=dt
   # llistavar1=vars1
   # llistavar2=vars2
-  # coductor_variables="conductor_variables"
+  # conductor_variables="conductor_variables"
   # etiquetar=T
   # method = "square"
 
   # Seleccio de variables
-  dt<-dades %>% dplyr::select(llistavar1,llistavar2)
+  dt<-dades %>% dplyr::select(all_of(llistavar1),all_of(llistavar2))
 
   # Genero matriu
   corr_temp<-stats::cor(dt,use="pairwise",method="pearson")
@@ -2174,8 +2182,11 @@ extreure_cor_multi<-function(dades=dt,
   # Etiquetar variable
   if (etiquetar) {
     # Si etiquetar llavors capturar etiquetes de conductor
-    rownames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar1),camp="value",taulavariables=conductor_variables,camp_descripcio= "descripcio",...) %>%  dplyr::pull(value)
-    colnames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar2),camp="value",taulavariables=conductor_variables,camp_descripcio= "descripcio",...) %>% dplyr:: pull(value)
+
+    dt_conductor_variables<-read_conductor(taulavariables,sheet=sheet)
+    rownames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar1),camp="value",taulavariables=dt_conductor_variables,camp_descripcio= "descripcio") %>%  dplyr::pull(value)
+    colnames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar2),camp="value",taulavariables=dt_conductor_variables,camp_descripcio= "descripcio") %>% dplyr:: pull(value)
+
   }
 
   # Ploto el tema

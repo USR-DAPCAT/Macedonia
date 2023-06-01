@@ -100,6 +100,12 @@ etiquetar_taula<-function(taula="resumtotal",
                           camp_descripcio="descripcio",
                           idcamp="camp",...) {
 
+  # taula=dplyr::as_tibble(llistavar2)
+  # camp="value"
+  # taulavariables=conductor_variables
+  # camp_descripcio= "descripcio"
+  # sheet="VarQV"
+  # idcamp="camp"
   # taula=dt_temp
   # taulavariables=conductor
   # camp="Parameter"
@@ -108,6 +114,7 @@ etiquetar_taula<-function(taula="resumtotal",
 
   ####  Llegir etiquetes i variables a analitzar ####
   variables <- read_conductor(taulavariables,...)
+  # variables <- read_conductor(taulavariables,sheet="VarQV")
   camp_sym<-dplyr::sym(camp)
   idcamp_sym<-dplyr::sym(camp_sym)
 
