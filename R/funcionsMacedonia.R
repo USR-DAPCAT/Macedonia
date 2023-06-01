@@ -2183,7 +2183,7 @@ extreure_cor_multi<-function(dades=dt,
   if (etiquetar) {
     # Si etiquetar llavors capturar etiquetes de conductor
 
-    dt_conductor_variables<-read_conductor(taulavariables,sheet=sheet)
+    dt_conductor_variables<-read_conductor(conductor_variables,sheet=sheet)
     rownames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar1),camp="value",taulavariables=dt_conductor_variables,camp_descripcio= "descripcio") %>%  dplyr::pull(value)
     colnames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar2),camp="value",taulavariables=dt_conductor_variables,camp_descripcio= "descripcio") %>% dplyr:: pull(value)
 
