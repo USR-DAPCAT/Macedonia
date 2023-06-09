@@ -2130,6 +2130,7 @@ extreure_cor<-function(var1="CD36",
 #' @param coductor_variables  coductor_variables
 #' @param method              method
 #' @param sheet               sheet
+#' @param show_p_values       sheet
 #' @param ...                 Altres parametres
 #' @export                    extreure_cor_multi
 extreure_cor_multi<-function(dades=dt,
@@ -2137,9 +2138,8 @@ extreure_cor_multi<-function(dades=dt,
                              llistavar2=c("Large_PER_HDL","Medium_HDL_P_molL"),
                              etiquetar=F,
                              conductor_variables="conductor_variables",
-                             method = "circle",sheet=NULL,...){
+                             method = "circle",sheet=NULL,show_p_values=FALSE,...){
   # NUMERO_35)
-
   # Correlacions , matriu i plot de quantis de dades  ----------------------
 
   # Retorna matriu de correlacions, i plot bivariant (Correlograma) de ggcorrplot
@@ -2160,6 +2160,7 @@ extreure_cor_multi<-function(dades=dt,
   # etiquetar=T
   # method = "square"
 
+
   # Seleccio de variables
   dt<-dades %>% dplyr::select(all_of(llistavar1),all_of(llistavar2))
 
@@ -2179,6 +2180,15 @@ extreure_cor_multi<-function(dades=dt,
   rownames(M) <- llistavar1
   # colnames(M) <- llistavar2
 
+  # Calculo la matriu de p-valors
+  p_corr_list_vars<-function(x="punt_tot_ansiedad_mis") {
+    # x="punt_tot_ansiedad_mis"
+    purrr::map(llistavar1, ~ cor.test(dt_temp[[x]], dt_temp[[.x]])$p.value) %>%
+      unlist() %>% as_tibble() %>% transmute(!!x:=value)}
+  dt_p_values_corr<-llistavar2 %>% purrr::map_dfc(~p_corr_list_vars(.x))
+  mat_p_values<-as.matrix(dt_p_values_corr)
+
+
   # Etiquetar variable
   if (etiquetar) {
     # Si etiquetar llavors capturar etiquetes de conductor
@@ -2187,14 +2197,20 @@ extreure_cor_multi<-function(dades=dt,
     rownames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar1),camp="value",taulavariables=dt_conductor_variables,camp_descripcio= "descripcio") %>%  dplyr::pull(value)
     colnames(M)<-etiquetar_taula(dplyr::as_tibble(llistavar2),camp="value",taulavariables=dt_conductor_variables,camp_descripcio= "descripcio") %>% dplyr:: pull(value)
 
-  }
+    rownames(mat_p_values) <- etiquetar_taula(dplyr::as_tibble(llistavar1),camp="value",taulavariables=dt_conductor_variables,camp_descripcio= "descripcio") %>%  dplyr::pull(value)
+    colnames(mat_p_values) <- etiquetar_taula(dplyr::as_tibble(llistavar2),camp="value",taulavariables=dt_conductor_variables,camp_descripcio= "descripcio") %>% dplyr:: pull(value)
+
+    }
+
 
   # Ploto el tema
   # corrplot<-ggcorrplot::ggcorrplot(M,method = "circle",type=c("full"),lab_col = "black",colors = c("red", "white", "black"),outline.color = "grey")
-  corrplot<-ggcorrplot::ggcorrplot(M,method = method,...)
+
+  if (show_p_values) { corrplot<-ggcorrplot::ggcorrplot(M,method = method,p.mat=mat_p_values,...)
+      } else         { corrplot<-ggcorrplot::ggcorrplot(M,method = method,p.mat=NULL,...) }
 
   # Retorno llista d'objectes (MAtriu i plot)
-  list(matriu=corr_temp,plot=corrplot)
+  list(matriu=corr_temp,plot=corrplot, matriu_P_values=dt_p_values_corr)
 }
 
 
